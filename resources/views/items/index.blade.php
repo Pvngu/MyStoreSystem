@@ -3,36 +3,16 @@
 
     <script>
         const submitForm = document.getElementById('submitForm');
-        const sortID = document.getElementById('sortById');
-        const sortName = document.getElementById('sortByName');
-        const sortStock = document.getElementById('sortByStock');
-        const sortCP = document.getElementById('sortByCP');
-        const sortUP = document.getElementById('sortByUP');
-        const sortCategory = document.getElementById('sortByCategory');
         const sort_order = document.getElementById('sort_order');
 
-        sortID.addEventListener('click', () => {
-            sortBy('id');
-        });
+        const columnIds = ['sortById', 'sortByName', 'sortByStock', 'sortByCP', 'sortByUP'];
+        const columnNames = ['id', 'name', 'stock', 'cost_price', 'unit_price'];
 
-        sortName.addEventListener('click', () => {
-            sortBy('name');
-        });
-
-        sortStock.addEventListener('click', () => {
-            sortBy('stock');
-        });
-
-        sortCP.addEventListener('click', () => {
-            sortBy('cost_price');
-        });
-
-        sortUP.addEventListener('click', () => {
-            sortBy('unit_price');
-        });
-
-        sortCategory.addEventListener('click', () => {
-            sortBy('category');
+        columnIds.forEach((id, index) => {
+            const element = document.getElementById(id);
+            element.addEventListener('click', () => {
+                sortBy(columnNames[index]);
+            });
         });
 
         function sortBy(x){
@@ -99,17 +79,25 @@
                     </div>
                 </nav>
             </div>
+            @php
+                $sort_column = request('sort_column');
+                $sort_order = request('sort_order');
+            @endphp
             <div class = "table-container">
                 <table class = "content-table">
                     <thead>
                         <tr>
                             <th class="center-cell">
-                                <input type="checkbox">
+                                <input type="checkbox" id="checkAll">
                             </th>
                             <th>
                                 <div class="table-head">
                                     <div id="sortById">#</div>
-                                    <div class="sort-icon">
+                                    <div 
+                                        class="sort-icon id 
+                                        {{(($sort_column == 'id') && ($sort_order == 'A')) ? 'up' : ''}}
+                                        {{(($sort_column == 'id') && ($sort_order == 'D')) ? 'down' : ''}} 
+                                    ">
                                         <i class='bx bxs-up-arrow'></i>
                                         <i class='bx bxs-down-arrow'></i>
                                     </div>
@@ -118,59 +106,56 @@
                             <th>
                                 <div class="table-head">
                                     <div id="sortByName">name</div>
-                                    <div class="sort-icon">
-                                        <i class='bx bxs-up-arrow'></i>
-                                        <i class='bx bxs-down-arrow'></i>
+                                    <div 
+                                        class="sort-icon name 
+                                        {{(($sort_column == 'name') && ($sort_order == 'A')) ? 'up' : ''}}
+                                        {{(($sort_column == 'name') && ($sort_order == 'D')) ? 'down' : ''}} 
+                                    ">
+                                    <i class='bx bxs-up-arrow'></i>
+                                    <i class='bx bxs-down-arrow'></i>
                                     </div>
                                 </div>
-                                <style>
-                                    .sort-icon{
-                                        display: flex;
-                                        flex-direction: column;
-                                        font-size: 4px;
-                                    }
-
-                                    .table-head{
-                                        display: flex;
-                                        gap: 8px;
-                                    }
-                                </style>
                             </th>
                             <th>
                                 <div class="table-head">
                                     <div id="sortByStock">Stock</div>
-                                    <div class="sort-icon">
-                                        <i class='bx bxs-up-arrow'></i>
-                                        <i class='bx bxs-down-arrow'></i>
-                                    </div>
+                                    <div 
+                                        class="sort-icon stock 
+                                        {{(($sort_column == 'stock') && ($sort_order == 'A')) ? 'up' : ''}}
+                                        {{(($sort_column == 'stock') && ($sort_order == 'D')) ? 'down' : ''}} 
+                                    ">
+                                    <i class='bx bxs-up-arrow'></i>
+                                    <i class='bx bxs-down-arrow'></i>
                                 </div>
                             </th>
                             <th>
                                 <div class="table-head">
                                     <div id="sortByCP">Cost price</div>
-                                    <div class="sort-icon">
-                                        <i class='bx bxs-up-arrow'></i>
-                                        <i class='bx bxs-down-arrow'></i>
+                                    <div 
+                                        class="sort-icon costP 
+                                        {{(($sort_column == 'cost_price') && ($sort_order == 'A')) ? 'up' : ''}}
+                                        {{(($sort_column == 'cost_price') && ($sort_order == 'D')) ? 'down' : ''}} 
+                                    ">
+                                    <i class='bx bxs-up-arrow'></i>
+                                    <i class='bx bxs-down-arrow'></i>
                                     </div>
                                 </div>
                             </th>
                             <th>
                                 <div class="table-head">
                                     <div id="sortByUP">Unit price</div>
-                                    <div class="sort-icon">
-                                        <i class='bx bxs-up-arrow'></i>
-                                        <i class='bx bxs-down-arrow'></i>
+                                    <div 
+                                    class="sort-icon unitP 
+                                    {{(($sort_column == 'unit_price') && ($sort_order == 'A')) ? 'up' : ''}}
+                                    {{(($sort_column == 'unit_price') && ($sort_order == 'D')) ? 'down' : ''}} 
+                                ">
+                                    <i class='bx bxs-up-arrow'></i>
+                                    <i class='bx bxs-down-arrow'></i>
                                     </div>
                                 </div>
                             </th>
                             <th>
-                                <div class="table-head">
-                                    <div id="sortByCategory">Category</div>
-                                    <div class="sort-icon">
-                                        <i class='bx bxs-up-arrow'></i>
-                                        <i class='bx bxs-down-arrow'></i>
-                                    </div>
-                                </div>
+                                <div id="sortByCategory">Category</div>
                             </th>
                             <th class = "center-cell">Status</th>
                             <th class = "center-cell">Actions</th>

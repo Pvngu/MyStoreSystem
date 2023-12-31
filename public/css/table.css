@@ -9,7 +9,6 @@ table{
 table thead tr{
     text-align: left;
     font-size: 0.8rem;
-    cursor: pointer;
 }
 
 table th, table td{
@@ -381,4 +380,37 @@ table thead{
     color: red;
     font-size: 0.7rem;
     transform: translate(155px,30px);
+}
+
+.sort-icon{
+    display: flex;
+    flex-direction: column;
+    font-size: 4px;
+    opacity: .6;
+}
+
+.sort-icon.id.up :first-child,
+.sort-icon.name.up :first-child,
+.sort-icon.stock.up :first-child,
+.sort-icon.costP.up :first-child,
+.sort-icon.unitP.up :first-child
+{
+    opacity: 1;
+    color: #00ffff;
+}
+
+.sort-icon.id.down :last-child,
+.sort-icon.name.down :last-child,
+.sort-icon.stock.down :last-child,
+.sort-icon.costP.down :last-child,
+.sort-icon.unitP.down :last-child
+{
+    opacity: 1;
+    color: #00ffff;
+}
+
+.table-head{
+    display: flex;
+    gap: 8px;
+    cursor: pointer;
 }
