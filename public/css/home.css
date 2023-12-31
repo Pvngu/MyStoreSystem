@@ -1,0 +1,256 @@
+:root {
+    --c-text-primary: rgb(31, 35, 40);
+    --c-text-header: #7E7F79;
+    --c-border-primary: rgba(0, 0, 0, .1);
+    --c-bg-body: #fff;
+    --c-bg-sidebar: #fff;
+    --c-bg-primary: #fff;
+    --c-bg-secondary: #d4d8dd;
+    --c-bg-button: #fff;
+    --c-bg-button-secondary: #e4e4e4;
+    --c-bg-sb-icon: #F0F2F4;
+  }
+  :root.dark-theme {
+    --c-text-primary: #cbd6e2;
+    --c-text-header: #fff;
+    --c-border-primary: #373E47;
+    --c-bg-body: #1c2128;
+    --c-bg-sidebar: #22272e;
+    --c-bg-primary: #2d333b;
+    --c-bg-secondary: #222128;
+    --c-bg-button: #494a50;
+    --c-bg-button-secondary: #eee;
+    --c-bg-sb-icon: #2e2f33;
+  }
+
+.content{
+  margin: 15px 50px;
+}
+
+.content .welcome h1{
+  text-align: center;
+  font-weight: 500;
+  padding: 0;
+}
+
+.content .welcome h2{
+  text-align: center;
+  margin-block: 25px;
+  font-weight: 400;
+}
+
+.container{
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    justify-content: center;
+}
+
+.item-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px var(--c-border-primary);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--c-text-primary);
+    background: var(--c-bg-sidebar);
+    padding: 10px;
+}
+
+.item-container img{
+    width: 100px;
+    height: 100px;
+    margin-block: 15px;
+}
+
+.item-container h2{
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding-block: 10px;
+}
+
+.item-container p{
+  font-size: 0.7rem;
+  text-align: center;
+  padding-bottom: 40px;
+}
+
+
+.item-container:hover{
+  background: var(--c-bg-sb-icon);
+}
+
+.cards{
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+ 
+.cards .right-content{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 2;
+  gap: 30px;
+}
+
+.cards .left-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  flex-grow: 1;
+}
+
+.cards .left-content .card-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.cards .card-item{
+  display: flex;
+  flex-direction: column;
+  padding: 20px 30px;
+  height: 200px;
+  background: var(--c-bg-table-option);
+  border-radius: 23px;
+}
+
+.cards .card-table{
+  background: var(--c-bg-table-option);
+  flex-grow: 1;
+  border-radius: 23px;
+  height: 390px;
+  overflow: hidden;
+}
+
+.card-item .card-header{
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-item .card-header .card-tittle{
+  font-weight: 600;
+}
+.card-item .card-content{
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.card-item .card-content .card-number{
+  font-size: 3rem;
+}
+
+.card-item .card-date{
+  text-align: right;
+}
+
+.card-table .card-table-header{
+  text-align: center;
+  padding-block: 15px;
+  font-weight: 600;
+}
+
+.card-table .card-table-content{
+  padding-inline: 20px;
+}
+
+table{
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table thead tr{
+  text-align: left;
+  font-size: 0.8rem;
+}
+
+table th, table td{
+  padding: 12px 15px;
+}
+
+table tbody tr{
+  transition: all 0.5s ease;
+}
+
+table tbody tr:nth-of-type(even){
+  background-color: var(--c-bg-tb-even);
+}
+
+table thead{
+  border-bottom: 2px solid rgba(0, 0, 0, 0.20);
+}
+
+.row-image{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.table-image{
+  width: 45px;
+  height: 35px;
+  border-radius: 10px;
+}
+
+.dashboard-header{
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-header span{
+  font-size: 1.7rem;
+  font-weight: 500;
+}
+
+.center-cell{
+  text-align: center;
+}
+
+.card-item.last-card{
+  height: 350px;
+}
+
+@media (max-width: 1150px) {
+  .cards{
+    flex-direction: column;
+  }
+
+  .cards .left-content{
+    margin: 0 auto;
+  }
+
+  .cards .right-content{
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 800px) {
+  .card-item .card-content .card-number{
+    font-size: 1.4rem;
+  }
+
+  .card-item .card-header .card-tittle{
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  .card-item .card-date{
+    font-size: 0.7rem;
+  }
+
+  .cards .card-item{
+    height: 150px;
+  }
+
+  .cards .last-card{
+    height: 250px;
+  }
+}

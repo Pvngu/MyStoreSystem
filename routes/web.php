@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +16,41 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
+
+Route::get('/home', function () {
+    return view('home');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+
+// inventory
+
+// Show all Inventory
+Route::get('/inventory/items', [ItemController::class, 'index']);
+
+// Show create form
+Route::get('/inventory/items/create', [ItemController::class, 'create']);
+
+// Store item data
+Route::post('/inventory/items', [ItemController::class, 'store']);
+
+// Show edit form
+Route::get('/inventory/items/{item}/edit', [ItemController::class, 'edit']);
+
+// Update items
+Route::put('/inventory/items/{item}', [ItemController::class, 'update']);
+
+// Delete an item
+Route::delete('/inventory/items/{item}', [ItemController::class, 'destroy']);
+
+//categories
+
+// Show all categories
+Route::get('/inventory/categories', [CategoryController::class, 'index']);
+
+// Show create form
+Route::get('/inventory/categories/create', [CategoryController::class, 'create']);
