@@ -1,8 +1,10 @@
 <?php
 
+use App\Models\Item;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +26,8 @@ Route::get('/home', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $itemCount = Item::count();
+    return view('dashboard', compact('itemCount'));
 });
 
 // inventory
@@ -54,3 +57,8 @@ Route::get('/inventory/categories', [CategoryController::class, 'index']);
 
 // Show create form
 Route::get('/inventory/categories/create', [CategoryController::class, 'create']);
+
+//Customers
+
+// Show all customers
+Route::get('/customers', [CustomerController::class, 'index']);

@@ -411,7 +411,7 @@ opacity: 1;
     display: inline-block;
 }
 
-.logoutButtons button{
+.logoutButtons button, .deleteButton{
     font-family: 'Poppins';
     font-weight: 600;
     padding: 6px 16px;

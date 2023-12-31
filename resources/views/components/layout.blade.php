@@ -91,7 +91,7 @@
                     <span class="tooltip">Customers</span>
                     <ul class="submenu-items sm-customers">
                         <li>
-                            <a href="#">View Customers</a>
+                            <a href="/customers">View Customers</a>
                         </li>
                         <li>
                             <a href="#">New Customer</a>

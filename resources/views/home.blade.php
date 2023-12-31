@@ -15,12 +15,17 @@
                     <h2>Inventory</h2>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ea?</p>
                 </a>
+                <a class="item-container" href="inventory/items">
+                    <img src="{{asset('images\inventory.png')}}" alt="inventory image">
+                    <h2>Categories</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ea?</p>
+                </a>
                 <a class="item-container" href="#">
                     <img src="{{asset('images\report.png')}}" alt="icon image">
                     <h2>Orders</h2>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, ab.</p>
                 </a>
-                <a class="item-container" href="#">
+                <a class="item-container" href="/customers">
                     <img src="{{asset('images\customers.png')}}" alt="icon image">
                     <h2>Customers</h2>
                     <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum, necessitatibus.</p>

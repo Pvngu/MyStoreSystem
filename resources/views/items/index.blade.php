@@ -83,6 +83,10 @@
                 $sort_column = request('sort_column');
                 $sort_order = request('sort_order');
             @endphp
+            <div class="nav-content flex-container">
+                <div>Items selected: 20</div>
+                <button class="deleteButton">Delete</button>
+            </div>
             <div class = "table-container">
                 <table class = "content-table">
                     <thead>

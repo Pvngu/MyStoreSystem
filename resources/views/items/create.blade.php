@@ -86,13 +86,13 @@
             </div>
             <div class="file-content">
                 <div id="preview"></div>
-            <div class="file-icon">
-                <img src="{{asset('images/files-icon.png')}}" alt="file upload image">
-                <span>Drag an image or click to select a file</span>
-            </div>
+                <div class="file-icon">
+                    <img src="{{asset('images/files-icon.png')}}" alt="file upload image">
+                    <span>Drag an image or click to select a file</span>
+                </div>
                 <input type="file" name="image" accept="image/gif,image/jpeg,image/png,image/jpg" id="upload_file" onchange="getImagePreview(event)">
                 <i class='bx bxs-trash'></i>
-        </div>
+            </div>
         </div>
         <div class="form-buttons">
             <a href="/inventory/items" style="text-decoration: none;">

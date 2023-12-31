@@ -32,7 +32,7 @@
                             <i class='bx bx-package'></i>
                         </div>
                         <div class="card-content">
-                            <span class="card-number">85</span>
+                            <span class="card-number">{{$itemCount}}</span>
                         </div>
                         <span class="card-date">Since last month</span>
                     </div>

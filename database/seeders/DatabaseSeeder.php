@@ -4,8 +4,12 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Category;
+use App\Models\City;
 use App\Models\Item;
+use App\Models\Address;
+use App\Models\Country;
+use App\Models\Category;
+use App\Models\Customer;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,37 +21,76 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\User::factory(3)->create();
 
-        Category::create([
-            'name' => 'None',
-            'description' => ''
-        ]);
-
-        Category::create([
-            'name' => 'Utensils',
-            'description' => 'a'
-        ]);
-
-        Category::create([
-            'name' => 'Electronic',
-            'description' => 'b'
-        ]);
-
-        Category::create([
-            'name' => 'Game systems',
-            'description' => 'c'
-        ]);
-
-        Category::create([
-            'name' => 'Videogames',
-            'description' => 'd'
-        ]);
-
-        Category::create([
-            'name' => 'Desktop computers',
-            'description' => 'e'
-        ]);
+        $categoriesData = [
+            ['name' => 'None', 'description' => ''],
+            ['name' => 'Utensils', 'description' => 'a'],
+            ['name' => 'Electronic', 'description' => 'b'],
+            ['name' => 'Game systems', 'description' => 'c'],
+            ['name' => 'Videogames', 'description' => 'd'],
+            ['name' => 'Desktop computers', 'description' => 'e'],
+        ];
+        
+        foreach ($categoriesData as $data) {
+            Category::create($data);
+        }
 
         Item::factory(200)->create();
+
+        $countriesData = [
+            ['name' => 'United States'],
+            ['name' => 'Mexico'],
+            ['name' => 'Canada']
+        ];
+
+        foreach ($countriesData as $data) {
+            Country::create($data);
+        }
+
+        $citiesData = [
+            // United States
+            ['name' => 'New York', 'country_id' => 1],
+            ['name' => 'Los Angeles', 'country_id' => 1],
+            ['name' => 'Chicago', 'country_id' => 1],
+            ['name' => 'Houston', 'country_id' => 1],
+            ['name' => 'Phoenix', 'country_id' => 1],
+            ['name' => 'Philadelphia', 'country_id' => 1],
+            ['name' => 'San Antonio', 'country_id' => 1],
+            ['name' => 'San Diego', 'country_id' => 1],
+            ['name' => 'Dallas', 'country_id' => 1],
+            ['name' => 'San Francisco', 'country_id' => 1],
+        
+            // Mexico
+            ['name' => 'Mexico City', 'country_id' => 2],
+            ['name' => 'Guadalajara', 'country_id' => 2],
+            ['name' => 'Monterrey', 'country_id' => 2],
+            ['name' => 'Puebla', 'country_id' => 2],
+            ['name' => 'Tijuana', 'country_id' => 2],
+            ['name' => 'Merida', 'country_id' => 2],
+            ['name' => 'Cancun', 'country_id' => 2],
+            ['name' => 'Leon', 'country_id' => 2],
+            ['name' => 'Queretaro', 'country_id' => 2],
+            ['name' => 'Toluca', 'country_id' => 2],
+        
+            // Canada
+            ['name' => 'Toronto', 'country_id' => 3],
+            ['name' => 'Vancouver', 'country_id' => 3],
+            ['name' => 'Montreal', 'country_id' => 3],
+            ['name' => 'Calgary', 'country_id' => 3],
+            ['name' => 'Edmonton', 'country_id' => 3],
+            ['name' => 'Ottawa', 'country_id' => 3],
+            ['name' => 'Winnipeg', 'country_id' => 3],
+            ['name' => 'Quebec City', 'country_id' => 3],
+            ['name' => 'Hamilton', 'country_id' => 3],
+            ['name' => 'London', 'country_id' => 3],
+        ];
+
+        foreach ($citiesData as $data) {
+            City::create($data);
+        }
+
+        Address::factory(50)->create();
+
+        Customer::factory(60)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
