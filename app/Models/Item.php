@@ -33,5 +33,12 @@ class Item extends Model
         if($filters['category'] ?? false) {
             $query->where('category_id', '=', request('category'));
         }
+
+        if(($filters['sort_order']) ?? false) {
+            $column = request('sort_column');
+            if($filters['sort_column'] == $column && $filters['sort_order'] == 'D'){
+                $query->orderBy($column, 'desc');
+            }
+        }
     }
 }

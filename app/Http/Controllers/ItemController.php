@@ -12,7 +12,7 @@ class ItemController extends Controller
 {
     //Show all items
     public function index () {
-        $items = Item::with('category')->filter(request(['search', 'status', 'category']))->paginate(20)->withQueryString();
+        $items = Item::with('category')->filter(request(['search', 'status', 'category', 'sort_column', 'sort_order']))->paginate(20)->withQueryString();
         $categories = Category::orderBy('name')->get();
         return view('items.index', compact('items', 'categories'));
     }
