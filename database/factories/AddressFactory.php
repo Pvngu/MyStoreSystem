@@ -17,8 +17,8 @@ class AddressFactory extends Factory
     public function definition(): array
     {
         return [
-            'address' => fake()->address(),
-            'address2' => fake()->address(),
+            'address' => fake()->streetAddress(),
+            'address2' => fake()->streetAddress(),
             'postal_code' => fake()->numberBetween(4000, 9999),
             'city_id' => fake()->numberBetween(1, 30)
         ];

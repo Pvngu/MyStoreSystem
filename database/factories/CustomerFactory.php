@@ -22,7 +22,7 @@ class CustomerFactory extends Factory
             'email' => fake()->email(),
             'phone' => fake()->phoneNumber(),
             'active' => fake()->numberBetween(0, 1),
-            'address_id' => fake()->numberBetween(1, 60)
+            'address_id' => fake()->numberBetween(1, 1)
         ];
     }
 }

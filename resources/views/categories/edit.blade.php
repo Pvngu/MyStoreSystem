@@ -1,36 +1,54 @@
 @push('scripts')
 <script>
-    window.onload = isImageSet();
-    var imagediv = document.getElementById('preview');
-    function getImagePreview() {
-        var image = URL.createObjectURL(event.target.files[0]);
-        var newimg = document.createElement('img');
-        imagediv.innerHTML = '';
-        newimg.src = image;
-        imagediv.appendChild(newimg);
-        isImageSet(image);
-    }
-
-    function isImageSet(jsImg){
-        const fileContent = document.querySelector('.file-content');
-        const fileIcon = document.querySelector('.file-icon');
-        if(jsImg) {
-            fileContent.classList.add('imgSet');
-            fileIcon.classList.add('imgSet');
+        window.onload = isImageSet();
+        var imagediv = document.getElementById('preview');
+        function getImagePreview() {
+            var image = URL.createObjectURL(event.target.files[0]);
+            var newimg = document.createElement('img');
+            imagediv.innerHTML = '';
+            newimg.src = image;
+            imagediv.appendChild(newimg);
+            isImageSet(image);
         }
-    }
 
-    const deleteImg = document.querySelector('.bxs-trash');
-    deleteImg.addEventListener('click', () => {
-        const file = document.getElementById('upload_file');
-        const fileContent = document.querySelector('.file-content');
-        const fileIcon = document.querySelector('.file-icon');
-        file.value = '';
-        imagediv.innerHTML = '';
-        isImageSet();
-        fileIcon.classList.remove('imgSet');
-        fileContent.classList.remove('imgSet');
-    });
+        function isImageSet(jsImg){
+            const img = document.getElementById('item-image');
+            const fileContent = document.querySelector('.file-content');
+            const fileIcon = document.querySelector('.file-icon');
+            if(img) {
+                fileContent.classList.add('imgSet');
+                fileIcon.classList.add('imgSet');
+                if(jsImg) {
+                    img.style.display = "none";
+                }
+            }
+            if(jsImg) {
+                fileContent.classList.add('imgSet');
+                fileIcon.classList.add('imgSet');
+            }
+        }
+
+        const deleteImg = document.querySelector('.bxs-trash');
+        deleteImg.addEventListener('click', () => {
+            const img = document.getElementById('item-image');
+            const file = document.getElementById('upload_file');
+            const fileContent = document.querySelector('.file-content');
+            const fileIcon = document.querySelector('.file-icon');
+            file.value = '';
+            imagediv.innerHTML = '';
+            isImageSet();
+            fileIcon.classList.remove('imgSet');
+            fileContent.classList.remove('imgSet');
+            img.style.display= 'none';
+        });
+
+        $(document).ready(function () {
+            $('.bxs-trash').click(function (e) {
+                e.preventDefault();
+
+                $('#empty_image').val('yes');
+            });
+        });
 
     let removedOptions = [];
 
@@ -49,12 +67,10 @@ function removeSelectedOption(value) {
 function restoreRemovedOptions(value) {
     let nameInput = document.getElementById('name');
     const [itemName, itemValue] = value.split(',');
-    console.log([itemName, itemValue]);
 
     const newOption = document.createElement('option');
     newOption.value = itemName + ',' + itemValue;
     newOption.text = itemName;
-    console.log(itemName);
 
     nameInput.add(newOption);
     removedOptions = removedOptions.filter(option => option.value !== itemValue);
@@ -62,13 +78,18 @@ function restoreRemovedOptions(value) {
     
     let btnAdd = document.getElementById('addButton');
     let table = document.getElementById('addRow');
-    let count = 0
+    let itemNumber = document.getElementById('itemNumber').value;
+    let count = itemNumber;
+
+    $(document).ready(function () {
+        $('#itemCount').val(count);
+    });
 
     table.addEventListener('click', (event) => {
     if (event.target.id === 'addButton') {
         let nameInput = document.getElementById('name');
         if(nameInput.options.length > 0) {
-            let value = nameInput.value;
+            let value = nameInput.value; 
             const item = value.split(',');
             count++;
 
@@ -107,7 +128,7 @@ function restoreRemovedOptions(value) {
     const deleteButtons = document.querySelectorAll('.bxs-trash');
     deleteButtons.forEach(deleteBtn => {
     deleteBtn.addEventListener('click', () => {
-        // Your delete logic here
+
         const file = document.getElementById('upload_file');
         const fileContent = document.querySelector('.file-content');
         const fileIcon = document.querySelector('.file-icon');
@@ -125,34 +146,36 @@ function restoreRemovedOptions(value) {
         <div class="content-header">
             <div class="header-text">
                 <a href="/inventory/categories">Categories</a>
-                <div class="animated-header">> New Category</div>
+                <div class="animated-header">> Edit Category</div>
             </div>
         </div>
-        <form action="/inventory/categories" method="POST" enctype="multipart/form-data">
+        <form action="/inventory/categories/{{$category->id}}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="item-info">
                 <div class="item-fields">
                     <div class="content-items">
                         <label>Name</label>
-                        <input type="text" name="name">
-                        @error('name')
-                            <p class="errorMessage">{{$message}}</p>
-                        @enderror
+                        <input type="text" name="name" value="{{$category->name}}">
                     </div>
                     <div class="content-items">
                         <label>Description</label>
-                        <textarea spellcheck="false" name="description" rows="6" style="min-width: 300px;"></textarea>
+                        <textarea spellcheck="false" name="description" rows="6" style="min-width: 300px;">{{$category->description}}</textarea>
                     </div>
                 </div>
                 <div class="file-content">
                     <div id="preview"></div>
-                    <div class="file-icon">
-                        <img src="{{asset('images/files-icon.png')}}" alt="file upload image">
-                        <span>Drag an image or click to select a file</span>
-                    </div>
+                    @if($category->image)
+                        <img id="item-image" src="{{asset('storage/' . $category->image)}}" alt="image">
+                    @endif
+                <div class="file-icon">
+                    <img src="{{asset('images/files-icon.png')}}" alt="file upload image">
+                    <span>Drag an image or click to select a file</span>
+                </div>
                     <input type="file" name="image" accept="image/gif,image/jpeg,image/png,image/jpg" id="upload_file" onchange="getImagePreview(event)">
                     <i class='bx bxs-trash'></i>
-                </div>
+                    <input type="hidden" id="empty_image" name="empty_image">
+            </div>
             </div>
             <div class = "table-container" style="margin-top: 20px;">
                 <span>item table</span>
@@ -178,15 +201,28 @@ function restoreRemovedOptions(value) {
                                 <input id="addButton" class="newButton" type="button" value="Add">
                             </td>
                         </tr>
+                        @foreach ($categoryItems as $index => $item)
+                        <tr data-item-value="{{$item->name . ',' . $item->id}}">
+                            <td>
+                                <div class="row-image">
+                                    <img class="table-image" src="{{asset('images/default-gray.png')}}" alt="">
+                                    {{$item->name}}
+                                    <input type="hidden" name="{{'item' . $index + 1}}" value="{{$item->id}}" />
+                                </div>
+                            </td>
+                            <td class='actions center-cell'>
+                                <input class="newButton deleteButton" type="button" value="Delete">
+                            </td>
+                        </tr>
+                        @endforeach
+                        <input type="hidden" id="itemNumber" value="{{$index ?? false ? $index + 1 : 0}} ">
                     </tbody>
                 </table>
                 <input type="hidden" name="itemCount" id="itemCount">
             </div>
             <div class="form-buttons">
-                <a href="/inventory/categories" style="text-decoration: none;">
-                    <input class="newButton cancelButton" type="button" value="Cancel">
-                </a>
-                <input class="newButton" id="" type="submit" value="Save">
+                <input class="newButton cancelButton" type="button" value="Cancel">
+                <input class="newButton" type="submit" value="Save">
             </div>
         </form>
     </div>

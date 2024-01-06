@@ -22,7 +22,7 @@
                             <i class='bx bx-group'></i>
                         </div>
                         <div class="card-content">
-                            <span class="card-number">106</span>
+                            <span class="card-number">{{$customerCount}}</span>
                         </div>
                         <span class="card-date">Since last month</span>
                     </div>

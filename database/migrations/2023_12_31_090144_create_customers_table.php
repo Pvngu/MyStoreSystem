@@ -15,11 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('email');
-            $table->string('phone', 20);
+            $table->string('email')->nullable();
+            $table->string('phone', 20)->nullable();
             $table->boolean('active');
             $table->timestamps();
-            $table->foreignId('address_id')->contrained();
+            $table->foreignId('address_id')
+                  ->nullable()
+                  ->contrained()
+                  ->onDelete('cascade');
         });
     }
 

@@ -2,28 +2,41 @@
     <div class="content">
         <div class="content-header">
             <div class="header-text">
-                <a href="customers.html">Customers</a>
+                <a href="/customers">Customers</a>
                 <div class="animated-header">> New Customer</div>
             </div>
         </div>
-        <form action="">
+        <form action="/customers" method="post">
+            @csrf
             <div class="item-info">
                 <div class="item-fields">
                     <div class="content-items">
                         <label>First Name</label>
-                        <input type="text" name="first_name">
+                        <input type="text" name="first_name" value="{{old('first_name')}}">
+                        @error('first_name')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
                     </div>
                     <div class="content-items">
                         <label>Last Name</label>
-                        <input type="text" name="last_name">
+                        <input type="text" name="last_name" value="{{old('last_name')}}">
+                        @error('last_name')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
                     </div>
                     <div class="content-items">
                         <label>Email</label>
-                        <input type="email" name="email">
+                        <input type="email" name="email" value="{{old('email')}}">
+                        @error('email')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
                     </div>
                     <div class="content-items">
                         <label>Phone</label>
-                        <input type="text" name="phone">
+                        <input type="text" name="phone" value="{{old('phone')}}">
+                        @error('phone')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
                     </div>
                 </div>
                 <div>
@@ -37,14 +50,18 @@
                     </div>
                     <div class="content-items">
                         <label>City</label>
-                        <input type="text" name="city">
+                        <select name="city">
+                            @foreach ($cities as $city)
+                                <option value="{{$city->id}}">{{$city->name}}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="content-items">
                         <label>Country</label>
                         <select name="country">
-                            <option value="mexico">Mexico</option>
-                            <option value="united states">United States</option>
-                            <option value="canada">Canada</option>
+                            @foreach ($countries as $country)
+                                <option value="{{$country->id}}">{{$country->name}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="content-items">
@@ -54,8 +71,10 @@
                 </div>
             </div>
             <div class="form-buttons">
-                <input class="newButton cancelButton" type="button" value="Cancel">
-                <input class="newButton" type="button" value="Save">
+                <a href="/customers" style="text-decoration: none;">
+                    <input class="newButton cancelButton" type="button" value="Cancel">
+                </a>
+                <input class="newButton" type="submit" value="Create">
             </div>
         </form>
     </div>

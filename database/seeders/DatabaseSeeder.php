@@ -22,19 +22,19 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(3)->create();
 
         $categoriesData = [
-            ['name' => 'None', 'description' => ''],
-            ['name' => 'Utensils', 'description' => 'a'],
-            ['name' => 'Electronic', 'description' => 'b'],
-            ['name' => 'Game systems', 'description' => 'c'],
-            ['name' => 'Videogames', 'description' => 'd'],
-            ['name' => 'Desktop computers', 'description' => 'e'],
+            ['name' => 'None', 'description' => '', 'image' => ''],
+            ['name' => 'Utensils', 'description' => 'a', 'image' => ''],
+            ['name' => 'Electronic', 'description' => 'b', 'image' => ''],
+            ['name' => 'Game systems', 'description' => 'c', 'image' => ''],
+            ['name' => 'Videogames', 'description' => 'd', 'image' => ''],
+            ['name' => 'Desktop computers', 'description' => 'e', 'image' => ''],
         ];
         
         foreach ($categoriesData as $data) {
             Category::create($data);
         }
 
-        Item::factory(200)->create();
+        Item::factory(20)->create();
 
         $countriesData = [
             ['name' => 'United States'],
@@ -90,7 +90,7 @@ class DatabaseSeeder extends Seeder
 
         Address::factory(50)->create();
 
-        Customer::factory(60)->create();
+        Customer::factory(1)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

@@ -32,7 +32,7 @@ class ItemController extends Controller
         ]);
 
         if($request->hasFile('image')){
-            $formfields['image'] = $request->file('image')->store('item_image', 'public');
+            $formfields['image'] = $request->file('image')->store('item_images', 'public');
         }
 
         Item::create($formfields);
@@ -56,7 +56,7 @@ class ItemController extends Controller
 
         if($request->hasFile('image')){
             FIle::delete('storage/' . $item->image);
-            $formFields['image'] = $request->file('image')->store('item_image', 'public');
+            $formFields['image'] = $request->file('image')->store('item_images', 'public');
         }
         else if($request->empty_image == 'yes'){
             FIle::delete('storage/' . $item->image);
@@ -79,7 +79,7 @@ class ItemController extends Controller
             return back()->with('message', 'Item deleted successfully');
         }
         else {
-            return back()->with('message', 'Item was not found');
+            return back()->with('errorMessage', 'Item was not found');
         }
     }
 }

@@ -543,11 +543,57 @@ opacity: 1;
 }
 
 .message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     top: 0;
     transform: translateX(-50%);
     left: 50%;
-    background: green;
-    color: #fff;
+    text-wrap: nowrap;
+    z-index: 100;
+    background: #EDFBD8;
+    border: solid #2a8c3f 1px;
+    border-radius: 5px;
     padding: 10px;
+    color: #597151;
+    animation: slide-bottom 400ms ease-in-out both;
+}
+
+.message.error{
+    background: #ecc8c5;
+    color: #c1514d;
+    border: solid #d6b1b1 1px;
+}
+
+@keyframes slide-bottom{
+    0%{
+        top: -30%;
+    }
+    100%{
+        top: 10px;
+    }
+}
+
+.message p{
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.message .bold{
+    font-weight: 600;
+}
+
+.bx-check, .bx-block{
+    font-weight: 700;
+    font-size: 40px;
+    margin-right: 10px;
+}
+
+.bx-x{
+    font-size: 25px;
+    font-weight: 700;
+    margin-left: 30px;
+    opacity: .6;
+    cursor: pointer;
 }

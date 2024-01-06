@@ -1,5 +1,38 @@
 @push('scripts')
     <script src="{{asset('js/table.js')}}"></script>
+
+    <script>
+        const submitForm = document.getElementById('submitForm');
+        const sort_order = document.getElementById('sort_order');
+
+        const columnIds = ['sortById', 'sortByName', 'sortByStock', 'sortByCP', 'sortByUP'];
+        const columnNames = ['id', 'name', 'stock', 'cost_price', 'unit_price'];
+
+        columnIds.forEach((id, index) => {
+            const element = document.getElementById(id);
+            element.addEventListener('click', () => {
+                sortBy(columnNames[index]);
+            });
+        });
+
+        function sortBy(x){
+            if(sort_order.value === 'D'){
+                $(document).ready(function () {
+                    $('#sort_column').val(x);
+                    $('#sort_order').val('A');
+                    sort_order.value == 'A';
+                    submitForm.submit();
+                });
+            }
+            else{
+                $(document).ready(function () {
+                    $('#sort_column').val(x);
+                    $('#sort_order').val('D');
+                    submitForm.submit();
+                });
+            }
+        }
+    </script>
 @endpush
 <x-layout>
     <div class="content">
@@ -34,8 +67,8 @@
                         <th class="center-cell"><input type="checkbox"></th>
                         <th>#</th>
                         <th>Name</th>
+                        <th>Description</th>
                         <th>items</th>
-                        <th>stock</th>
                         <th class = "center-cell">Actions</th>
                     </tr>
                 </thead>
@@ -44,17 +77,24 @@
                         <tr>
                             <td class="center-cell"><input type="checkbox"></td>
                             <td>{{$category->id}}</td>
-                            <td>{{$category->name}}</td>
-                            <td>?</td>
-                            <td>?</td>
-                            <td class = 'actions center-cell'>
-                                <a href = '/inventory/categories/{{$category->id}}'>
-                                    <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
-                                </a>
-                                <a class="openModalD">
-                                    <i class='bx bx-trash' style = 'color: #fa7878'></i>
-                                </a>
+                            <td>
+                                <div class="row-image">
+                                    <img class="table-image" src="{{$category->image ? asset('storage/' . $category->image) : asset('images/default-gray.png')}}" alt="">
+                                    {{$category->name}}
+                                </div>
                             </td>
+                            <td>{{$category->description ? $category->description : 'No decription'}}</td>
+                            <td>{{$category->items->count()}}</td>
+                            @if($category->id > 1)
+                                <td class = 'actions center-cell'>
+                                    <a href = '/inventory/categories/{{$category->id}}/edit'>
+                                        <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
+                                    </a>
+                                    <a class="openModalD" data-item-id='{{$category->id}}'>
+                                        <i class='bx bx-trash' style = 'color: #fa7878'></i>
+                                    </a>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>
@@ -73,8 +113,8 @@
                     @method('DELETE')
                     <div class="logoutText">Are you sure you want to delete this category?</div>
                     <div class="logoutButtons">
-                        <input type="hidden" id="item_id" name="item_delete_id">
-                        <button id="logoutClose" class = "closeBtnModalD">Cancel</button>
+                        <input type="hidden" id="item_id" name="category_delete_id">
+                        <button id="logoutClose" type="button" class = "closeBtnModalD">Cancel</button>
                         <button id="deleteBtn" type="submit">Delete</button>
                     </div>
                 </form>

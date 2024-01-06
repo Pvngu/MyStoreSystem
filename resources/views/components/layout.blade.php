@@ -10,6 +10,8 @@
     @stack('css')
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
+    <script src="//unpkg.com/alpinejs" defer></script>
+
     <!-- google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,7 +96,7 @@
                             <a href="/customers">View Customers</a>
                         </li>
                         <li>
-                            <a href="#">New Customer</a>
+                            <a href="/customers/create">New Customer</a>
                         </li>
                     </ul>
                 </li>
@@ -249,6 +251,7 @@
                 </div>
         </dialog>
     </div>
+    <x-flash-message />
 </body>
 <script src="{{asset('js/sidebar.js')}}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
