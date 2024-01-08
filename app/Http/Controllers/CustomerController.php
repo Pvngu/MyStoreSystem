@@ -11,7 +11,7 @@ class CustomerController extends Controller
 {
     public function index() {
         return view('customers.index', [
-            'customers' => Customer::with('address.city')->filter(request(['search', 'country', 'status']))->paginate(20),
+            'customers' => Customer::with('address.city')->filter(request(['search', 'country', 'status']))->paginate(20)->withQueryString(),
             'countries' => Country::all(),
             'cities' => City::all()
         ]);

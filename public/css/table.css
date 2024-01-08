@@ -152,7 +152,7 @@ table thead{
     width: 190px;
 }
 
-.status-active, .status-deactive{
+.status-active, .status-deactive, .status-pending{
     padding: 3px 5px;
     border-radius: 10px;
     font-weight: 500;
@@ -162,6 +162,10 @@ table thead{
 
 .status-deactive{
     background: #f44336;
+}
+
+.status-pending {
+    background: #cf9840;
 }
 
 .nav-content{

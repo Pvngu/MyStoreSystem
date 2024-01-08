@@ -221,7 +221,9 @@ function restoreRemovedOptions(value) {
                 <input type="hidden" name="itemCount" id="itemCount">
             </div>
             <div class="form-buttons">
-                <input class="newButton cancelButton" type="button" value="Cancel">
+                <a href="/inventory/categories" style="text-decoration: none;">
+                    <input class="newButton cancelButton" type="button" value="Cancel">
+                </a>
                 <input class="newButton" type="submit" value="Save">
             </div>
         </form>

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\File;
 class CategoryController extends Controller
 {
     public function index() {
-        $categories = Category::with('items')->filter(request('search'))->paginate(20);
+        $categories = Category::with('items')->filter(request(['search', 'sort_column', 'sort_order']))->paginate(20);
         $items = Item::get();
         return view('categories.index', compact('categories'));
     }

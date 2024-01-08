@@ -8,37 +8,37 @@
                 <a class="item-container" href="/dashboard">
                     <img src="{{asset('images\dashboard.png')}}" alt="dashboard image">
                     <h2>Dashboard</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ea?</p>
+                    <p>View your inventory stats in a single page.</p>
                 </a>
                 <a class="item-container" href="inventory/items">
                     <img src="{{asset('images\inventory.png')}}" alt="inventory image">
                     <h2>Inventory</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ea?</p>
+                    <p>Have a better control of your items.</p>
                 </a>
-                <a class="item-container" href="inventory/items">
-                    <img src="{{asset('images\inventory.png')}}" alt="inventory image">
+                <a class="item-container" href="inventory/categories">
+                    <img src="{{asset('images\categories.png')}}" alt="inventory image">
                     <h2>Categories</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, ea?</p>
+                    <p>Enhance the organizarion of your items by establishing new categories for your items.</p>
                 </a>
-                <a class="item-container" href="#">
+                <a class="item-container" href="/orders">
                     <img src="{{asset('images\report.png')}}" alt="icon image">
                     <h2>Orders</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, ab.</p>
+                    <p>Have a control of your orders.</p>
                 </a>
                 <a class="item-container" href="/customers">
                     <img src="{{asset('images\customers.png')}}" alt="icon image">
                     <h2>Customers</h2>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum, necessitatibus.</p>
+                    <p>Create customers to have all the information you need from them and create new orders in the future.</p>
                 </a>
-                <a class="item-container" href="#">
+                <a class="item-container" href="/users">
                     <img src="{{asset('images\userAdmin.png')}}" alt="icon image">
                     <h2>User Management</h2>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum, necessitatibus.</p>
+                    <p>Manage your users to give them access to whatever you want.</p>
                 </a>
                 <a class="item-container">
                     <img src="{{asset('images\settings-icon.png')}}" alt="icon image">
                     <h2>Settings</h2>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ex, ab!</p>
+                    <p>Change theme color or see additional information about the page</p>
                 </a>
             </div>
     </div>

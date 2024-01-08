@@ -1,9 +1,11 @@
 <?php
 
 use App\Models\Item;
+use App\Models\Order;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 
@@ -29,7 +31,8 @@ Route::get('/home', function () {
 Route::get('/dashboard', function () {
     $itemCount = Item::count();
     $customerCount = Customer::count();
-    return view('dashboard', compact('itemCount', 'customerCount'));
+    $orderCount = Order::count();
+    return view('dashboard', compact('itemCount', 'customerCount', 'orderCount'));
 });
 
 // inventory
@@ -91,3 +94,11 @@ Route::put('customers/{customer}', [CustomerController::class, 'update']);
 
 // Delete a customer
 Route::delete('customers/{customer}', [CustomerController::class, 'destroy']);
+
+// Orders
+
+// Show all orders
+Route::get('orders', [OrderController::class, 'index']);
+
+//show create form
+Route::get('orders/create', [OrderController::class, 'create']);

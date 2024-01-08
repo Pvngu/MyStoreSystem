@@ -16,9 +16,21 @@ class Category extends Model
         return $this->hasMany(Item::class);
     }
 
-    public function scopeFilter($query, $filter){
-        if($filter ?? false){
+    public function scopeFilter($query, array $filters){
+        if($filters['search'] ?? false){
             $query->where('name', 'like', '%' . request('search') . '%');
+        }
+
+        if(($filters['sort_order']) ?? false) {
+            $column = request('sort_column');
+            
+            if($filters['sort_column'] == $column && $filters['sort_order'] == 'D'){
+                $query->orderBy($column, 'desc');
+            }
+            
+            else{
+                $query->orderBy($column, 'asc');
+            }
         }
     }
 }

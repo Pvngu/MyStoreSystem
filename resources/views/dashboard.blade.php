@@ -42,7 +42,7 @@
                             <i class='bx bxs-shopping-bag'></i>
                         </div>
                         <div class="card-content">
-                            <span class="card-number">205</span>
+                            <span class="card-number">{{$orderCount}}</span>
                         </div>
                         <span class="card-date">Since last month</span>
                     </div>

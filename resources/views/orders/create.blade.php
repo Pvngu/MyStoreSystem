@@ -1,38 +1,6 @@
 @push('scripts')
 <script>
-    window.onload = isImageSet();
-    var imagediv = document.getElementById('preview');
-    function getImagePreview() {
-        var image = URL.createObjectURL(event.target.files[0]);
-        var newimg = document.createElement('img');
-        imagediv.innerHTML = '';
-        newimg.src = image;
-        imagediv.appendChild(newimg);
-        isImageSet(image);
-    }
-
-    function isImageSet(jsImg){
-        const fileContent = document.querySelector('.file-content');
-        const fileIcon = document.querySelector('.file-icon');
-        if(jsImg) {
-            fileContent.classList.add('imgSet');
-            fileIcon.classList.add('imgSet');
-        }
-    }
-
-    const deleteImg = document.querySelector('.bxs-trash');
-    deleteImg.addEventListener('click', () => {
-        const file = document.getElementById('upload_file');
-        const fileContent = document.querySelector('.file-content');
-        const fileIcon = document.querySelector('.file-icon');
-        file.value = '';
-        imagediv.innerHTML = '';
-        isImageSet();
-        fileIcon.classList.remove('imgSet');
-        fileContent.classList.remove('imgSet');
-    });
-
-    let removedOptions = [];
+let removedOptions = [];
 
 function removeSelectedOption(value) {
     let nameInput = document.getElementById('name');
@@ -48,11 +16,11 @@ function removeSelectedOption(value) {
 
 function restoreRemovedOptions(value) {
     let nameInput = document.getElementById('name');
-    const [itemName, itemValue] = value.split(',');
+    const [itemName, itemValue, itemStock] = value.split(',');
 
     const newOption = document.createElement('option');
-    newOption.value = itemName + ',' + itemValue;
-    newOption.text = itemName;
+    newOption.value = itemName + ',' + itemValue + ',' + itemStock;
+    newOption.text = itemName + '- Stock: ' + itemStock;
 
     nameInput.add(newOption);
     removedOptions = removedOptions.filter(option => option.value !== itemValue);
@@ -60,7 +28,7 @@ function restoreRemovedOptions(value) {
     
     let btnAdd = document.getElementById('addButton');
     let table = document.getElementById('addRow');
-    let count = 0
+    let count = 0;
 
     table.addEventListener('click', (event) => {
     if (event.target.id === 'addButton') {
@@ -75,12 +43,18 @@ function restoreRemovedOptions(value) {
             });
 
             let template = `
-                <tr data-item-value="${item[0]},${item[1]}">
+                <tr data-item-value="${item[0]},${item[1]},${item[2]}">
                     <td>
                         <div>
                             ${item[0]}
                             <input type="hidden" name="item${count}" value="${item[1]}" />
                         </div>
+                    </td>
+                    <td class="center-cell">
+                        <input type="number" value="1" style="max-width: 60px" min="1" onchange="amount(this.value, ${item[3]})">
+                    </td>
+                    <td class="center-cell">
+                        $20
                     </td>
                     <td class='actions center-cell'>
                         <input class="newButton deleteButton" type="button" value="Delete">
@@ -115,62 +89,69 @@ function restoreRemovedOptions(value) {
         fileContent.classList.remove('imgSet');
     });
 });
+
+function amount(value, price){
+    console.log(value * price);
+}
 </script>
 @endpush
 <x-layout>
     <div class="content">
         <div class="content-header">
             <div class="header-text">
-                <a href="/inventory/categories">Categories</a>
-                <div class="animated-header">> New Category</div>
+                <a href="/orders">Orders</a>
+                <div class="animated-header">> New Order</div>
             </div>
         </div>
-        <form action="/inventory/categories" method="POST" enctype="multipart/form-data">
-            @csrf
+        <form action="">
             <div class="item-info">
                 <div class="item-fields">
                     <div class="content-items">
-                        <label>Name</label>
-                        <input type="text" name="name">
-                        @error('name')
-                            <p class="errorMessage">{{$message}}</p>
-                        @enderror
+                        <label>Date</label>
+                        <input type="date" name="date">
                     </div>
                     <div class="content-items">
-                        <label>Description</label>
-                        <textarea spellcheck="false" name="description" rows="6" style="min-width: 300px;"></textarea>
+                        <label>Customer</label>
+                        <select name="customer_id">
+                            <option value="" disabled selected>Select a customer</option>
+                            @foreach ($customers as $customer)
+                                <option value="{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}}</option>
+                            @endforeach
+                        </select>
                     </div>
-                </div>
-                <div class="file-content">
-                    <div id="preview"></div>
-                    <div class="file-icon">
-                        <img src="{{asset('images/files-icon.png')}}" alt="file upload image">
-                        <span>Drag an image or click to select a file</span>
+                    <div class="content-items">
+                        <label>Status</label>
+                        <select name="status" id="status" class="select-input">
+                            <option value="paid">Paid</option>
+                            <option value="pending">Pending</option>
+                        </select>
                     </div>
-                    <input type="file" name="image" accept="image/gif,image/jpeg,image/png,image/jpg" id="upload_file" onchange="getImagePreview(event)">
-                    <i class='bx bxs-trash'></i>
                 </div>
             </div>
             <div class = "table-container" style="margin-top: 20px;">
-                <span>item table</span>
+                <span>items</span>
                 <table class = "content-table">
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th class="center-cell">Quantity</th>
+                            <th class="center-cell">Amount</th>
                             <th class = "center-cell" style = "width: 200px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="addRow">
                         <tr>
                             <td>
-                                <div class="row-image">
+                                <div>
                                     <select id="name" class="input-box" style="max-width: 300px;">
                                         @foreach ($items as $item)
-                                            <option value="{{$item->name}},{{$item->id}}">{{$item->name}}</option>
+                                            <option value="{{$item->name}},{{$item->id}},{{$item->stock}},{{$item->unit_price}}">{{$item->name}} - Stock: {{$item->stock}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </td>
+                            <td></td>
+                            <td></td>
                             <td class = 'actions center-cell'>
                                 <input id="addButton" class="newButton" type="button" value="Add">
                             </td>
@@ -180,10 +161,8 @@ function restoreRemovedOptions(value) {
                 <input type="hidden" name="itemCount" id="itemCount">
             </div>
             <div class="form-buttons">
-                <a href="/inventory/categories" style="text-decoration: none;">
-                    <input class="newButton cancelButton" type="button" value="Cancel">
-                </a>
-                <input class="newButton" id="" type="submit" value="Save">
+                <input class="newButton cancelButton" type="button" value="Cancel">
+                <input class="newButton" type="button" value="Save">
             </div>
         </form>
     </div>

@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\City;
 use App\Models\Item;
+use App\Models\Order;
 use App\Models\Address;
 use App\Models\Country;
 use App\Models\Category;
@@ -34,7 +35,7 @@ class DatabaseSeeder extends Seeder
             Category::create($data);
         }
 
-        Item::factory(20)->create();
+        Item::factory(200)->create();
 
         $countriesData = [
             ['name' => 'United States'],
@@ -90,7 +91,9 @@ class DatabaseSeeder extends Seeder
 
         Address::factory(50)->create();
 
-        Customer::factory(1)->create();
+        Customer::factory(50)->create();
+
+        Order::factory(2)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

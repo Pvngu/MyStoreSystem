@@ -21,8 +21,7 @@ class CustomerFactory extends Factory
             'last_name' => fake()->lastName(),
             'email' => fake()->email(),
             'phone' => fake()->phoneNumber(),
-            'active' => fake()->numberBetween(0, 1),
-            'address_id' => fake()->numberBetween(1, 1)
+            'active' => fake()->numberBetween(0, 1)
         ];
     }
 }

@@ -77,10 +77,10 @@
                     <span class="tooltip">Orders</span>
                     <ul class="submenu-items sm-orders">
                         <li>
-                            <a href="#">View Orders</a>
+                            <a href="/orders">View Orders</a>
                         </li>
                         <li>
-                            <a href="#">New Order</a>
+                            <a href="/orders/create">New Order</a>
                         </li>
                     </ul>
                 </li>
@@ -109,10 +109,10 @@
                     <span class="tooltip">Users</span>
                     <ul class="submenu-items sm-users">
                         <li>
-                            <a href="#">View Users</a>
+                            <a href="/users">View Users</a>
                         </li>
                         <li>
-                            <a href="views\users\create.html">New Users</a>
+                            <a href="/users/create">New Users</a>
                         </li>
                     </ul>
                 </li>

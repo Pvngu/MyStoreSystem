@@ -121,7 +121,7 @@
   background: var(--c-bg-table-option);
   flex-grow: 1;
   border-radius: 23px;
-  height: 390px;
+  height: 375px;
   overflow: hidden;
 }
 
@@ -214,7 +214,7 @@ table thead{
 }
 
 .card-item.last-card{
-  height: 350px;
+  height: 320px;
 }
 
 @media (max-width: 1150px) {
