@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Category;
-use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 
 class ItemController extends Controller
 {
-    //Show all items
     public function index () {
         $items = Item::with('category')->filter(request(['search', 'status', 'category', 'sort_column', 'sort_order']))->paginate(20)->withQueryString();
+        $itemNumbers = Item::all();
         $categories = Category::orderBy('name')->get();
-        return view('items.index', compact('items', 'categories'));
+        return view('items.index', compact('items', 'itemNumbers', 'categories'));
     }
+
 
     public function create () {
         $categories = Category::orderBy('name')->get()->where('id', '>', 1);
@@ -81,5 +81,17 @@ class ItemController extends Controller
         else {
             return back()->with('errorMessage', 'Item was not found');
         }
+    }
+
+    public function deleteItems(Request $request){
+        $items = Item::whereIn('id', $request->ids)->get();
+        foreach($items as $item) {
+            $destination = 'storage/' . $item->image;
+            if(File::exists($destination)) {
+                File::delete($destination);
+            }
+            $item->delete();
+        }
+        return back()->with('message', 'Items deleted successfully');
     }
 }

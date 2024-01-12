@@ -17,10 +17,9 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'customer_id' => fake()->numberBetween(1,40),
+            'customer_id' => fake()->numberBetween(1,5),
             'date' => fake()->date(),
-            'status' => fake()->randomElement(['paid', 'canceled', 'refunded', 'pending']),
-            'total_amount' => fake()->randomFloat(2, 5, 30)
+            'status' => fake()->randomElement(['paid', 'canceled', 'pending'])
         ];
     }
 }

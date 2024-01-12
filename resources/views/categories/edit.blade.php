@@ -42,25 +42,21 @@
             img.style.display= 'none';
         });
 
-        $(document).ready(function () {
-            $('.bxs-trash').click(function (e) {
-                e.preventDefault();
-
-                $('#empty_image').val('yes');
-            });
+        deleteImg.addEventListener('click', () => {
+            document.getElementById('empty_image').value = 'yes';
         });
 
     let removedOptions = [];
 
-function removeSelectedOption(value) {
-    let nameInput = document.getElementById('name');
-    const name = value.split(',');
+    function removeSelectedOption(value) {
+        let nameInput = document.getElementById('name');
+        const name = value.split(',');
 
-    Array.from(nameInput.options).forEach((option, index) => {
-        if (option.value === value) {
-            removedOptions.push(option);
-            option.remove();
-        }
+        Array.from(nameInput.options).forEach((option, index) => {
+            if (option.value === value) {
+                removedOptions.push(option);
+                option.remove();
+            }
     });
 }
 
@@ -78,12 +74,8 @@ function restoreRemovedOptions(value) {
     
     let btnAdd = document.getElementById('addButton');
     let table = document.getElementById('addRow');
-    let itemNumber = document.getElementById('itemNumber').value;
-    let count = itemNumber;
-
-    $(document).ready(function () {
-        $('#itemCount').val(count);
-    });
+    let count = document.getElementById('itemNumber').value;
+    document.getElementById('itemCount').value = count;
 
     table.addEventListener('click', (event) => {
     if (event.target.id === 'addButton') {
@@ -92,10 +84,7 @@ function restoreRemovedOptions(value) {
             let value = nameInput.value; 
             const item = value.split(',');
             count++;
-
-            $(document).ready(function () {
-                $('#itemCount').val(count);
-            });
+            document.getElementById('itemCount').value = count;
 
             let template = `
                 <tr data-item-value="${item[0]},${item[1]}">
@@ -202,12 +191,13 @@ function restoreRemovedOptions(value) {
                             </td>
                         </tr>
                         @foreach ($categoryItems as $index => $item)
+                        @php $index++;@endphp
                         <tr data-item-value="{{$item->name . ',' . $item->id}}">
                             <td>
                                 <div class="row-image">
                                     <img class="table-image" src="{{asset('images/default-gray.png')}}" alt="">
                                     {{$item->name}}
-                                    <input type="hidden" name="{{'item' . $index + 1}}" value="{{$item->id}}" />
+                                    <input type="hidden" name="{{'item' . $index}}" value="{{$item->id}}" />
                                 </div>
                             </td>
                             <td class='actions center-cell'>
@@ -215,7 +205,7 @@ function restoreRemovedOptions(value) {
                             </td>
                         </tr>
                         @endforeach
-                        <input type="hidden" id="itemNumber" value="{{$index ?? false ? $index + 1 : 0}} ">
+                        <input type="hidden" id="itemNumber" value="{{$index ?? false ? $index : 0}} ">
                     </tbody>
                 </table>
                 <input type="hidden" name="itemCount" id="itemCount">

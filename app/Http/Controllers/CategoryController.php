@@ -12,8 +12,9 @@ class CategoryController extends Controller
 {
     public function index() {
         $categories = Category::with('items')->filter(request(['search', 'sort_column', 'sort_order']))->paginate(20);
+        $categoryNumbers = Category::where('id', '>', '0')->get();
         $items = Item::get();
-        return view('categories.index', compact('categories'));
+        return view('categories.index', compact('categories', 'categoryNumbers'));
     }
     
     public function create() {
@@ -24,7 +25,7 @@ class CategoryController extends Controller
     public function store(Request $request) {
         $formFields = $request->validate([
             'name' => ['required', Rule::unique('categories', 'name')],
-            'description' => 'required'
+            'description' => 'nullable'
         ]);
 
         if($request->hasFile('image')){
@@ -36,8 +37,7 @@ class CategoryController extends Controller
         $itemCount = $request->itemCount;
         if($itemCount){
             for($i = 1; $i <= $itemCount; $i++) {
-                $x = 'item' . $i; 
-                $itemId = $request->$x;
+                $itemId = $request->input('item' . $i);
                 Item::where('id',$itemId)->update(['category_id'=>$category->id]);
             }
         }
@@ -76,8 +76,7 @@ class CategoryController extends Controller
         if($itemCount){
             Item::where('category_id',$category->id)->update(['category_id'=> '1']);
             for($i = 1; $i <= $itemCount; $i++) {
-                $x = 'item' . $i; 
-                $itemId = $request->$x;
+                $itemId = $request->input('item' . $i);
                 Item::where('id',$itemId)->update(['category_id'=>$category->id]);
             }
         }
@@ -101,5 +100,20 @@ class CategoryController extends Controller
             return redirect('/inventory/categories')->with('errorMessage', 'Category was not found');
         }
         return redirect('/inventory/categories')->with('message', 'Category deleted successfully');
+    }
+
+    public function deleteCategories(Request $request){
+        $ids = $request->ids;
+        foreach($ids as $id) {
+            $category = Category::find($id);
+            $destination = 'storage/' . $category->image;
+            if(File::exists($destination)) {
+                File::delete($destination);
+            }
+        }
+        Item::whereIn('category_id',$ids)->update(['category_id' => 1]);
+        Category::whereIn('id', $ids)->delete();
+
+        return redirect('/inventory/categories')->with('message', 'Categories deleted successfully');
     }
 }

@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class City extends Model
+class State extends Model
 {
     use HasFactory;
 
-    public function addresses(): hasMany{
-        return $this->hasMany(Address::class);
+    public function cities() : HasMany {
+        return $this->hasMany(City::class);
     }
 
-    public function state():BelongsTo {
-        return $this->belongsTo(State::class);
+    public function  country() : BelongsTo {
+        return $this->belongsTo(Country::class);
     }
 }

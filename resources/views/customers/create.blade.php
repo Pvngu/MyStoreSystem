@@ -1,3 +1,38 @@
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            $('#country').on('change', function () {
+                var countryId = this.value;
+                $('#state').html('');
+                $.ajax({
+                    url: '{{ route('states') }}?country_id='+countryId,
+                    type: 'get',
+                    success: function (res) {
+                        $('#state').html('<option value="" disabled selected>Select State</option>');
+                        $.each(res, function (key, value) {
+                            $('#state').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                        $('#city').html('<option value="">Select City</option>');
+                    }
+                });
+            });
+            $('#state').on('change', function () {
+                var stateId = this.value;
+                $('#city').html('');
+                $.ajax({
+                    url: '{{ route('cities') }}?state_id='+stateId,
+                    type: 'get',
+                    success: function (res) {
+                        $('#city').html('<option value="" disabled selected>Select City</option>');
+                        $.each(res, function (key, value) {
+                            $('#city').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+@endpush
 <x-layout>
     <div class="content">
         <div class="content-header">
@@ -43,30 +78,47 @@
                     <div class="content-items">
                         <label>Address 1</label>
                         <input type="text" name="address">
+                        @error('address')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
                     </div>
                     <div class="content-items">
                         <label>Address 2</label>
                         <input type="text" name="address2">
                     </div>
                     <div class="content-items">
-                        <label>City</label>
-                        <select name="city">
-                            @foreach ($cities as $city)
-                                <option value="{{$city->id}}">{{$city->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="content-items">
                         <label>Country</label>
-                        <select name="country">
+                        <select id="country">
+                            <option value="" disabled selected>Select country</option>
                             @foreach ($countries as $country)
                                 <option value="{{$country->id}}">{{$country->name}}</option>
                             @endforeach
                         </select>
+                        @error('country')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
+                    </div>
+                    <div class="content-items">
+                        <label>State</label>
+                        <select id="state">
+                            <option value="" disabled selected>Select State</option>
+                        </select>
+                    </div>
+                    <div class="content-items">
+                        <label>City</label>
+                        <select name="city_id" id="city">
+                            <option value="" disabled selected>Select city</option>
+                        </select>
+                        @error('city_id')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
                     </div>
                     <div class="content-items">
                         <label>Zip Code</label>
                         <input type="text" pattern="[0-9]{5}" name="postal_code">
+                        @error('postal_code')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
                     </div>
                 </div>
             </div>

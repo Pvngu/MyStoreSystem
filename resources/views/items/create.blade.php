@@ -55,7 +55,7 @@
                 </div>
                 <div class="content-items">
                     <label>Quantity</label>
-                    <input type="text" name="stock" value="{{old('stock')}}">
+                    <input type="number" min="0" name="stock" value="{{old('stock')}}">
                     @error('stock')
                         <p class="errorMessage">{{$message}}</p>
                     @enderror

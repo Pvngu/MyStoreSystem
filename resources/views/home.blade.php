@@ -21,7 +21,7 @@
                     <p>Enhance the organizarion of your items by establishing new categories for your items.</p>
                 </a>
                 <a class="item-container" href="/orders">
-                    <img src="{{asset('images\report.png')}}" alt="icon image">
+                    <img src="{{asset('images\order.png')}}" alt="icon image">
                     <h2>Orders</h2>
                     <p>Have a control of your orders.</p>
                 </a>

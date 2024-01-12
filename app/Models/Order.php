@@ -11,6 +11,8 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['customer_id', 'date', 'status', 'total_amount'];
+
     public function items() : BelongsToMany {
         return $this->belongsToMany(Item::class);
     }
@@ -30,6 +32,18 @@ class Order extends Model
 
         if($filters['customer'] ?? false) {
             $query->where('customer_id', '=', request('customer'));
+        }
+
+        if(($filters['sort_order']) ?? false) {
+            $column = request('sort_column');
+            
+            if($filters['sort_column'] == $column && $filters['sort_order'] == 'D'){
+                $query->orderBy($column, 'desc');
+            }
+            
+            else{
+                $query->orderBy($column, 'asc');
+            }
         }
     }
 }

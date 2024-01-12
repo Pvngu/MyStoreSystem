@@ -51,68 +51,61 @@
     <div class="content">
         <div class="content-header">
             <div class="header-text">
-                <a href="/inventory/items">Inventory</a>
-                <div class="animated-header">> Edit Item</div>
+                <a href="/users">Users</a>
+                <div class="animated-header">> Edit User</div>
             </div>
         </div>
-        <form action="/inventory/items/{{$item->id}}" method="post" enctype="multipart/form-data">
+        <form action="/users/{{$user->id}}" method="POST" enctype="multipart/form-data">
             @csrf
-            @method('PUT')
+            @method('put')
             <div class="item-info">
                 <div class="item-fields">
                     <div class="content-items">
                         <label>Name</label>
-                        <input type="text" name="name" value="{{$item->name}}">
+                        <input type="text" name="name" value="{{$user->name}}">
                         @error('name')
                             <p class="errorMessage">{{$message}}</p>
                         @enderror
                     </div>
                     <div class="content-items">
-                        <label>Stock</label>
-                        <input type="number" min="0" name="stock" value="{{$item->stock}}">
-                        @error('stock')
+                        <label>Username</label>
+                        <input type="text" name="username" value="{{$user->username}}">
+                        @error('username')
                             <p class="errorMessage">{{$message}}</p>
                         @enderror
                     </div>
                     <div class="content-items">
-                        <label>Cost Price</label>
-                        <input type="text" name="cost_price" value="{{$item->cost_price}}">
-                        @error('cost_price')
-                            <p class="errorMessage">{{$message}}</p>
-                        @enderror
+                        <label>Role</label>
+                        <select name="role">
+                            <option value="admin">Admin</option>
+                            <option value="inventory">Inventory</option>
+                            <option value="report">Report</option>
+                        </select>
                     </div>
                     <div class="content-items">
-                        <label>Selling price</label>
-                        <input type="text" name="unit_price" value="{{$item->unit_price}}">
-                        @error('unit_price')
-                            <p class="errorMessage">{{$message}}</p>
-                        @enderror
-                    </div>
-                    <div class="content-items">
-                        <label>Category</label>
-                        <select name="category_id">
-                            @foreach ($categories as $category)
-                                <option value="{{$category->id}}" {{($category->id == $item->category_id) ? 'selected' : ''}}>{{$category->name}}</option>
-                            @endforeach
+                        <label>Status</label>
+                        <select name="status" value="active">
+                            <option value="1">Active</option>
+                            <option value="0">Deactive</option>
                         </select>
                     </div>
                 </div>
                 <div class="file-content">
-                        <div id="preview"></div>
-                        @if($item->image)
-                            <img id="item-image" src="{{asset('storage/' . $item->image)}}" alt="image">
-                        @endif
-                    <div class="file-icon">
-                        <img src="{{asset('images/files-icon.png')}}" alt="file upload image">
-                        <span>Drag an image or click to select a file</span>
-                    </div>
-                        <input type="file" name="image" accept="image/gif,image/jpeg,image/png,image/jpg" id="upload_file" onchange="getImagePreview(event)">
-                        <i class='bx bxs-trash'></i>
-                        <input type="hidden" id="empty_image" name="empty_image">
+                    <div id="preview"></div>
+                    @if($user->image)
+                        <img id="item-image" src="{{asset('storage/' . $user->image)}}" alt="image">
+                    @endif
+                <div class="file-icon">
+                    <img src="{{asset('images/files-icon.png')}}" alt="file upload image">
+                    <span>Drag an image or click to select a file</span>
                 </div>
+                    <input type="file" name="image" accept="image/gif,image/jpeg,image/png,image/jpg" id="upload_file" onchange="getImagePreview(event)">
+                    <i class='bx bxs-trash'></i>
+                    <input type="hidden" id="empty_image" name="empty_image">
+            </div>
             </div>
             <div class="form-buttons">
-                <a href="/inventory/items" style="text-decoration: none;">
+                <a href="/users" style="text-decoration: none;">
                     <input class="newButton cancelButton" type="button" value="Cancel">
                 </a>
                 <input class="newButton" type="submit" value="Save">

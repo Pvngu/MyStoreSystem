@@ -70,9 +70,7 @@ function restoreRemovedOptions(value) {
             const item = value.split(',');
             count++;
 
-            $(document).ready(function () {
-                $('#itemCount').val(count);
-            });
+            document.getElementById('itemCount').value = count;
 
             let template = `
                 <tr data-item-value="${item[0]},${item[1]}">
@@ -104,7 +102,6 @@ function restoreRemovedOptions(value) {
     const deleteButtons = document.querySelectorAll('.bxs-trash');
     deleteButtons.forEach(deleteBtn => {
     deleteBtn.addEventListener('click', () => {
-        // Your delete logic here
         const file = document.getElementById('upload_file');
         const fileContent = document.querySelector('.file-content');
         const fileIcon = document.querySelector('.file-icon');

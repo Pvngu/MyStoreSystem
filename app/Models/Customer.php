@@ -11,7 +11,7 @@ class Customer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['first_name', 'last_name', 'email', 'phone', 'active'];
+    protected $fillable = ['first_name', 'last_name', 'email', 'phone', 'active', 'address_id'];
 
     public function address()  : BelongsTo {
         return $this->belongsTo(Address::class);

@@ -17,12 +17,12 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('email')->nullable();
             $table->string('phone', 20)->nullable();
-            $table->boolean('active');
-            $table->timestamps();
+            $table->boolean('active')->default('1');
             $table->foreignId('address_id')
                   ->nullable()
-                  ->contrained()
+                  ->constrained()
                   ->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

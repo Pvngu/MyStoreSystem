@@ -19,8 +19,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
+        'role',
+        'status',
         'email',
         'password',
+        'image',
     ];
 
     /**
@@ -42,4 +46,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function scopeFilter($query, array $filters) {
+        if($filters['search'] ?? false) {
+            $query->where('name', 'like', '%' . request('search') . '%')
+            ->orWhere('username', 'like', '%'. request('search') . '%')
+            ->orWhere('id', '=', request('search'));
+        }
+        if($filters['role'] ?? false) {
+            $query->where('role', '=', request('role'));
+        }
+        if($filters['status'] ?? false) {
+            if($filters['status'] == 'active') {
+                $query->where('status', '=', 1);
+            }
+            if($filters['status'] == 'deactive') {
+                $query->where('status', '=', 0);
+            }
+        }
+    }
 }

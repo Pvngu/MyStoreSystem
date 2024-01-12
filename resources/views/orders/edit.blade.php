@@ -33,7 +33,8 @@ function restoreRemovedOptions(value) {
     
     let btnAdd = document.getElementById('addButton');
     let table = document.getElementById('addRow');
-    let count = 0;
+    let count = document.getElementById('itemNumber').value;
+    document.getElementById('itemCount').value = count;
 
     table.addEventListener('click', (event) => {
         let quantityInput = document.getElementById('quantity');
@@ -108,16 +109,17 @@ function restoreRemovedOptions(value) {
         <div class="content-header">
             <div class="header-text">
                 <a href="/orders">Orders</a>
-                <div class="animated-header">> New Order</div>
+                <div class="animated-header">> Edit Order</div>
             </div>
         </div>
-        <form action="/orders" method="post">
+        <form action="/orders/{{$order->id}}" method="post">
             @csrf
+            @method('PUT')
             <div class="item-info">
                 <div class="item-fields">
                     <div class="content-items">
                         <label>Date</label>
-                        <input type="date" name="date" value="{{old('date')}}" id="date">
+                        <input type="date" name="date" value="{{$order->date}}" id="date">
                         @error('date')
                             <p class="errorMessage">{{$message}}</p>
                         @enderror
@@ -127,7 +129,7 @@ function restoreRemovedOptions(value) {
                         <select name="customer_id">
                             <option value="" disabled selected>Select a customer</option>
                             @foreach ($customers as $customer)
-                                <option value="{{$customer->id}}">{{$customer->first_name}} {{$customer->last_name}}</option>
+                                <option value="{{$customer->id}}" {{$order->customer_id == $customer->id ? 'selected' : ''}}>{{$customer->first_name}} {{$customer->last_name}}</option>
                             @endforeach
                         </select>
                         @error('customer_id')
@@ -137,8 +139,8 @@ function restoreRemovedOptions(value) {
                     <div class="content-items">
                         <label>Status</label>
                         <select name="status" id="status" class="select-input">
-                            <option value="paid">Paid</option>
-                            <option value="pending">Pending</option>
+                            <option value="paid" {{$order->status == 'paid' ? 'selected' : ''}}>Paid</option>
+                            <option value="pending" {{$order->status == 'pending' ? 'selected' : ''}}>Pending</option>
                         </select>
                         @error('status')
                             <p class="errorMessage">{{$message}}</p>
@@ -151,7 +153,7 @@ function restoreRemovedOptions(value) {
                 <table class = "content-table">
                     <thead>
                         <tr>
-                            <th>Item name</th>
+                            <th>Name</th>
                             <th class="center-cell">Quantity</th>
                             <th class="center-cell">Amount</th>
                             <th class = "center-cell" style = "width: 200px;">Actions</th>
@@ -162,7 +164,7 @@ function restoreRemovedOptions(value) {
                             <td>
                                 <div>
                                     <select id="name" class="input-box" style="max-width: 300px;">
-                                        <option value="0" disabled selected>Select Item</option>
+                                        <option value="0" selected disabled>Select Item</option>
                                         @foreach ($items as $item)
                                             <option value="{{$item->name}},{{$item->id}},{{$item->stock}},{{$item->unit_price}}">{{$item->name}} - Stock: {{$item->stock}}</option>
                                         @endforeach
@@ -177,12 +179,35 @@ function restoreRemovedOptions(value) {
                                 <input id="addButton" class="newButton" type="button" value="Add">
                             </td>
                         </tr>
+                        @foreach ($itemsOrder as $index => $itemOrder)
+                        @php $index++;@endphp
+                            <tr data-item-value="{{$itemOrder->item->name . ',' . $itemOrder->item->id . ',' . $itemOrder->item->stock}}">
+                                <td>
+                                    <div>
+                                        {{$itemOrder->item->name}}
+                                        <input type="hidden" name="{{'item' . $index}}" value="{{$itemOrder->item->id}}" />
+                                    </div>
+                                </td>
+                                <td class="center-cell">
+                                    <input class="input-box" type="number" value="{{$itemOrder->quantity}}" name="{{'quantity' . $index}}" style="max-width: 60px" min="1" max="{{$itemOrder->item->stock + $itemOrder->quantity}}">
+                                </td>
+                                <td class="center-cell">
+                                    $20
+                                </td>
+                                <td class='actions center-cell'>
+                                    <input class="newButton deleteButton" type="button" value="Delete">
+                                </td>
+                            </tr>
+                        @endforeach
+                        <input type="hidden" id="itemNumber" value="{{$index ?? false ? $index : 0}} ">
                     </tbody>
                 </table>
                 <input type="hidden" name="itemCount" id="itemCount">
             </div>
             <div class="form-buttons">
-                <input class="newButton cancelButton" type="button" value="Cancel">
+                <a href="/orders" style="text-decoration: none;">
+                    <input class="newButton cancelButton" type="button" value="Cancel">
+                </a>
                 <input class="newButton" type="submit" value="Save">
             </div>
         </form>
