@@ -18,3 +18,9 @@ $(document).ready(function () {
         modalD.showModal();
     });
 });
+
+// openButtonD.addEventListener('click', () => {
+//     var item_id = openButtonD.dataset.itemId;
+//     document.getElementById('item_id').value = item_id;
+//     modalD.showModal();
+// })

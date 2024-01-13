@@ -2,32 +2,9 @@
     <script src="{{asset('js/table.js')}}"></script>
 
     <script>
-        const submitForm = document.getElementById('submitForm');
-        const sort_order = document.getElementById('sort_order');
-
-        const columnIds = ['sortById', 'sortByName'];
         const columnNames = ['id', 'name'];
-
-        columnIds.forEach((id, index) => {
-            const element = document.getElementById(id);
-            element.addEventListener('click', () => {
-                sortBy(columnNames[index]);
-            });
-        });
-
-        function sortBy(x){
-            if(sort_order.value === 'D'){
-                sort_column.value = x;
-                sort_order.value = 'A';
-                submitForm.submit();
-            }
-            else{
-                sort_column.value = x;
-                sort_order.value = "D";
-                submitForm.submit();
-            }
-        }
     </script>
+    <script src="{{asset('js/tableSort.js')}}"></script>
     <script src="{{asset('js/checkboxes.js')}}"></script>
 @endpush
 <x-layout>
@@ -67,87 +44,49 @@
                     $sort_order = request('sort_order');
                 @endphp
                 <div class = "table-container">
-                    <table class = "content-table">
-                        <thead>
-                            <form action="/inventory/categories" id="submitForm">
-                                <tr>
-                                    <th class="center-cell">
-                                        <label class="checkbox-container">
-                                            <input type="checkbox" id="checkAll" class="custom-checkbox" onchange="checkAllcheckboxes()">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </th>
-                                    <th>
-                                        <div class="table-head">
-                                            <div id="sortById">#</div>
-                                            <div 
-                                                class="sort-icon one 
-                                                {{(($sort_column == 'id') && ($sort_order == 'A')) ? 'up' : ''}}
-                                                {{(($sort_column == 'id') && ($sort_order == 'D')) ? 'down' : ''}} 
-                                            ">
-                                                <i class='bx bxs-up-arrow'></i>
-                                                <i class='bx bxs-down-arrow'></i>
-                                            </div>
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div class="table-head">
-                                            <div id="sortByName">name</div>
-                                            <div 
-                                                class="sort-icon two
-                                                {{(($sort_column == 'name') && ($sort_order == 'A')) ? 'up' : ''}}
-                                                {{(($sort_column == 'name') && ($sort_order == 'D')) ? 'down' : ''}} 
-                                            ">
-                                            <i class='bx bxs-up-arrow'></i>
-                                            <i class='bx bxs-down-arrow'></i>
-                                            </div>
-                                        </div>
-                                    </th>
-                                    <th>Description</th>
-                                    <th>items</th>
-                                    <th class = "center-cell">Actions</th>
-                                    <input type="hidden" name="sort_column" id="sort_column" value="{{old('sort_column', request()->input('sort_column'))}}">
-                                    <input type="hidden" name="sort_order" id="sort_order" value="{{old('sort_order', request()->input('sort_order'))}}">
-                                </tr>
-                            </form>
-                        </thead>
-                        <tbody>
-                            <form id="deleteIdsForm" action="/inventory/categories/delete-categories" method="POST">
-                                @csrf
-                                @foreach ($categories as $category)
-                                    <tr>
-                                        <td class="center-cell">
-                                            @if($category->id > 1)
-                                                <label class="checkbox-container">
-                                                    <input type="checkbox" name="ids[{{$category->id}}]" value="{{$category->id}}" class="checkboxIds custom-checkbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            @endif
-                                        </td>
-                                        <td>{{$category->id}}</td>
-                                        <td>
-                                            <div class="row-image">
-                                                <img class="table-image" src="{{$category->image ? asset('storage/' . $category->image) : asset('images/default-gray.png')}}" alt="">
-                                                {{$category->name}}
-                                            </div>
-                                        </td>
-                                        <td>{{$category->description ? $category->description : 'No decription'}}</td>
-                                        <td>{{$category->items->count()}}</td>
-                                        <td class = 'actions center-cell'>
-                                            @if($category->id > 1)
-                                                <a href = '/inventory/categories/{{$category->id}}/edit'>
-                                                    <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
-                                                </a>
-                                                <a class="openModalD" data-item-id='{{$category->id}}'>
-                                                    <i class='bx bx-trash' style = 'color: #fa7878'></i>
-                                                </a>
-                                            @endif
-                                        </td>           
-                                    </tr>
-                                @endforeach
-                            </form>
-                        </tbody>
-                    </table>
+                    <x-table.table
+                    :headers="[
+                        ['name'=> 'id', 'column_type' => 'sortable'],
+                        ['name' => 'name', 'column_type' => 'sortable'],
+                        'description',
+                        ['name' => 'items', 'align' => 'center']
+                        ]"
+                    :action="'/inventory/categories'"
+                    >
+                    <form id="deleteIdsForm" action="/inventory/categories/delete-categories" method="POST">
+                        @csrf
+                        @foreach ($categories as $category)
+                            <tr>
+                                <td class="center-cell">
+                                    @if($category->id > 1)
+                                    <x-checkbox>
+                                        <input type="checkbox" name="ids[{{$category->id}}]" value="{{$category->id}}" class="checkboxIds">
+                                    </x-checkbox>
+                                    @endif
+                                </td>
+                                <td>{{$category->id}}</td>
+                                <td>
+                                    <div class="row-image">
+                                        <img class="table-image" src="{{$category->image ? asset('storage/' . $category->image) : asset('images/default-gray.png')}}" alt="">
+                                        {{$category->name}}
+                                    </div>
+                                </td>
+                                <td>{{$category->description ? $category->description : 'No decription'}}</td>
+                                <td class="center-cell">{{$category->items->count()}}</td>
+                                <td class = 'actions center-cell'>
+                                    @if($category->id > 1)
+                                        <a href = '/inventory/categories/{{$category->id}}/edit'>
+                                            <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
+                                        </a>
+                                        <a class="openModalD" data-item-id='{{$category->id}}'>
+                                            <i class='bx bx-trash' style = 'color: #fa7878'></i>
+                                        </a>
+                                    @endif
+                                </td>           
+                            </tr>
+                        @endforeach
+                    </form>
+                    </x-table.table>
                 </div>
         @else
             <div class="empty-table">

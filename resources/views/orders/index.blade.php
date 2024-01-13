@@ -1,42 +1,9 @@
 @push('scripts')
     <script src="{{asset('js/table.js')}}"></script>
-
     <script>
-        const submitForm = document.getElementById('submitForm');
-        const sort_order = document.getElementById('sort_order');
-
-        const columnIds = ['sortById', 'sortByDate'];
         const columnNames = ['id', 'date'];
-
-        columnIds.forEach((id, index) => {
-            const element = document.getElementById(id);
-            element.addEventListener('click', () => {
-                sortBy(columnNames[index]);
-            });
-        });
-
-        function sortBy(x){
-            if(sort_order.value === 'D'){
-                $(document).ready(function () {
-                    $('#sort_column').val(x);
-                    $('#sort_order').val('A');
-                    sort_order.value == 'A';
-                    submitForm.submit();
-                });
-            }
-            else{
-                $(document).ready(function () {
-                    $('#sort_column').val(x);
-                    $('#sort_order').val('D');
-                    submitForm.submit();
-                });
-            }
-        }
-
-        $(document).ready(function () {
-            
-        });
     </script>
+    <script src="{{asset('js/tableSort.js')}}"></script>
     <script src="{{asset('js/checkboxes.js')}}"></script>
 @endpush
 <x-layout>
@@ -90,87 +57,51 @@
                 </div>
             </div>
             <div class = "table-container">
-                <table class = "content-table">
-                    <thead>
-                        <form action="/orders" id="submitForm">
-                            @php
-                                $sort_column = request('sort_column');
-                                $sort_order = request('sort_order');
-                            @endphp
-                            <tr>
-                                <th class="center-cell">
-                                    <input type="checkbox" id="checkAll" onchange="checkAllcheckboxes()">
-                                </th>
-                                <th>
-                                    <div class="table-head">
-                                        <div id="sortById">#</div>
-                                        <div 
-                                            class="sort-icon one 
-                                            {{(($sort_column == 'id') && ($sort_order == 'A')) ? 'up' : ''}}
-                                            {{(($sort_column == 'id') && ($sort_order == 'D')) ? 'down' : ''}} 
-                                        ">
-                                            <i class='bx bxs-up-arrow'></i>
-                                            <i class='bx bxs-down-arrow'></i>
-                                        </div>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="table-head">
-                                        <div id="sortByDate">Date</div>
-                                        <div 
-                                            class="sort-icon two
-                                            {{(($sort_column == 'date') && ($sort_order == 'A')) ? 'up' : ''}}
-                                            {{(($sort_column == 'date') && ($sort_order == 'D')) ? 'down' : ''}} 
-                                        ">
-                                            <i class='bx bxs-up-arrow'></i>
-                                            <i class='bx bxs-down-arrow'></i>
-                                        </div>
-                                    </div>
-                                </th>
-                                    <th class = "center-cell">Status</th>
-                                    <th>Customer</th>
-                                    <th>Items</th>
-                                    <th>Total</th>
-                                    <th class = "center-cell">Actions</th>
-                                    
-                            </tr>
-                            <input type="hidden" name="sort_column" id="sort_column" value="{{old('sort_column', request()->input('sort_column'))}}">
-                            <input type="hidden" name="sort_order" id="sort_order" value="{{old('sort_order', request()->input('sort_order'))}}">
-                        </form>
-                    </thead>
-                    <tbody>
-                        <form id="deleteIdsForm" action="/orders/delete-orders" method="POST">
-                            @foreach ($orders as $order)
-                                <tr>
-                                    <td class="center-cell">
-                                        <input type="checkbox" name="ids[{{$order->id}}]" value="{{$order->id}}" class="checkboxIds">
-                                    </td>
-                                    <td>{{$order->id}}</td>
-                                    <td>{{ \Carbon\Carbon::parse($order->date)->format('M d, Y')}}</td>
-                                    <td class = 'center-cell'>
-                                        @if ($order->status == 'paid')
-                                            <span class = 'status-active'>{{$order->status}}</span>
-                                        @elseif($order->status == 'canceled')
-                                            <span class = 'status-deactive'>{{$order->status}}</span>
-                                        @else
-                                            <span class = 'status-pending'>{{$order->status}}</span>
-                                        @endif
-                                    </td>
-                                    <td>{{$order->customer->first_name}} {{$order->customer->last_name}}</td>
-                                    <td>{{$order->items->count()}}</td>
-                                    <td>${{$order->total_amount}}</td>
-                                    <td class = 'actions center-cell'>
-                                        <a href = 'orders/{{$order->id}}/edit'>
-                                            <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
-                                        </a>
-                                        <a class="openModalD" data-item-id='{{$order->id}}'>
-                                            <i class='bx bx-trash' style = 'color: #fa7878'></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                    </tbody>
-                </table>
+                <x-table.table
+                :headers="[
+                    ['name' => 'id', 'column_type' => 'sortable'],
+                    ['name' => 'date', 'column_type' => 'sortable'],
+                    ['name' => 'customers', 'column_type' => 'sortable'],
+                    ['name' => 'status', 'align' => 'center'],
+                    ['name' => 'items', 'align' => 'center'],
+                    ['name' => 'total', 'align' => 'center']
+                ]"
+                :action="'/orders'"
+                >
+                <form id="deleteIdsForm" action="/orders/delete-orders" method="POST">
+                    @foreach ($orders as $order)
+                        <tr>
+                            <td class="center-cell">
+                                <x-checkbox>
+                                    <input type="checkbox" name="ids[{{$order->id}}]" value="{{$order->id}}" class="checkboxIds">
+                                </x-checkbox>
+                            </td>
+                            <td>{{$order->id}}</td>
+                            <td>{{ \Carbon\Carbon::parse($order->date)->format('M d, Y')}}</td>
+                            <td>{{$order->customer->first_name}} {{$order->customer->last_name}}</td>
+                            <td class = 'center-cell'>
+                                @if ($order->status == 'paid')
+                                    <span class = 'status-active'>{{$order->status}}</span>
+                                @elseif($order->status == 'canceled')
+                                    <span class = 'status-deactive'>{{$order->status}}</span>
+                                @else
+                                    <span class = 'status-pending'>{{$order->status}}</span>
+                                @endif
+                            </td>
+                            <td class = 'center-cell'>{{$order->items->count()}}</td>
+                            <td class = 'center-cell'>${{$order->total_amount}}</td>
+                            <td class = 'actions center-cell'>
+                                <a href = 'orders/{{$order->id}}/edit'>
+                                    <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
+                                </a>
+                                <a class="openModalD" data-item-id='{{$order->id}}'>
+                                    <i class='bx bx-trash' style = 'color: #fa7878'></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </form>
+                </x-table.table>
             </div>
             <div style="margin-top: 15px;">
                 {{$orders->links('pagination.default')}}

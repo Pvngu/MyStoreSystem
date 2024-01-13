@@ -1,34 +1,9 @@
 @push('scripts')
     <script src="{{asset('js/table.js')}}"></script>
-
     <script>
-        const submitForm = document.getElementById('submitForm');
-        const sort_order = document.getElementById('sort_order');
-        const sort_column = document.getElementById('sort_column');
-
-        const columnIds = ['sortById', 'sortByName', 'sortByStock', 'sortByCP', 'sortByUP', 'sortByCategory'];
-        const columnNames = ['id', 'name', 'stock', 'cost_price', 'unit_price', 'category_id'];
-
-        columnIds.forEach((id, index) => {
-            const element = document.getElementById(id);
-            element.addEventListener('click', () => {
-                sortBy(columnNames[index]);
-            });
-        });
-
-        function sortBy(x){
-            if(sort_order.value === 'D'){
-                sort_column.value = x;
-                sort_order.value = 'A';
-                submitForm.submit();
-            }
-            else{
-                sort_column.value = x;
-                sort_order.value = "D";
-                submitForm.submit();
-            }
-        }
+        const columnNames = ['id', 'category', 'name', 'stock', 'cost_price', 'unit_price'];
     </script>
+    <script src="{{asset('js/tableSort.js')}}"></script>
     <script src="{{asset('js/checkboxes.js')}}"></script>
 @endpush
 <x-layout>
@@ -62,7 +37,7 @@
                                     </div>
                                     <div class="nav-item">
                                         <label>Category</label>
-                                        <select name="category" id="category" class="select-input" onchange="this.form.submit()">
+                                        <select name="category" class="select-input" onchange="this.form.submit()">
                                             <option value="">All</option>
                                             @foreach ($categories as $category)
                                                 <option value="{{$category->id}}" {{($category->id == request('category')) ? 'selected' : ''}}>{{$category->name}}</option>
@@ -81,146 +56,56 @@
                     </div>
                 </div>
                     <div class = "table-container">
-                        <table class = "content-table">
-                            <thead>
-                                <form action="/inventory/items" id="submitForm">
-                                    @php
-                                        $sort_column = request('sort_column');
-                                        $sort_order = request('sort_order');
-                                    @endphp
+                        <x-table.table 
+                        :headers="[
+                            ['name' => 'id', 'column_type' => 'sortable'], 
+                            ['name' => 'name', 'column_type' => 'sortable'], 
+                            ['name' => 'category', 'column_type' => 'sortable'], 
+                            ['name' => 'stock', 'column_type' => 'sortable'], 
+                            ['name' => 'cost_price', 'column_type' => 'sortable'], 
+                            ['name' => 'unit_price', 'column_type' => 'sortable'], 
+                            ['name' => 'status', 'align' => 'center']]"
+                        :action="'/inventory/items/'"
+                        >
+                        <form id="deleteIdsForm" action="/inventory/items/delete-items" method="POST">
+                            @csrf
+                            @foreach ($items as $item)
                                 <tr>
-                                    <th class="center-cell">
-                                        <label class="checkbox-container">
-                                            <input type="checkbox" id="checkAll" class="custom-checkbox" onchange="checkAllcheckboxes()">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </th>
-                                    <th>
-                                        <div class="table-head">
-                                            <div id="sortById">#</div>
-                                            <div 
-                                                class="sort-icon one
-                                                {{(($sort_column == 'id') && ($sort_order == 'A')) ? 'up' : ''}}
-                                                {{(($sort_column == 'id') && ($sort_order == 'D')) ? 'down' : ''}} 
-                                            ">
-                                                <i class='bx bxs-up-arrow'></i>
-                                                <i class='bx bxs-down-arrow'></i>
-                                            </div>
+                                    <td class="center-cell">
+                                        <x-checkbox>
+                                            <input type="checkbox" name="ids[{{$item->id}}]" value="{{$item->id}}" class="checkboxIds">
+                                        </x-checkbox>
+                                    </td>
+                                    <td>{{$item->id}}</td>
+                                    <td>
+                                        <div class="row-image">
+                                            <img class="table-image" src="{{$item->image ? asset('storage/' . $item->image) : asset('images/default-gray.png')}}" alt="">
+                                            {{$item->name}}
                                         </div>
-                                    </th>
-                                    <th>
-                                        <div class="table-head">
-                                            <div id="sortByName">Name</div>
-                                            <div 
-                                                class="sort-icon two
-                                                {{(($sort_column == 'name') && ($sort_order == 'A')) ? 'up' : ''}}
-                                                {{(($sort_column == 'name') && ($sort_order == 'D')) ? 'down' : ''}} 
-                                            ">
-                                            <i class='bx bxs-up-arrow'></i>
-                                            <i class='bx bxs-down-arrow'></i>
-                                            </div>
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div class="table-head">
-                                            <div id="sortByCategory">Category</div>
-                                            <div 
-                                                class="sort-icon six
-                                                {{(($sort_column == 'category_id') && ($sort_order == 'A')) ? 'up' : ''}}
-                                                {{(($sort_column == 'category_id') && ($sort_order == 'D')) ? 'down' : ''}} 
-                                            ">
-                                            <i class='bx bxs-up-arrow'></i>
-                                            <i class='bx bxs-down-arrow'></i>
-                                            </div>
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div class="table-head">
-                                            <div id="sortByStock">Stock</div>
-                                            <div 
-                                                class="sort-icon three
-                                                {{(($sort_column == 'stock') && ($sort_order == 'A')) ? 'up' : ''}}
-                                                {{(($sort_column == 'stock') && ($sort_order == 'D')) ? 'down' : ''}} 
-                                            ">
-                                            <i class='bx bxs-up-arrow'></i>
-                                            <i class='bx bxs-down-arrow'></i>
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div class="table-head">
-                                            <div id="sortByCP">Cost price</div>
-                                            <div 
-                                                class="sort-icon four
-                                                {{(($sort_column == 'cost_price') && ($sort_order == 'A')) ? 'up' : ''}}
-                                                {{(($sort_column == 'cost_price') && ($sort_order == 'D')) ? 'down' : ''}} 
-                                            ">
-                                            <i class='bx bxs-up-arrow'></i>
-                                            <i class='bx bxs-down-arrow'></i>
-                                            </div>
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div class="table-head">
-                                            <div id="sortByUP">Unit price</div>
-                                            <div 
-                                            class="sort-icon five 
-                                            {{(($sort_column == 'unit_price') && ($sort_order == 'A')) ? 'up' : ''}}
-                                            {{(($sort_column == 'unit_price') && ($sort_order == 'D')) ? 'down' : ''}} 
-                                        ">
-                                            <i class='bx bxs-up-arrow'></i>
-                                            <i class='bx bxs-down-arrow'></i>
-                                            </div>
-                                        </div>
-                                    </th>
-                                    <th class = "center-cell">Status</th>
-                                    <th class = "center-cell">Actions</th>
-                                    <input type="hidden" name="sort_column" id="sort_column" value="{{old('sort_column', request()->input('sort_column'))}}">
-                                    <input type="hidden" name="sort_order" id="sort_order" value="{{old('sort_order', request()->input('sort_order'))}}">
+                                    </td>
+                                    <td>{{$item->category->name}}</td>
+                                    <td>{{$item->stock}}</td>
+                                    <td>${{$item->cost_price}}</td>
+                                    <td>${{$item->unit_price}}</td>
+                                    <td class = 'center-cell'>
+                                        @if ($item->stock >= 1)
+                                            <span class = 'status-active'>InStock</span>
+                                        @else
+                                            <span class = 'status-deactive'>OutStock</span>
+                                        @endif
+                                    </td>
+                                    <td class = 'actions center-cell'>
+                                        <a href='/inventory/items/{{$item->id}}/edit'>
+                                            <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
+                                        </a>
+                                        <a class="openModalD" data-item-id="{{$item->id}}">
+                                            <i class='bx bx-trash' style = 'color: #fa7878'></i>
+                                        </a>
+                                    </td>
                                 </tr>
-                            </form>
-                            </thead>
-                            <tbody>
-                                <form id="deleteIdsForm" action="/inventory/items/delete-items" method="POST">
-                                    @csrf
-                                    @foreach ($items as $item)
-                                        <tr>
-                                            <td class="center-cell">
-                                                <label class="checkbox-container">
-                                                    <input type="checkbox" name="ids[{{$item->id}}]" value="{{$item->id}}" class="checkboxIds custom-checkbox">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </td>
-                                            <td>{{$item->id}}</td>
-                                            <td>
-                                                <div class="row-image">
-                                                    <img class="table-image" src="{{$item->image ? asset('storage/' . $item->image) : asset('images/default-gray.png')}}" alt="">
-                                                    {{$item->name}}
-                                                </div>
-                                            </td>
-                                            <td>{{$item->category->name}}</td>
-                                            <td>{{$item->stock}}</td>
-                                            <td>${{$item->cost_price}}</td>
-                                            <td>${{$item->unit_price}}</td>
-                                            <td class = 'center-cell'>
-                                                @if ($item->stock >= 1)
-                                                    <span class = 'status-active'>InStock</span>
-                                                @else
-                                                    <span class = 'status-deactive'>OutStock</span>
-                                                @endif
-                                            </td>
-                                            <td class = 'actions center-cell'>
-                                                <a href='/inventory/items/{{$item->id}}/edit'>
-                                                    <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
-                                                </a>
-                                                <a class="openModalD" data-item-id="{{$item->id}}">
-                                                    <i class='bx bx-trash' style = 'color: #fa7878'></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </form>
-                            </tbody>
-                        </table>
+                            @endforeach
+                        </form>
+                        </x-table.table>
                     <div style="margin-top: 15px;">
                         {{ $items->links('pagination.default') }}
                     </div>

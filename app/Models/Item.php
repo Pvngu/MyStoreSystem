@@ -43,8 +43,8 @@ class Item extends Model
         if(($filters['sort_order']) ?? false) {
             $column = request('sort_column');
 
-            if($filters['sort_column'] == 'category_id') {
-                if ($filters['sort_column'] == 'category_id' && $filters['sort_order'] == 'D') {
+            if($filters['sort_column'] == 'category') {
+                if ($filters['sort_column'] == 'category' && $filters['sort_order'] == 'D') {
                     $query->join('categories', 'categories.id', '=', 'items.category_id')
                         ->orderBy('categories.name', 'desc')
                         ->select('items.*', 'categories.name as category_name');

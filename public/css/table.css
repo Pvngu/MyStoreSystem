@@ -427,23 +427,13 @@ display: none;
     opacity: .6;
 }
 
-.sort-icon.one.up :first-child,
-.sort-icon.two.up :first-child,
-.sort-icon.three.up :first-child,
-.sort-icon.four.up :first-child,
-.sort-icon.five.up :first-child,
-.sort-icon.six.up :first-child
+.sort-icon:nth-child(-n + 6).up :first-child
 {
     opacity: 1;
     color: #00ffff;
 }
 
-.sort-icon.one.down :last-child,
-.sort-icon.two.down :last-child,
-.sort-icon.three.down :last-child,
-.sort-icon.four.down :last-child,
-.sort-icon.five.down :last-child,
-.sort-icon.six.down :last-child
+.sort-icon:nth-child(-n + 6).down :last-child
 {
     opacity: 1;
     color: #00ffff;

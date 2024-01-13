@@ -1,38 +1,10 @@
 @push('scripts')
     <script src="{{asset('js/table.js')}}"></script>
-
     <script>
-        const submitForm = document.getElementById('submitForm');
-        const sort_order = document.getElementById('sort_order');
-
-        const columnIds = ['sortById', 'sortByName', 'sortByStock', 'sortByCP', 'sortByUP'];
-        const columnNames = ['id', 'name', 'stock', 'cost_price', 'unit_price'];
-
-        columnIds.forEach((id, index) => {
-            const element = document.getElementById(id);
-            element.addEventListener('click', () => {
-                sortBy(columnNames[index]);
-            });
-        });
-
-        function sortBy(x){
-            if(sort_order.value === 'D'){
-                $(document).ready(function () {
-                    $('#sort_column').val(x);
-                    $('#sort_order').val('A');
-                    sort_order.value == 'A';
-                    submitForm.submit();
-                });
-            }
-            else{
-                $(document).ready(function () {
-                    $('#sort_column').val(x);
-                    $('#sort_order').val('D');
-                    submitForm.submit();
-                });
-            }
-        }
+        const columnNames = ['id', 'username', 'name', 'role', 'status'];
     </script>
+    <script src="{{asset('js/tableSort.js')}}"></script>
+    <script src="{{asset('js/checkboxes.js')}}"></script>
 @endpush
 <x-layout>
     <div class="content">
@@ -78,22 +50,25 @@
                 </nav>
             </div>
             <div class = "table-container">
-                <table class = "content-table">
-                    <thead>
-                        <tr>
-                            <th class="center-cell"><input type="checkbox"></th>
-                            <th>#</th>
-                            <th>Username</th>
-                            <th>Name</th>
-                            <th>Role</th>
-                            <th class = "center-cell">Status</th>
-                            <th class = "center-cell">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <x-table.table
+                :headers="[
+                    ['name' => 'id', 'column_type' => 'sortable'],
+                    ['name' => 'username', 'column_type' => 'sortable'],
+                    ['name' => 'name', 'column_type' => 'sortable'],
+                    ['name' => 'role', 'align' => 'center'],
+                    ['name' => 'status', 'align' => 'center']
+                ]"
+                :action="'/users'"
+                >
+                <form id="deleteIdsForm" action="/users/delete-users" method="POST">
+                    @csrf
                         @foreach ($users as $user)
                             <tr>
-                                <td class="center-cell"><input type="checkbox"></td>
+                                <td class="center-cell">
+                                    <x-checkbox>
+                                        <input type="checkbox" name="ids[{{$user->id}}]" value="{{$user->id}}" class="checkboxIds">
+                                    </x-checkbox>
+                                </td>
                                 <td>{{$user->id}}</td>
                                 <td>
                                     <div class="row-image">
@@ -120,8 +95,8 @@
                                 </td>
                             </tr>
                         @endforeach
-                    </tbody>
-                </table>
+                </form>
+                </x-table.table>
             </div>
         @else
             <div class="empty-table">

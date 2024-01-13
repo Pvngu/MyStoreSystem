@@ -167,10 +167,6 @@ table thead tr{
   font-size: 0.8rem;
 }
 
-table th, table td{
-  padding: 12px 15px;
-}
-
 table tbody tr{
   transition: all 0.5s ease;
 }
@@ -207,10 +203,6 @@ table thead{
 .dashboard-header span{
   font-size: 1.7rem;
   font-weight: 500;
-}
-
-.center-cell{
-  text-align: center;
 }
 
 .card-item.last-card{
