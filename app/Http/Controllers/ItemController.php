@@ -10,16 +10,18 @@ use Illuminate\Support\Facades\File;
 class ItemController extends Controller
 {
     public function index () {
-        $items = Item::with('category')->filter(request(['search', 'status', 'category', 'sort_column', 'sort_order']))->paginate(20)->withQueryString();
-        $itemNumbers = Item::all();
-        $categories = Category::orderBy('name')->get();
-        return view('items.index', compact('items', 'itemNumbers', 'categories'));
+        return view('items.index', [
+            'items' => Item::with('category')->filter(request(['search', 'status', 'category', 'sort_column', 'sort_order']))->paginate(20)->withQueryString(),
+            'itemCount' => Item::all(),
+            'categories' => Category::orderBy('name')->get()
+        ]);
     }
 
 
     public function create () {
-        $categories = Category::orderBy('name')->get()->where('id', '>', 1);
-        return view('items.create', compact('categories'));
+        return view('items.create', [
+            'categories' => Category::orderBy('name')->get()->where('id', '>', 1)
+        ]);
     }
 
     public function store(Request $request) {
@@ -41,8 +43,9 @@ class ItemController extends Controller
     }
 
     public function edit(Item $item){
-        $categories = Category::orderBy('name')->get();
-        return view('items.edit', ['item' => $item], compact('categories'));
+        return view('items.edit', ['item' => $item], [
+            'categories' => Category::orderBy('name')->get()
+        ]);
     }
 
     public function update(Request $request, Item $item){

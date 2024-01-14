@@ -5,7 +5,7 @@
 @endpush
 <x-layout>
     <div class="content">
-        @if(count($itemNumbers) >= 1)
+        @if(count($itemCount) >= 1)
             <div class="content-header">
                 <div style="font-size: 1.4rem;">Inventory</div>
                 <a id = "addButton" href="/inventory/items/create">
