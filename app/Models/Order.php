@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
@@ -23,27 +24,19 @@ class Order extends Model
 
     public function scopeFilter($query, array $filters) {
         if($filters['search'] ?? false) {
-            $query->where('id', '=', request('search'));
+            $query->where('id', request('search'));
         }
 
         if($filters['status'] ?? false) {
-            $query->where('status', '=', request('status'));
+            $query->where('status', request('status'));
         }
 
         if($filters['customer'] ?? false) {
-            $query->where('customer_id', '=', request('customer'));
+            $query->where('customer_id', request('customer'));
         }
-
+        
         if(($filters['sort_order']) ?? false) {
-            $column = request('sort_column');
-            
-            if($filters['sort_column'] == $column && $filters['sort_order'] == 'D'){
-                $query->orderBy($column, 'desc');
-            }
-            
-            else{
-                $query->orderBy($column, 'asc');
-            }
+            $query->orderBy(request('sort_column'), $filters['sort_order'] == 'D' ? 'desc' : 'asc');
         }
     }
 }

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
 
+use function PHPUnit\Framework\isNull;
+
 class CategoryController extends Controller
 {
     public function index() {
@@ -76,13 +78,15 @@ class CategoryController extends Controller
 
         $itemCount = $request->itemCount;
         if($itemCount){
-            Item::where('category_id',$category->id)->update(['category_id'=> '1']);
+            $ids = [];
             for($i = 1; $i <= $itemCount; $i++) {
                 $itemId = $request->input('item' . $i);
-                Item::where('id',$itemId)->update(['category_id'=>$category->id]);
+                $itemId = is_null($itemId) ? 0 : $itemId;
+                array_push($ids, $itemId);
+                Item::where('id', $itemId)->whereNot('category_id', $category->id)->update(['category_id'=>$category->id]);
             }
+            Item::whereNotIn('id', $ids)->where('category_id', $category->id)->update(['category_id' => '1']);
         }
-
         return redirect('/inventory/categories')->with('message', 'Category updated successfully');
     }
 

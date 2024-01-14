@@ -22,15 +22,7 @@ class Category extends Model
         }
 
         if(($filters['sort_order']) ?? false) {
-            $column = request('sort_column');
-            
-            if($filters['sort_column'] == $column && $filters['sort_order'] == 'D'){
-                $query->orderBy($column, 'desc');
-            }
-            
-            else{
-                $query->orderBy($column, 'asc');
-            }
+            $query->orderBy(request('sort_column'), $filters['sort_order'] == 'D' ? 'desc' : 'asc');
         }
     }
 }

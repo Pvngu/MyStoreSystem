@@ -15,7 +15,7 @@ class OrderController extends Controller
      */
     public function index() {
         return view('orders.index', [
-            'orders' => Order::with('customer', 'items')->filter(request(['search', 'status', 'customer', 'sort_column', 'sort_order']))->paginate(20)->withQueryString(),
+            'orders' => Order::filter(request(['search', 'status', 'customer', 'sort_column', 'sort_order']))->paginate(20)->withQueryString(),
             'customers' => Customer::orderBy('first_name')->get()
         ]);
     }
@@ -79,6 +79,7 @@ class OrderController extends Controller
         $itemCount = $request->itemCount;
         if($itemCount){
             $totalAmount = [];
+            $ids = [];
             for($i = 1; $i <= $itemCount; $i++) {
                 $itemId = $request->input('item' . $i);
                 $quantity = $request->input('quantity' . $i);
@@ -92,17 +93,21 @@ class OrderController extends Controller
                         'quantity' => $quantity
                     ]);
                     $item->decrement('stock', $quantity);
+                    array_push($ids, $itemOrder->id);
+                    array_push($totalAmount, $item->unit_price * $quantity);
                 }
-                else {
-                    ItemOrder::create([
+                elseif(is_null($itemOrder) && isset($itemId)){
+                    $newItemOrder = ItemOrder::create([
                         'order_id' => $order->id,
                         'item_id' => $itemId,
                         'quantity' => $quantity
                     ]);
                     $item->decrement('stock', $quantity);
+                    array_push($ids, $newItemOrder->id);
+                    array_push($totalAmount, $item->unit_price * $quantity);
                 }
-                array_push($totalAmount, $item->unit_price * $quantity);
             }
+            ItemOrder::whereNotIn('id', $ids)->where('order_id', $order->id)->delete();
             $order->update(['total_amount' => array_sum($totalAmount)]);
         }
 
