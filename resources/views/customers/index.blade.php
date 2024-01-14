@@ -1,74 +1,7 @@
 @push('scripts')
     <script src="{{asset('js/table.js')}}"></script>
-
-    <script>
-        const submitForm = document.getElementById('submitForm');
-        const sort_order = document.getElementById('sort_order');
-
-        const columnIds = ['sortById', 'sortByName', 'sortByStock', 'sortByCP', 'sortByUP'];
-        const columnNames = ['id', 'name', 'stock', 'cost_price', 'unit_price'];
-
-        columnIds.forEach((id, index) => {
-            const element = document.getElementById(id);
-            element.addEventListener('click', () => {
-                sortBy(columnNames[index]);
-            });
-        });
-
-        function sortBy(x){
-            if(sort_order.value === 'D'){
-                $(document).ready(function () {
-                    $('#sort_column').val(x);
-                    $('#sort_order').val('A');
-                    sort_order.value == 'A';
-                    submitForm.submit();
-                });
-            }
-            else{
-                $(document).ready(function () {
-                    $('#sort_column').val(x);
-                    $('#sort_order').val('D');
-                    submitForm.submit();
-                });
-            }
-        }
-
-        var checkboxes = document.querySelectorAll('.checkboxIds');
-
-        function countCheckbox() {
-            var checkedCount = 0;
-            var nav = document.querySelector('.deleteItemsNav');
-
-            checkboxes.forEach(function(checkbox) {
-                if (checkbox.checked) {
-                    checkedCount++;
-                }
-            });
-
-            if(checkedCount !== 0) {
-                nav.classList.add('active');
-            }
-            else {
-                nav.classList.remove('active');
-            }
-
-            document.getElementById('count').innerText = 'items selected: ' + checkedCount;
-        }
-
-        document.addEventListener('change', countCheckbox);
-
-        function checkAllcheckboxes() {
-            var checkAll = document.getElementById('checkAll');
-            var checkboxes = document.querySelectorAll('.checkboxIds');
-            for(var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = checkAll.checked;
-            }
-        }
-
-        function submitIdsForm() {
-            document.getElementById('deleteIdsForm').submit();
-        }
-    </script>
+    <script src="{{asset('js/tableSort.js')}}"></script>
+    <script src="{{asset('js/checkboxes.js')}}"></script>
 @endpush
 <x-layout>
     <div class="content">
@@ -184,7 +117,7 @@
                 @method('DELETE')
                 <div class="logoutText">Are you sure you want to delete this customer?</div>
                 <div class="logoutButtons">
-                    <input type="hidden" id="item_id" name="customer_delete_id">
+                    <input type="hidden" id="item_id" name="row_delete_id">
                     <button id="logoutClose" type="button" class = "closeBtnModalD">Cancel</button>
                     <button id="deleteBtn" type="submit">Delete</button>
                 </div>

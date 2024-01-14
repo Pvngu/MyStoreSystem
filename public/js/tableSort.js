@@ -1,8 +1,13 @@
 const submitForm = document.getElementById('submitForm');
 const sort_order = document.getElementById('sort_order');
 const sort_column = document.getElementById('sort_column');
+var columnIds = [];
 
-columnNames.forEach((name) => {
+document.querySelectorAll('.table-head').forEach((e) => {
+    columnIds.push(e.getAttribute('id'));
+});
+
+columnIds.forEach((name) => {
     const element = document.getElementById(name);
     element.addEventListener('click', () => {
         sortBy(name);

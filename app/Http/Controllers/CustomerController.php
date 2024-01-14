@@ -96,7 +96,7 @@ class CustomerController extends Controller
     }
 
     public function destroy(Request $request) {
-        $customer = Customer::find($request->customer_delete_id);
+        $customer = Customer::find($request->row_delete_id);
         if($customer){
             $customer->delete();
             return redirect('customers')->with('message', 'Customer deleted successfully');

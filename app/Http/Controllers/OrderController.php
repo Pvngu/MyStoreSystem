@@ -110,7 +110,7 @@ class OrderController extends Controller
     }
 
     public function destroy(Request $request) {
-        $order = Order::find($request->order_delete_id);
+        $order = Order::find($request->row_delete_id);
         if($order) {
             $order->delete();
             return back()->with('message', 'order successfully deleted');

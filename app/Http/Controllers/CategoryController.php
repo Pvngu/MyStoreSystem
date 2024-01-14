@@ -85,7 +85,7 @@ class CategoryController extends Controller
     }
 
     public function destroy(Request $request) {
-        $category = Category::find($request->category_delete_id);
+        $category = Category::find($request->row_delete_id);
         if($category) {
             $destination = 'storage/' . $category->image;
             if(File::exists($destination)) {

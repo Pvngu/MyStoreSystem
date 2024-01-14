@@ -1,9 +1,5 @@
 @push('scripts')
     <script src="{{asset('js/table.js')}}"></script>
-
-    <script>
-        const columnNames = ['id', 'name'];
-    </script>
     <script src="{{asset('js/tableSort.js')}}"></script>
     <script src="{{asset('js/checkboxes.js')}}"></script>
 @endpush
@@ -98,22 +94,7 @@
         @endif
     </div>
         <!-- Delete popup -->
-        <dialog class="deleteModal modal">
-            <div class="modalHeader">
-                <h1>Delete</h1>
-                <i class='bx bx-x closeBtnModalD modalX'></i>
-            </div>
-            <div class="modalContent DelModal">
-                <form action="/inventory/categories/delete" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <div class="logoutText">Are you sure you want to delete this category?</div>
-                    <div class="logoutButtons">
-                        <input type="hidden" id="item_id" name="category_delete_id">
-                        <button id="logoutClose" type="button" class = "closeBtnModalD">Cancel</button>
-                        <button id="deleteBtn" type="submit">Delete</button>
-                    </div>
-                </form>
-            </div>
-        </dialog>
+        <x-delete_confirmation>
+            Are you sure you want to delete this category?
+        </x-delete_confirmation>
 </x-layout>

@@ -69,7 +69,7 @@ class ItemController extends Controller
     }
 
     public function destroy(Request $request) {
-        $item = Item::find($request->item_delete_id);
+        $item = Item::find($request->row_delete_id);
         if($item) {
             $destination = 'storage/' . $item->image;
             if(File::exists($destination)) {

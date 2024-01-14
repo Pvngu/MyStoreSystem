@@ -1,8 +1,5 @@
 @push('scripts')
     <script src="{{asset('js/table.js')}}"></script>
-    <script>
-        const columnNames = ['id', 'date'];
-    </script>
     <script src="{{asset('js/tableSort.js')}}"></script>
     <script src="{{asset('js/checkboxes.js')}}"></script>
 @endpush
@@ -127,7 +124,7 @@
                 @method('DELETE')
                 <div class="logoutText">Are you sure you want to delete this customer?</div>
                 <div class="logoutButtons">
-                    <input type="hidden" id="item_id" name="order_delete_id">
+                    <input type="hidden" id="item_id" name="row_delete_id">
                     <button id="logoutClose" type="button" class = "closeBtnModalD">Cancel</button>
                     <button id="deleteBtn" type="submit">Delete</button>
                 </div>
