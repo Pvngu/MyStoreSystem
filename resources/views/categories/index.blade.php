@@ -1,8 +1,3 @@
-@push('scripts')
-    <script src="{{asset('js/table.js')}}"></script>
-    <script src="{{asset('js/tableSort.js')}}"></script>
-    <script src="{{asset('js/checkboxes.js')}}"></script>
-@endpush
 <x-layout>
     <div class="content">
         @if(count($categoryCount) >= 1)
@@ -47,7 +42,9 @@
                         'description',
                         ['name' => 'items', 'align' => 'center']
                         ]"
-                    :action="'/inventory/categories'"
+                    :sortAction="'/inventory/categories'"
+                    :deleteAction="'/inventory/categories/delete'"
+                    :confirmationText="'Are you sure you want to delete this category?'"
                     >
                     <form id="deleteIdsForm" action="/inventory/categories/delete-categories" method="POST">
                         @csrf
@@ -93,8 +90,4 @@
             </div>
         @endif
     </div>
-        <!-- Delete popup -->
-        <x-delete_confirmation>
-            Are you sure you want to delete this category?
-        </x-delete_confirmation>
 </x-layout>

@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Customer extends Model
 {
@@ -23,17 +24,22 @@ class Customer extends Model
 
     public function scopeFilter($query, array $filters){
         if($filters['search'] ?? false){
-            $query->where('first_name', 'like', '%' . request('search') . '%')
-            ->orwhere('last_name', 'like', '%' . request('search') .'%');
+            $query->where('id', request('search'))
+            ->orWhere(DB::raw('CONCAT(first_name, " ", last_name)'), 'like', '%' . request('search') . '%');
         }
 
         if($filters['status'] ?? false) {
-            if($filters['status'] == 'active') {
-                $query->where('active', '=', 1);
+            $query->where('active', $filters['status'] == 'active' ? 1 : 0);
+        }
+
+        if(($filters['sort_order']) ?? false) {
+            if($filters['sort_column'] == 'name') {
+                $query->orderBy('first_name', $filters['sort_order'] == 'D' ? 'desc' : 'asc');
             }
-            if($filters['status'] == "deactive") {
-                $query->where('active', '=', 0);
+            else {
+                $query->orderBy(request('sort_column'), $filters['sort_order'] == 'D' ? 'desc' : 'asc');
             }
         }
+
     }
 }

@@ -4,7 +4,7 @@
         <i class='bx bx-x closeBtnModalD modalX'></i>
     </div>
     <div class="modalContent DelModal">
-        <form action="/inventory/items/delete" method="POST">
+        <form action="{{$action}}" method="POST">
             @csrf
             @method('DELETE')
             <div class="logoutText">{{$slot}}</div>

@@ -14,9 +14,10 @@ class CustomerController extends Controller
 {
     public function index() {
         return view('customers.index', [
-            'customers' => Customer::with('address.city')->filter(request(['search', 'country', 'status']))->paginate(20)->withQueryString(),
+            'customers' => Customer::with('address.city')->filter(request(['search', 'country', 'status', 'sort_column', 'sort_order']))->paginate(20)->withQueryString(),
             'countries' => Country::all(),
-            'cities' => City::all()
+            'cities' => City::all(),
+            'customerCount' => Customer::all()
         ]);
     }
 
@@ -69,7 +70,8 @@ class CustomerController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'nullable',
-            'phone' => 'nullable'
+            'phone' => 'nullable',
+            'active' => 'required'
         ]);
 
         if($request->filled('address') || $request->filled('address2') || $request->filled('city_id') || $request->filled('postal_code')) {

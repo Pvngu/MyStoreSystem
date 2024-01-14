@@ -1,8 +1,3 @@
-@push('scripts')
-    <script src="{{asset('js/table.js')}}"></script>
-    <script src="{{asset('js/tableSort.js')}}"></script>
-    <script src="{{asset('js/checkboxes.js')}}"></script>
-@endpush
 <x-layout>
     <div class="content">
         @if(count($userNumbers) >= 1)
@@ -55,7 +50,9 @@
                     ['name' => 'role', 'align' => 'center'],
                     ['name' => 'status', 'align' => 'center']
                 ]"
-                :action="'/users'"
+                :sortAction="'/users'"
+                :deleteAction="'/users/delete'"
+                :confirmationText="'Are you sure you want to delete this user?'"
                 >
                 <form id="deleteIdsForm" action="/users/delete-users" method="POST">
                     @csrf
@@ -104,23 +101,4 @@
             </div>
         @endif
     </div>
-    <!-- Delete popup -->
-    <dialog class="deleteModal modal">
-        <div class="modalHeader">
-            <h1>Delete</h1>
-            <i class='bx bx-x closeBtnModalD modalX'></i>
-        </div>
-        <div class="modalContent DelModal">
-            <form action="/users/delete" method="POST">
-                @csrf
-                @method('DELETE')
-                <div class="logoutText">Are you sure you want to delete this item?</div>
-                <div class="logoutButtons">
-                    <input type="hidden" id="item_id" name="item_delete_id">
-                    <button id="logoutClose" type="button" class = "closeBtnModalD">Cancel</button>
-                    <button id="deleteBtn" type="submit">Delete</button>
-                </div>
-            </form>
-        </div>
-    </dialog>
 </x-layout>

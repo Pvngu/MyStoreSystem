@@ -10,15 +10,18 @@ use Illuminate\View\Component;
 class Table extends Component
 {
     public array $headers;
-    public $action;
+    public $sortAction;
+    public $deleteAction;
+    public $confirmationText;
     /**
      * Create a new component instance.
      */
-    public function __construct(array $headers, $action)
+    public function __construct(array $headers, $sortAction, $deleteAction, $confirmationText)
     {
         $this->headers = $this->formatHeaders($headers);
-        $this->action = $action;
-        
+        $this->sortAction = $sortAction;
+        $this->deleteAction = $deleteAction;
+        $this->confirmationText = $confirmationText;
     }
 
     private function formatHeaders(array $headers): array {

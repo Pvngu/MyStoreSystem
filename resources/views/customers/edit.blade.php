@@ -105,6 +105,13 @@
                             <p class="errorMessage">{{$message}}</p>
                         @enderror
                     </div>
+                    <div class="content-items">
+                        <label>Status</label>
+                        <select name="active">
+                            <option value="1" {{$customer->active == 1 ? 'selected' : ''}}>Active</option>
+                            <option value="0" {{$customer->active == 0 ? 'selected' : ''}}>Deactive</option>
+                        </select>
+                    </div>
                 </div>
                 <div>
                     <div class="content-items">

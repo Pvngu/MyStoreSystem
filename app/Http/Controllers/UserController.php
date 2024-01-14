@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index() {
         return view('users.index', [
-            'users' => User::filter(request(['search', 'role', 'status']))->paginate(20)->withQueryString(),
+            'users' => User::filter(request(['search', 'role', 'status', 'sort_column', 'sort_order']))->paginate(20)->withQueryString(),
             'userNumbers' => User::all()
         ]);
     }

@@ -17,7 +17,6 @@ class ItemController extends Controller
         ]);
     }
 
-
     public function create () {
         return view('items.create', [
             'categories' => Category::orderBy('name')->get()->where('id', '>', 1)

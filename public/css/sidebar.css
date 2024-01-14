@@ -253,12 +253,6 @@ header .bizName{
     margin: 20px 30px;
 }
 
-.content h1{
-    font-weight: 400;
-    text-align: center;
-    padding-top: 40px;
-}
-
 .modal {
     border: 0;
     border-radius: 10px;

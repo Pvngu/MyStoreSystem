@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::factory(3)->create();
+        \App\Models\User::factory(10)->create();
 
         $categoriesData = [
             ['name' => 'None', 'description' => '', 'image' => ''],
@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
         
         Category::insert($categoriesData);
 
-        Item::factory(5)->create();
+        Item::factory(10)->create();
 
         $countriesData = [
             ['name' => 'Mexico'],
@@ -630,7 +630,7 @@ class DatabaseSeeder extends Seeder
 
         Address::factory(5)->create();
 
-        Customer::factory(5)->create();
+        Customer::factory(60)->create();
 
         Order::factory(3)->create();
 

@@ -26,13 +26,9 @@ class Item extends Model
             $query->where('name', 'like', '%' . request('search') . '%')
                   ->orWhere('id', '=', request('search'));
         }
+
         if($filters['status'] ?? false) {
-            if($filters['status'] == 'OutStock'){
-                $query->where('stock', '=', 0);
-            }
-            if($filters['status'] == 'InStock'){
-                $query->where('stock', '>', 0);
-            }
+            $filters['status'] == 'OutStock' ? $query->where('stock', '=', 0) : $query->where('stock', '>', 0);
         }
 
         if($filters['category'] ?? false) {
@@ -41,27 +37,13 @@ class Item extends Model
         
 
         if(($filters['sort_order']) ?? false) {
-            $column = request('sort_column');
-
             if($filters['sort_column'] == 'category') {
-                if ($filters['sort_column'] == 'category' && $filters['sort_order'] == 'D') {
-                    $query->join('categories', 'categories.id', '=', 'items.category_id')
-                        ->orderBy('categories.name', 'desc')
-                        ->select('items.*', 'categories.name as category_name');
-                } else {
-                    $query->join('categories', 'categories.id', '=', 'items.category_id')
-                        ->orderBy('categories.name', 'asc')
-                        ->select('items.*', 'categories.name as category_name');
-                }
+                $query->join('categories', 'categories.id', '=', 'items.category_id')
+                      ->orderBy('categories.name', $filters['sort_order'] == 'D' ? 'desc' : 'asc')
+                      ->select('items.*', 'categories.name as category_name');
             }
             else {
-                if($filters['sort_column'] == $column && $filters['sort_order'] == 'D'){
-                    $query->orderBy($column, 'desc');
-                }
-                
-                else{
-                    $query->orderBy($column, 'asc');
-                }
+                $query->orderBy(request('sort_column'), $filters['sort_order'] == 'D' ? 'desc' : 'asc');
             }
         }
     }

@@ -1,8 +1,3 @@
-@push('scripts')
-    <script src="{{asset('js/table.js')}}"></script>
-    <script src="{{asset('js/tableSort.js')}}"></script>
-    <script src="{{asset('js/checkboxes.js')}}"></script>
-@endpush
 <x-layout>
     <div class="content">
         @if(count($customers) >= 1)
@@ -35,7 +30,7 @@
                                 </div>
                                 <div class="nav-item">
                                     <label>Customer</label>
-                                    <select name="customer" id="customer" class="select-input" onchange="this.form.submit()">
+                                    <select name="customer" class="select-input" onchange="this.form.submit()">
                                         <option value="">All</option>
                                         @foreach ($customers as $customer)
                                             <option value="{{$customer->id}}" {{request('customer') == $customer->id ? 'selected' : ''}}>{{$customer->first_name}} {{$customer->last_name}}</option>
@@ -58,12 +53,14 @@
                 :headers="[
                     ['name' => 'id', 'column_type' => 'sortable'],
                     ['name' => 'date', 'column_type' => 'sortable'],
-                    ['name' => 'customers', 'column_type' => 'sortable'],
+                    ['name' => 'customer', 'column_type' => 'sortable'],
                     ['name' => 'status', 'align' => 'center'],
                     ['name' => 'items', 'align' => 'center'],
                     ['name' => 'total', 'align' => 'center']
                 ]"
-                :action="'/orders'"
+                :sortAction="'/orders'"
+                :deleteAction="'/orders/delete'"
+                :confirmationText="'Are you sure you want to delete this order?'"
                 >
                 <form id="deleteIdsForm" action="/orders/delete-orders" method="POST">
                     @foreach ($orders as $order)
@@ -112,23 +109,4 @@
         </div>
         @endif
     </div>
-    <!-- Delete popup -->
-    <dialog class="deleteModal modal">
-        <div class="modalHeader">
-            <h1>Delete</h1>
-            <i class='bx bx-x closeBtnModalD modalX'></i>
-        </div>
-        <div class="modalContent DelModal">
-            <form action="customers/delete" method="POST">
-                @csrf
-                @method('DELETE')
-                <div class="logoutText">Are you sure you want to delete this customer?</div>
-                <div class="logoutButtons">
-                    <input type="hidden" id="item_id" name="row_delete_id">
-                    <button id="logoutClose" type="button" class = "closeBtnModalD">Cancel</button>
-                    <button id="deleteBtn" type="submit">Delete</button>
-                </div>
-            </form>
-        </div>
-    </dialog>
 </x-layout>

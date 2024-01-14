@@ -57,12 +57,11 @@ class User extends Authenticatable
             $query->where('role', '=', request('role'));
         }
         if($filters['status'] ?? false) {
-            if($filters['status'] == 'active') {
-                $query->where('status', '=', 1);
-            }
-            if($filters['status'] == 'deactive') {
-                $query->where('status', '=', 0);
-            }
+            $query->where('status', $filters['status'] == 'active' ? 1 : 0);
+        }
+
+        if(($filters['sort_order']) ?? false) {
+            $query->orderBy(request('sort_column'), $filters['sort_order'] == 'D' ? 'desc' : 'asc');
         }
     }
 }

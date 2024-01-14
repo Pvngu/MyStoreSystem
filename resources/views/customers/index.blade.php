@@ -1,11 +1,6 @@
-@push('scripts')
-    <script src="{{asset('js/table.js')}}"></script>
-    <script src="{{asset('js/tableSort.js')}}"></script>
-    <script src="{{asset('js/checkboxes.js')}}"></script>
-@endpush
 <x-layout>
     <div class="content">
-        @if(count($customers) >= 1)
+        @if(count($customerCount) >= 1)
             <div class="content-header">
                 <div style="font-size: 1.4rem;">Customers</div>
                 <a id = "addButton" href="customers/create">
@@ -47,51 +42,53 @@
                 </nav>
             </div>
             <div class = "table-container">
-                <table class = "content-table">
-                    <thead>
-                        <tr>
-                            <th class="center-cell"><input type="checkbox"></th>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th class = 'center-cell'>City</th>
-                            <th class = "center-cell">Status</th>
-                            <th class = "center-cell">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($customers as $customer)
-                            <tr>
-                                <td class="center-cell"><input type="checkbox"></td>
-                                <td>{{$customer->id}}</td>
-                                <td>
-                                    <div class="row-image">
-                                        {{$customer->first_name . ' ' . $customer->last_name}}
-                                    </div>
-                                </td>
-                                <td>{{$customer->email}}</td>
-                                <td>{{$customer->phone}}</td>
-                                <td class = 'center-cell'>{{$customer->address ? $customer->address->city->name : ''}}</td>
-                                <td class = 'center-cell'>
-                                    @if ($customer->active == 1)
-                                        <span class = 'status-active'>Active</span>
-                                    @else
-                                        <span class = 'status-deactive'>Deactive</span>
-                                    @endif
-                                </td>
-                                <td class = 'actions center-cell'>
-                                    <a href = 'customers/{{$customer->id}}/edit'>
-                                        <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
-                                    </a>
-                                    <a class="openModalD" data-item-id='{{$customer->id}}'>
-                                        <i class='bx bx-trash' style = 'color: #fa7878'></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <x-table.table
+                :headers="[
+                    ['name' => 'id', 'column_type' => 'sortable'],
+                    ['name' => 'name', 'column_type' => 'sortable'],
+                    ['name' => 'email', 'column_type' => 'sortable'],
+                    'phone',
+                    ['name' => 'city', 'align' => 'center'],
+                    ['name' => 'status', 'align' => 'center'],
+                ]"
+                :sortAction="'/customers'"
+                :deleteAction="'/customers/delete'"
+                :confirmationText="'Are you sure you want to delete this customer?'"
+                >
+                @foreach ($customers as $customer)
+                    <tr>
+                        <td class="center-cell">
+                            <x-checkbox>
+                                <input type="checkbox" name="ids[{{$customer->id}}]" value="{{$customer->id}}" class="checkboxIds">
+                            </x-checkbox>
+                        </td>
+                        <td>{{$customer->id}}</td>
+                        <td>
+                            <div class="row-image">
+                                {{$customer->first_name . ' ' . $customer->last_name}}
+                            </div>
+                        </td>
+                        <td>{{$customer->email}}</td>
+                        <td>{{$customer->phone}}</td>
+                        <td class = 'center-cell'>{{$customer->address ? $customer->address->city->name : ''}}</td>
+                        <td class = 'center-cell'>
+                            @if ($customer->active == 1)
+                                <span class = 'status-active'>Active</span>
+                            @else
+                                <span class = 'status-deactive'>Deactive</span>
+                            @endif
+                        </td>
+                        <td class = 'actions center-cell'>
+                            <a href = 'customers/{{$customer->id}}/edit'>
+                                <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
+                            </a>
+                            <a class="openModalD" data-item-id='{{$customer->id}}'>
+                                <i class='bx bx-trash' style = 'color: #fa7878'></i>
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+                </x-table.table>
             </div>
             <div style="margin-top: 15px;">
                 {{$customers->links('pagination.default')}}
@@ -105,23 +102,4 @@
             </div>
         @endif
     </div>
-    <!-- Delete popup -->
-    <dialog class="deleteModal modal">
-        <div class="modalHeader">
-            <h1>Delete</h1>
-            <i class='bx bx-x closeBtnModalD modalX'></i>
-        </div>
-        <div class="modalContent DelModal">
-            <form action="customers/delete" method="POST">
-                @csrf
-                @method('DELETE')
-                <div class="logoutText">Are you sure you want to delete this customer?</div>
-                <div class="logoutButtons">
-                    <input type="hidden" id="item_id" name="row_delete_id">
-                    <button id="logoutClose" type="button" class = "closeBtnModalD">Cancel</button>
-                    <button id="deleteBtn" type="submit">Delete</button>
-                </div>
-            </form>
-        </div>
-    </dialog>
 </x-layout>

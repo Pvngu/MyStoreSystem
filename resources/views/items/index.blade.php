@@ -1,8 +1,3 @@
-@push('scripts')
-    <script src="{{asset('js/table.js')}}"></script>
-    <script src="{{asset('js/tableSort.js')}}"></script>
-    <script src="{{asset('js/checkboxes.js')}}"></script>
-@endpush
 <x-layout>
     <div class="content">
         @if(count($itemCount) >= 1)
@@ -43,14 +38,10 @@
                                 </div>
                             </div>
                         </div>
+                        <input type="hidden" name="sort_column" value="{{old('sort_column', request()->input('sort_column'))}}">
+                        <input type="hidden" name="sort_order" value="{{old('sort_order', request()->input('sort_order'))}}">
                     </form>
                 </nav>
-            </div>
-            <div class="deleteItemsNav">
-                <div class="nav-content flex-container">
-                    <div id="count"></div>
-                    <input id="deleteIdsButton" type="button" class="deleteButton" value="Delete Items" onclick="submitIdsForm()">
-                </div>
             </div>
                 <div class = "table-container">
                     <x-table.table 
@@ -62,7 +53,9 @@
                         ['name' => 'cost_price', 'column_type' => 'sortable'], 
                         ['name' => 'unit_price', 'column_type' => 'sortable'], 
                         ['name' => 'status', 'align' => 'center']]"
-                    :action="'/inventory/items/'"
+                    :sortAction="'/inventory/items/'"
+                    :deleteAction="'/inventory/items/delete'"
+                    :confirmationText="'Are you sure you want to delete this item?'"
                     >
                     <form id="deleteIdsForm" action="/inventory/items/delete-items" method="POST">
                         @csrf
@@ -116,8 +109,4 @@
             </div>
         @endif
     </div>
-    <!-- Delete popup -->
-    <x-delete_confirmation>
-        Are you sure you want to delete this item?
-    </x-delete_confirmation>
 </x-layout>
