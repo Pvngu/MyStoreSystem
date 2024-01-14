@@ -11,15 +11,17 @@ use Illuminate\Support\Facades\File;
 class CategoryController extends Controller
 {
     public function index() {
-        $categories = Category::with('items')->filter(request(['search', 'sort_column', 'sort_order']))->paginate(20);
-        $categoryNumbers = Category::where('id', '>', '0')->get();
-        $items = Item::get();
-        return view('categories.index', compact('categories', 'categoryNumbers'));
+        return view('categories.index', [
+            'categories' => Category::with('items')->filter(request(['search', 'sort_column', 'sort_order']))->paginate(20),
+            'categoryCount' => Category::where('id', '>', '0')->get(),
+            'items' => Item::get()
+        ]);
     }
     
     public function create() {
-        $items = Item::orderBy('name')->where('category_id', '=', '1')->get();
-        return view('categories.create', compact('items'));
+        return view('categories.create', [
+            'items' => Item::orderBy('name')->where('category_id', '=', '1')->get()
+        ]);
     }
 
     public function store(Request $request) {
