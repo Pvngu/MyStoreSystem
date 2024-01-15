@@ -404,7 +404,7 @@ opacity: 1;
     display: inline-block;
 }
 
-.logoutButtons button, .deleteButton, #addButton{
+.logoutButtons input, .logoutButtons button, .deleteButton, #addButton{
     font-family: 'Poppins';
     font-weight: 600;
     padding: 6px 16px;

@@ -12,7 +12,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap" rel="stylesheet">
-
   <title>Log into MyStore System</title>
 </head>
 <body>
@@ -23,15 +22,16 @@
       <span id="bottomText">System made only for educational purposes</span>
     </div>
     <div class="login-form">
-      <form action="">
+      <form action="/login" method="post">
+        @csrf
         <h1 class="loginText">Login</h1>
         <div class="input-box">
-          <input type="email" placeholder="Email">
+          <input name="email" type="email" placeholder="Email">
         </div>
         <div class="input-box">
-          <input type="password" placeholder="Password">
+          <input name="password" type="password" placeholder="Password">
         </div>
-        <a href="/home.html"><input type="button" value="Login"></a>
+        <input id="loginButton" type="submit" value="Login">
         <div class="forgot open-button">Forgot Password?</div>
       </form>
       <dialog class="modal" id="modal">

@@ -205,11 +205,13 @@
                 <i class='bx bx-x closeBtnModalL modalX'></i>
             </div>
             <div class="modalContent lgtModal">
-                <div class="logoutText">Are you sure you want to logout?</div>
-                <div class="logoutButtons">
-                    <button id="logoutClose" class = "closeBtnModalL">Cancel</button>
-                    <a href="/index.html"><button id="logoutOk" type="submit">Ok</button></a>
-                </div>
+                <form action="/logout" method="get">
+                    <div class="logoutText">Are you sure you want to logout?</div>
+                    <div class="logoutButtons">
+                        <button type="button" id="logoutClose" class = "closeBtnModalL">Cancel</button>
+                        <input id="logoutOk" type="submit">
+                    </div>
+                </form>
             </div>
         </dialog>
         <!-- Account settings -->

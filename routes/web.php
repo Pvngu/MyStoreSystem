@@ -4,6 +4,7 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
@@ -21,74 +22,76 @@ use App\Http\Controllers\CustomerController;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-});
+Route::get('/', [AuthController::class, 'show'])->name('login');
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::get('/home', function () {
     return view('home');
-});
+})->middleware('auth');
 
 Route::get('/dashboard', function () {
     $itemCount = Item::count();
     $customerCount = Customer::count();
     $orderCount = Order::count();
     return view('dashboard', compact('itemCount', 'customerCount', 'orderCount'));
-});
+})->middleware('auth');
 
 // inventory
 
 // Show all Inventory
-Route::get('inventory/items', [ItemController::class, 'index']);
+Route::get('inventory/items', [ItemController::class, 'index'])->middleware('auth');
 
 // Show create form
-Route::get('inventory/items/create', [ItemController::class, 'create']);
+Route::get('inventory/items/create', [ItemController::class, 'create'])->middleware('auth');
 
 // Store item data
-Route::post('inventory/items', [ItemController::class, 'store']);
+Route::post('inventory/items', [ItemController::class, 'store'])->middleware('auth');
 
 // Show edit form
-Route::get('inventory/items/{item}/edit', [ItemController::class, 'edit']);
+Route::get('inventory/items/{item}/edit', [ItemController::class, 'edit'])->middleware('auth');
 
 // Update items
-Route::put('inventory/items/{item}', [ItemController::class, 'update']);
+Route::put('inventory/items/{item}', [ItemController::class, 'update'])->middleware('auth');
 
 // Delete an item
-Route::delete('inventory/items/{item}', [ItemController::class, 'destroy']);
+Route::delete('inventory/items/{item}', [ItemController::class, 'destroy'])->middleware('auth');
 
 //Delete several items
-Route::post('/inventory/items/delete-items', [ItemController::class, 'deleteItems']);
+Route::post('/inventory/items/delete-items', [ItemController::class, 'deleteItems'])->middleware('auth');
 
 //categories
 
 // Show all categories
-Route::get('inventory/categories', [CategoryController::class, 'index']);
+Route::get('inventory/categories', [CategoryController::class, 'index'])->middleware('auth');
 
 // Show create form
-Route::get('inventory/categories/create', [CategoryController::class, 'create']);
+Route::get('inventory/categories/create', [CategoryController::class, 'create'])->middleware('auth');
 
 // Store Category Data
-Route::post('inventory/categories', [CategoryController::class, 'store']);
+Route::post('inventory/categories', [CategoryController::class, 'store'])->middleware('auth');
 
 // Show edit form
-Route::get('inventory/categories/{category}/edit', [CategoryController::class, 'edit']);
+Route::get('inventory/categories/{category}/edit', [CategoryController::class, 'edit'])->middleware('auth');
 
 //Update categories
-Route::put('inventory/categories/{category}', [CategoryController::class, 'update']);
+Route::put('inventory/categories/{category}', [CategoryController::class, 'update'])->middleware('auth');
 
 // Delete a category
-Route::delete('inventory/categories/{category}', [CategoryController::class, 'destroy']);
+Route::delete('inventory/categories/{category}', [CategoryController::class, 'destroy'])->middleware('auth');
 
 //Delete several categories
-Route::post('/inventory/categories/delete-categories', [CategoryController::class, 'deleteCategories']);
+Route::post('/inventory/categories/delete-categories', [CategoryController::class, 'deleteCategories'])->middleware('auth');
 
 //Customers
 
 // Show all customers
-Route::get('customers', [CustomerController::class, 'index']);
+Route::get('customers', [CustomerController::class, 'index'])->middleware('auth');
 
 // Show create form
-Route::get('customers/create', [CustomerController::class, 'create']);
+Route::get('customers/create', [CustomerController::class, 'create'])->middleware('auth');
 
 // Select Country, States and cities option
 Route::get('countries', [CustomerController::class, 'getCountries'])->name('countries');
@@ -99,50 +102,50 @@ Route::get('cities', [CustomerController::class, 'getCities'])->name('cities');
 Route::post('customers', [CustomerController::class, 'store']);
 
 // Show edit form
-Route::get('customers/{customer}/edit', [CustomerController::class, 'edit']);
+Route::get('customers/{customer}/edit', [CustomerController::class, 'edit'])->middleware('auth');
 
 // Update customers
-Route::put('customers/{customer}', [CustomerController::class, 'update']);
+Route::put('customers/{customer}', [CustomerController::class, 'update'])->middleware('auth');
 
 // Delete a customer
-Route::delete('customers/{customer}', [CustomerController::class, 'destroy']);
+Route::delete('customers/{customer}', [CustomerController::class, 'destroy'])->middleware('auth');
 
 // Orders
 
 // Show all orders
-Route::get('orders', [OrderController::class, 'index']);
+Route::get('orders', [OrderController::class, 'index'])->middleware('auth');
 
 // Show create form
-Route::get('orders/create', [OrderController::class, 'create']);
+Route::get('orders/create', [OrderController::class, 'create'])->middleware('auth');
 
 // Store order data
-Route::post('orders', [OrderController::class, 'store']);
+Route::post('orders', [OrderController::class, 'store'])->middleware('auth');
 
 //Show edit form
-Route::get('orders/{order}/edit', [OrderController::class, 'edit']);
+Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->middleware('auth');
 
 // Update order data
-Route::put('orders/{order}', [OrderController::class, 'update']);
+Route::put('orders/{order}', [OrderController::class, 'update'])->middleware('auth');
 
 // Delete an order
-Route::delete('orders/{order}', [OrderController::class, 'destroy']);
+Route::delete('orders/{order}', [OrderController::class, 'destroy'])->middleware('auth');
 
 // Users
 
 // Show all users
-Route::get('users', [UserController::class, 'index']);
+Route::get('users', [UserController::class, 'index'])->middleware('auth');
 
 // Show create form
-Route::get('users/create', [UserController::class, 'create']);
+Route::get('users/create', [UserController::class, 'create'])->middleware('auth');
 
 // Store user data
-Route::post('users', [UserController::class, 'store']);
+Route::post('users', [UserController::class, 'store'])->middleware('auth');
 
 // Show edit form
-Route::get('users/{user}/edit', [UserController::class, 'edit']);
+Route::get('users/{user}/edit', [UserController::class, 'edit'])->middleware('auth');
 
 //Update users
-Route::put('users/{user}', [UserController::class, 'update']);
+Route::put('users/{user}', [UserController::class, 'update'])->middleware('auth');
 
 // Delete a user
-Route::delete('users/{user}', [UserController::class, 'destroy']);
+Route::delete('users/{user}', [UserController::class, 'destroy'])->middleware('auth');
