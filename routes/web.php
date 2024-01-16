@@ -59,7 +59,7 @@ Route::put('inventory/items/{item}', [ItemController::class, 'update'])->middlew
 // Delete an item
 Route::delete('inventory/items/{item}', [ItemController::class, 'destroy'])->middleware('auth');
 
-//Delete several items
+//Delete more than one item
 Route::post('/inventory/items/delete-items', [ItemController::class, 'deleteItems'])->middleware('auth');
 
 //categories
@@ -82,7 +82,7 @@ Route::put('inventory/categories/{category}', [CategoryController::class, 'updat
 // Delete a category
 Route::delete('inventory/categories/{category}', [CategoryController::class, 'destroy'])->middleware('auth');
 
-//Delete several categories
+//Delete more than one category
 Route::post('/inventory/categories/delete-categories', [CategoryController::class, 'deleteCategories'])->middleware('auth');
 
 //Customers
@@ -110,6 +110,9 @@ Route::put('customers/{customer}', [CustomerController::class, 'update'])->middl
 // Delete a customer
 Route::delete('customers/{customer}', [CustomerController::class, 'destroy'])->middleware('auth');
 
+// Delete more than one customer
+Route::post('customers/delete-customers', [CustomerController::class, 'deleteCustomers'])->middleware('auth');
+
 // Orders
 
 // Show all orders
@@ -130,6 +133,9 @@ Route::put('orders/{order}', [OrderController::class, 'update'])->middleware('au
 // Delete an order
 Route::delete('orders/{order}', [OrderController::class, 'destroy'])->middleware('auth');
 
+// Delete more than one order
+Route::post('orders/delete-orders', [OrderController::class, 'deleteOrders'])->middleware('auth');
+
 // Users
 
 // Show all users
@@ -149,3 +155,6 @@ Route::put('users/{user}', [UserController::class, 'update'])->middleware('auth'
 
 // Delete a user
 Route::delete('users/{user}', [UserController::class, 'destroy'])->middleware('auth');
+
+// Delete more than one user
+Route::post('users/delete-users', [UserController::class, 'deleteUsers'])->middleware('auth');

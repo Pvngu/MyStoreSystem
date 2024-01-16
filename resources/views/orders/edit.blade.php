@@ -104,7 +104,7 @@ function restoreRemovedOptions(value) {
 });
 </script>
 @endpush
-<x-layout>
+<x-layout :title="'Edit Order | MyStoreSystem'">
     <div class="content">
         <div class="content-header">
             <div class="header-text">

@@ -3,7 +3,6 @@
 namespace App\View\Components\Table;
 
 use Closure;
-use Hamcrest\Arrays\IsArray;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 

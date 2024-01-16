@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout :title="'Dashboard | MyStoreSystem'">
     <div class="content">
         <div class="dashboard-header">
             <span>Sales Report</span>

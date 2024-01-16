@@ -1,6 +1,6 @@
-<x-layout>
+<x-layout :title="'Orders | MyStoreSystem'">
     <div class="content">
-        @if(count($customers) >= 1)
+        @if(count($orderCount) >= 1)
         <div class="content-header">
             <div style="font-size: 1.4rem;">Orders</div>
             <a id = "addButton" href="orders/create">
@@ -42,12 +42,6 @@
                     </form>
                 </nav>
             </div>
-            <div class="deleteItemsNav">
-                <div class="nav-content flex-container">
-                    <div id="count"></div>
-                    <input id="deleteIdsButton" type="button" class="deleteButton" value="Delete Customers" onclick="submitIdsForm()">
-                </div>
-            </div>
             <div class = "table-container">
                 <x-table.table
                 :headers="[
@@ -63,6 +57,7 @@
                 :confirmationText="'Are you sure you want to delete this order?'"
                 >
                 <form id="deleteIdsForm" action="/orders/delete-orders" method="POST">
+                    @csrf
                     @foreach ($orders as $order)
                         <tr>
                             <td class="center-cell">
@@ -102,7 +97,7 @@
             </div>
         @else
         <div class="empty-table">
-            <div id="tittle-text">Start by creating the first Order</div>
+            <div id="tittle-text">Start by creating an order</div>
             <a href="/orders/create">
                 <button class="button-create" role="button">Create New Order</button>
             </a>

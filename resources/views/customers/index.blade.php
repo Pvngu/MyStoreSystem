@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout :title="'Customers | MyStoreSystem'">
     <div class="content">
         @if(count($customerCount) >= 1)
             <div class="content-header">
@@ -55,6 +55,8 @@
                 :deleteAction="'/customers/delete'"
                 :confirmationText="'Are you sure you want to delete this customer?'"
                 >
+                <form id="deleteIdsForm" action="/customers/delete-customers" method="POST">
+                @csrf
                 @foreach ($customers as $customer)
                     <tr>
                         <td class="center-cell">
@@ -63,11 +65,7 @@
                             </x-checkbox>
                         </td>
                         <td>{{$customer->id}}</td>
-                        <td>
-                            <div class="row-image">
-                                {{$customer->first_name . ' ' . $customer->last_name}}
-                            </div>
-                        </td>
+                        <td>{{$customer->first_name . ' ' . $customer->last_name}}</td>
                         <td>{{$customer->email}}</td>
                         <td>{{$customer->phone}}</td>
                         <td class = 'center-cell'>{{$customer->address ? $customer->address->city->name : ''}}</td>
@@ -88,6 +86,7 @@
                         </td>
                     </tr>
                 @endforeach
+                </form>
                 </x-table.table>
             </div>
             <div style="margin-top: 15px;">

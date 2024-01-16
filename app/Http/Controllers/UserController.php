@@ -81,4 +81,9 @@ class UserController extends Controller
             return back()->with('errorMessage', 'User was not found');
         }
     }
+
+    public function deleteUsers(Request $request){
+        User::whereIn('id', $request->ids)->delete();
+        return back()->with('message', 'Users deleted successfully');
+    }
 }

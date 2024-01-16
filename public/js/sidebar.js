@@ -175,11 +175,40 @@ closeButtonAS.addEventListener("click", () => {
 
 ////Theme switcher slider
 var html = document.getElementsByTagName('html');
-var radios = document.getElementsByName('themes')
+var radios = document.getElementsByName('themes');
+var slider = document.querySelector('.slider');
 
-for (i = 0; i < radios.length; i++){
-    radios[i].addEventListener('change', function() {
+function setThemeCookie(theme) {
+var expirationDate = new Date();
+expirationDate.setMonth(expirationDate.getMonth() + 3);
+
+document.cookie = "selected_theme=" + theme + "; expires=" + expirationDate.toUTCString() + "; path=/";
+}
+
+function getCookie(name) {
+    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return match[2];
+}
+
+function updateSliderPosition() {
+    var savedTheme = getCookie('selected_theme');
+    if (savedTheme === 'dark-theme') {
+        slider.style.transform = 'translateX(100%)';
+    } else {
+        slider.style.transform = 'translateX(0)';
+    }
+}
+
+var savedTheme = getCookie('selected_theme');
+if (savedTheme) {
+    updateSliderPosition();
+}
+
+for (var i = 0; i < radios.length; i++) {
+    radios[i].addEventListener('change', function () {
         html[0].classList.remove(html[0].classList.item(0));
         html[0].classList.add(this.id);
+        setThemeCookie(this.id);
+        updateSliderPosition();
     });
 }

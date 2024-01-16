@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout :title="'Categories | MyStoreSystem'">
     <div class="content">
         @if(count($categoryCount) >= 1)
             <div class="content-header">

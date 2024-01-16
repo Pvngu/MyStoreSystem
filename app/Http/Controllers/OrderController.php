@@ -16,7 +16,8 @@ class OrderController extends Controller
     public function index() {
         return view('orders.index', [
             'orders' => Order::filter(request(['search', 'status', 'customer', 'sort_column', 'sort_order']))->paginate(20)->withQueryString(),
-            'customers' => Customer::orderBy('first_name')->get()
+            'customers' => Customer::orderBy('first_name')->get(),
+            'orderCount' => Order::all()
         ]);
     }
 
@@ -59,9 +60,10 @@ class OrderController extends Controller
     }
 
     public function edit(Order $order) {
+        $itemIdsInOrder = ItemOrder::where('order_id', $order->id)->pluck('item_id')->toArray();
         return view('orders.edit', [
             'order' => $order,
-            'items' => Item::where('stock', '>', 0)->orderBy('name')->get(),
+            'items' => Item::where('stock', '>', 0)->whereNotIn('id', $itemIdsInOrder)->orderBy('name')->get(),
             'customers' => Customer::orderBy('first_name')->get(),
             'itemsOrder'=> ItemOrder::where('order_id',$order->id)->get()
         ]);
@@ -123,5 +125,10 @@ class OrderController extends Controller
         else {
             return back()->with('errorMessage', 'Order was not found');
         }
+    }
+
+    public function deleteOrders(Request $request){
+        Order::whereIn('id', $request->ids)->delete();
+        return back()->with('message', 'Orders deleted successfully');
     }
 }

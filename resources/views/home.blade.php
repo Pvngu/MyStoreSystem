@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout :title="'MyStoreSystem'">
     <div class="content">
         <div class="welcome">
             <h1>Welcome to MyStore System</h1>

@@ -114,7 +114,7 @@ function restoreRemovedOptions(value) {
 });
 </script>
 @endpush
-<x-layout>
+<x-layout :title="'Add New Category | MyStoreSystem'">
     <div class="content">
         <div class="content-header">
             <div class="header-text">

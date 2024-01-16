@@ -33,7 +33,7 @@
         });
     </script>
 @endpush
-<x-layout>
+<x-layout :title="'Add New Customer | MyStoreSystem'">
     <div class="content">
         <div class="content-header">
             <div class="header-text">

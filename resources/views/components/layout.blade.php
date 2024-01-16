@@ -1,16 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" class="dark-theme">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyStore System</title>
+    <title>{{$title}}</title>
     <link rel="stylesheet" href="{{asset('css\sidebar.css')}}">
     <link rel="stylesheet" href="{{asset('css\table.css')}}">
     <link rel="stylesheet" href="{{asset('css\home.css')}}">
     @stack('css')
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
     <script src="//unpkg.com/alpinejs" defer></script>
+    <script>
+        var savedTheme = getCookie('selected_theme');
+        if (savedTheme) {
+            document.getElementsByTagName('html')[0].classList.add(savedTheme);
+        }
+        function getCookie(name) {
+        var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        if (match) return match[2];
+}
+    </script>
 
     <!-- google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -146,11 +155,11 @@
                     <i class='bx bx-bell'></i>
                     <div class="userProfile">
                         <div class="userText">
-                            <div class="name">Username</div>
-                            <div class="job">Rol</div>
+                            <div class="name">{{Auth::User()->username}}</div>
+                            <div class="job">{{Auth::User()->role}}</div>
                         </div>
                         <div class="profilePicture">
-                            <i class='bx bx-user'></i>
+                            <img src="{{Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('images/default-profile-picture.jpg')}}">
                         </div>
                     </div>
                 </div>
@@ -209,7 +218,7 @@
                     <div class="logoutText">Are you sure you want to logout?</div>
                     <div class="logoutButtons">
                         <button type="button" id="logoutClose" class = "closeBtnModalL">Cancel</button>
-                        <input id="logoutOk" type="submit">
+                        <input id="logoutOk" value="OK" type="submit">
                     </div>
                 </form>
             </div>
@@ -225,19 +234,19 @@
                     <h2>Account Information</h2>
                     <li>
                         <i class='bx bx-hash'></i>
-                        <span>User ID: 1</span>
+                        <span>User ID: {{Auth::user()->id}}</span>
                     </li>
                     <li>
                         <i class='bx bx-user'></i>
-                        <span>Name: Omar</span>
+                        <span>Name: {{Auth::user()->name}}</span>
                     </li>
                     <li>
                         <i class='bx bx-user'></i>
-                        <span>Username: Pvngu</span>
+                        <span>Username: {{Auth::user()->username}}</span>
                     </li>
                     <li>
                         <i class='bx bx-user'></i>
-                        <span>Role: Admin</span>
+                        <span>Role: {{Auth::user()->role}}</span>
                     </li>
                 </ul>
             </div>

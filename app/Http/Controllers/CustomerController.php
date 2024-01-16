@@ -106,6 +106,11 @@ class CustomerController extends Controller
         return redirect('customers')->with('message', 'Customer was not found');
     }
 
+    public function deleteCustomers(Request $request){
+        Customer::whereIn('id', $request->ids)->delete();
+        return back()->with('message', 'Customers deleted successfully');
+    }
+
     public function getCountries () {
         $countries = DB::table('countries')->get();
         return $countries;

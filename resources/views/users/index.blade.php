@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout :title="'Users | MyStoreSystem'">
     <div class="content">
         @if(count($userNumbers) >= 1)
             <div class="content-header">

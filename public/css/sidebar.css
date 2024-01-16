@@ -48,7 +48,6 @@ body{
     color: var(--c-text-primary);
     background: var(--c-bg-body);
     font-size: 16px;
-    transition: all 0.5s ease;
 }
 
 i{
@@ -63,7 +62,7 @@ i{
     width: 75px;
     background: var(--c-bg-sidebar);
     z-index: 5;
-    transition: all 0.5s ease;
+    transition: width 0.5s ease;
     border-right: solid 1px var(--c-border-primary);
     white-space: nowrap;
 }
@@ -217,7 +216,8 @@ header .bizName{
 
 .userProfile .name{
     font-size: 0.9em;
-    font-weight: 400;
+    font-weight: 500;
+    text-align: right;
 }
 
 .userProfile .job{
@@ -225,8 +225,11 @@ header .bizName{
     text-align: right;
 }
 
-.userProfile .profilePicture{
-    font-size: 23px;
+.userProfile .profilePicture img {
+    max-width: 45px;
+    max-height: 45px;
+    border-radius: 20px;
+    margin-left: 10px;
 }
 
 @media (max-width: 510px){
@@ -242,10 +245,6 @@ header .bizName{
     .userProfile .job{
         font-size: 0.6em;
         text-align: right;
-    }
-    
-    .userProfile .profilePicture{
-        font-size: 16px;
     }
 }
 

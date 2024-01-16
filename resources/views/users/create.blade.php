@@ -33,7 +33,7 @@
         });
     </script>
 @endpush
-<x-layout>
+<x-layout :title="'Add New User | MyStoreSystem'">
     <div class="content">
         <div class="content-header">
             <div class="header-text">
@@ -67,15 +67,6 @@
                         @enderror
                     </div>
                     <div class="content-items">
-                        <label>Role</label>
-                        <select name="role">
-                            <option value="" disabled selected>Select a role</option>
-                            <option value="admin">Admin</option>
-                            <option value="inventory">Inventory</option>
-                            <option value="report">Report</option>
-                        </select>
-                    </div>
-                    <div class="content-items">
                         <label>Password</label>
                         <input type="password" name="password" value="{{old('password')}}">
                         @error('password')
@@ -88,6 +79,20 @@
                         @error('password_confirmation')
                             <p class="errorMessage">{{$message}}</p>
                         @enderror
+                    </div>
+                    <div class="content-items">
+                        <label>User type</label>
+                        <select name="role">
+                            <option value="" disabled selected>Select a role</option>
+                            <option value="admin">Admin</option>
+                            <option value="customerMgmt">Customer Management</option>
+                            <option value="InventoryMgmt">Inventory Management</option>
+                            <option value="OrderMgmt">Order Management</option>
+                            <option value="Reporting">Reporting</option>
+                        </select>
+                        @error('role')
+                        <p class="errorMessage">{{$message}}</p>
+                    @enderror
                     </div>
                 </div>
                 <div class="file-content">
