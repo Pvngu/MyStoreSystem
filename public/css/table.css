@@ -4,11 +4,15 @@ table{
     width: 100%;
     min-width: 640px;
     border: 1px solid var(--c-border-primary);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: rgba(134, 134, 134, 0.1);
 }
 
 table thead tr{
     text-align: left;
     font-size: 0.8rem;
+    background-color: var(--c-bg-tb-even);
 }
 
 table th, table td{
@@ -17,7 +21,6 @@ table th, table td{
 
 table tbody tr{
     border-bottom: 1px solid var(--c-border-primary);
-    transition: all 0.5s ease;
 }
 
 table tbody tr:nth-of-type(even){
@@ -26,7 +29,7 @@ table tbody tr:nth-of-type(even){
 
 table thead{
     border-bottom: 2px solid rgba(0, 0, 0, 0.20);
-    
+    border-radius: 10px 10px 0 0;
 }
 
 .row-image{
@@ -171,7 +174,6 @@ table thead{
 .nav-content{
     display: flex;
     justify-content: space-between;
-    align-items: center;
     width: 100%;
     background: var(--c-bg-table-option);
     padding: 17px 25px;

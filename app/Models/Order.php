@@ -36,7 +36,14 @@ class Order extends Model
         }
         
         if(($filters['sort_order']) ?? false) {
-            $query->orderBy(request('sort_column'), $filters['sort_order'] == 'D' ? 'desc' : 'asc');
+            if($filters['sort_column'] == 'customer') {
+                $query->join('customers', 'customers.id', '=', 'orders.customer_id')
+                      ->orderBy('customers.first_name', $filters['sort_order'] == 'D' ? 'desc' : 'asc')
+                      ->select('orders.*', 'customers.first_name');
+            }
+            else {
+                $query->orderBy(request('sort_column'), $filters['sort_order'] == 'D' ? 'desc' : 'asc');
+            }
         }
     }
 }

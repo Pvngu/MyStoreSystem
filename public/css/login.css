@@ -132,7 +132,7 @@ body{
     }
 
     .loginText::after{
-        content: ' To MyStore System';
+        content: ' To MyStoreSystem';
     }
 
     .modal{

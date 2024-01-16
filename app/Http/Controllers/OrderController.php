@@ -15,7 +15,7 @@ class OrderController extends Controller
      */
     public function index() {
         return view('orders.index', [
-            'orders' => Order::filter(request(['search', 'status', 'customer', 'sort_column', 'sort_order']))->paginate(20)->withQueryString(),
+            'orders' => Order::with('customer')->filter(request(['search', 'status', 'customer', 'sort_column', 'sort_order']))->paginate(20)->withQueryString(),
             'customers' => Customer::orderBy('first_name')->get(),
             'orderCount' => Order::all()
         ]);
