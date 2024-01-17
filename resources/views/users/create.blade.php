@@ -86,9 +86,9 @@
                             <option value="" disabled selected>Select a role</option>
                             <option value="admin">Admin</option>
                             <option value="customerMgmt">Customer Management</option>
-                            <option value="InventoryMgmt">Inventory Management</option>
-                            <option value="OrderMgmt">Order Management</option>
-                            <option value="Reporting">Reporting</option>
+                            <option value="inventoryMgmt">Inventory Management</option>
+                            <option value="orderMgmt">Order Management</option>
+                            <option value="reporting">Reporting</option>
                         </select>
                         @error('role')
                         <p class="errorMessage">{{$message}}</p>

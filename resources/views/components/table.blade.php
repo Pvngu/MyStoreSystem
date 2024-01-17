@@ -41,8 +41,8 @@
                 @endif
                 @endforeach
                 <th class = "center-cell">Actions</th>
-                <input type="hidden" name="sort_column" id="sort_column" value="{{old('sort_column', request()->input('sort_column'))}}">
-                <input type="hidden" name="sort_order" id="sort_order" value="{{old('sort_order', request()->input('sort_order'))}}">
+                <input type="hidden" name="sort_column" id="sort_column" value="{{request('sort_column') ?? ''}}">
+                <input type="hidden" name="sort_order" id="sort_order" value="{{request('sort_order') ?? ''}}">
             </tr>
         </form>
     </thead>

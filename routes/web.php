@@ -4,8 +4,10 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Routing\Router;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CategoryController;
@@ -158,3 +160,9 @@ Route::delete('users/{user}', [UserController::class, 'destroy'])->middleware('a
 
 // Delete more than one user
 Route::post('users/delete-users', [UserController::class, 'deleteUsers'])->middleware('auth');
+
+// Show all roles
+Route::get('users/roles', [RoleController::class, 'index'])->middleware('auth');
+
+// Show create form
+Route::get('users/roles/create', [RoleController::class, 'create'])->middleware('auth');

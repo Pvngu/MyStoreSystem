@@ -15,6 +15,10 @@ table thead tr{
     background-color: var(--c-bg-tb-even);
 }
 
+table th {
+    font-weight: 600;
+}
+
 table th, table td{
     padding: 12px 15px;
 }
@@ -155,20 +159,42 @@ table thead{
     width: 190px;
 }
 
-.status-active, .status-deactive, .status-pending{
-    padding: 3px 5px;
-    border-radius: 10px;
-    font-weight: 500;
-    color: #fff;
-    background: darkgreen;
+.flex-cell {
+    display: flex; 
+    justify-content: center;
 }
 
-.status-deactive{
-    background: #f44336;
-}
+.status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    padding: 4px 8px;
+    & div {
+        content: '';
+        width: 9px;
+        height: 9px;
+        background: white;
+        border-radius: 100%;
+        background: #12b36d;
+        margin-right: 6px;
+    }
 
-.status-pending {
-    background: #cf9840;
+    &.deactive div {
+        background: #ef5145;
+    }
+
+    &.active, &.deactive {
+        border-radius: 20px;
+        font-weight: 500;
+        color: #12b36d;
+        background: rgba(27, 255, 0, 0.06);
+    }
+
+    &.deactive {
+        background: rgba(255, 0, 0, 0.06);
+        color: #cb5c55;
+    }
 }
 
 .nav-content{

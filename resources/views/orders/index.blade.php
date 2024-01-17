@@ -68,13 +68,17 @@
                             <td>{{$order->id}}</td>
                             <td>{{ \Carbon\Carbon::parse($order->date)->format('M d, Y')}}</td>
                             <td>{{$order->customer->first_name}} {{$order->customer->last_name}}</td>
-                            <td class = 'center-cell'>
+                            <td class="flex-cell">
                                 @if ($order->status == 'paid')
-                                    <span class = 'status-active'>{{$order->status}}</span>
-                                @elseif($order->status == 'canceled')
-                                    <span class = 'status-deactive'>{{$order->status}}</span>
+                                <div class="status active">
+                                    <div></div>
+                                    <span>{{ucfirst($order->status)}}</span>
+                                </div>
                                 @else
-                                    <span class = 'status-pending'>{{$order->status}}</span>
+                                <div class="status deactive">
+                                    <div></div>
+                                    <span>{{ucfirst($order->status)}}</span>
+                                </div>
                                 @endif
                             </td>
                             <td class = 'center-cell'>{{$order->items->count()}}</td>

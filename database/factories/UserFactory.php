@@ -26,7 +26,7 @@ class UserFactory extends Factory
         return [
             'username' => fake()->company(),
             'name' => fake()->name(),
-            'role' => fake()->randomElement(['admin', 'inventory', 'report']),
+            'role' => fake()->randomElement(['admin', 'customerMgmt', 'inventoryMgmt', 'orderMgmt', 'reporting']),
             'status' => fake()->numberBetween(0,1),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),

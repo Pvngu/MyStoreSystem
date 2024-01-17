@@ -24,7 +24,7 @@
                                     <select name="status" id="status" class="select-input" onchange="this.form.submit()">
                                         <option value="" {{(request('status') == 'all') ? 'selected' : ''}}>All</option>
                                         <option value="active" {{request('status') == 'active' ? 'selected' : ''}}>Active</option>
-                                        <option value="deactive" {{request('status') == 'deactive' ? 'selected' : ''}}>Deactive</option>
+                                        <option value="inactive" {{request('status') == 'deactive' ? 'selected' : ''}}>Inactive</option>
                                     </select>
                                 </div>
                                 <div class="nav-item">
@@ -69,11 +69,17 @@
                         <td>{{$customer->email}}</td>
                         <td>{{$customer->phone}}</td>
                         <td class = 'center-cell'>{{$customer->address ? $customer->address->city->name : ''}}</td>
-                        <td class = 'center-cell'>
+                        <td class="flex-cell">
                             @if ($customer->active == 1)
-                                <span class = 'status-active'>Active</span>
+                            <div class="status active">
+                                <div></div>
+                                <span>Active</span>
+                            </div>
                             @else
-                                <span class = 'status-deactive'>Deactive</span>
+                            <div class="status deactive">
+                                <div></div>
+                                <span>Inactive</span>
+                            </div>
                             @endif
                         </td>
                         <td class = 'actions center-cell'>

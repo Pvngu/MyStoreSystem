@@ -72,11 +72,17 @@
                                 </td>
                                 <td>{{$user->name}}</td>
                                 <td>{{$user->role}}</td>
-                                <td class = 'center-cell'>
+                                <td class="flex-cell">
                                     @if ($user->status == 1)
-                                        <span class = 'status-active'>Active</span>
+                                    <div class="status active">
+                                        <div></div>
+                                        <span>Active</span>
+                                    </div>
                                     @else
-                                        <span class = 'status-deactive'>Deactive</span>
+                                    <div class="status deactive">
+                                        <div></div>
+                                        <span>Inactive</span>
+                                    </div>
                                     @endif
                                 </td>
                                 <td class = 'actions center-cell'>

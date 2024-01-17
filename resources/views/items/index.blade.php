@@ -38,8 +38,8 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" name="sort_column" value="{{old('sort_column', request()->input('sort_column'))}}">
-                        <input type="hidden" name="sort_order" value="{{old('sort_order', request()->input('sort_order'))}}">
+                        <input type="hidden" name="sort_column" value="{{request('sort_column') ?? ''}}">
+                        <input type="hidden" name="sort_order" value="{{request('sort_order') ?? ''}}">
                     </form>
                 </nav>
             </div>
@@ -77,11 +77,17 @@
                                 <td>{{$item->stock}}</td>
                                 <td>${{$item->cost_price}}</td>
                                 <td>${{$item->unit_price}}</td>
-                                <td class = 'center-cell'>
+                                <td class="flex-cell">
                                     @if ($item->stock >= 1)
-                                        <span class = 'status-active'>InStock</span>
+                                    <div class="status active">
+                                        <div></div>
+                                        <span>InStock</span>
+                                    </div>
                                     @else
-                                        <span class = 'status-deactive'>OutStock</span>
+                                    <div class="status deactive">
+                                        <div></div>
+                                        <span>OutStock</span>
+                                    </div>
                                     @endif
                                 </td>
                                 <td class = 'actions center-cell'>

@@ -226,10 +226,11 @@ header .bizName{
 }
 
 .userProfile .profilePicture img {
-    max-width: 45px;
-    max-height: 45px;
-    border-radius: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
     margin-left: 10px;
+    object-fit: cover;
 }
 
 @media (max-width: 510px){
@@ -493,13 +494,14 @@ opacity: 1;
     overflow: hidden;
 }
 
-.submenu-items.sm-inv.show{
+.submenu-items.sm-inv.show,
+.submenu-items.sm-users.show
+{
     height: 130px;
     opacity: 1;
     overflow: hidden;
 }
 
-.submenu-items.sm-users.show,
 .submenu-items.sm-customers.show,
 .submenu-items.sm-orders.show
 {

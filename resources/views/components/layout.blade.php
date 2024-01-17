@@ -123,6 +123,12 @@
                         <li>
                             <a href="/users/create">New Users</a>
                         </li>
+                        <li>
+                            <a href="/users/roles">View Roles</a>
+                        </li>
+                        <li>
+                            <a href="/users/roles/create">New Role</a>
+                        </li>
                     </ul>
                 </li>
             </div>
