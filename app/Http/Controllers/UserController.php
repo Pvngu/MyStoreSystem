@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
@@ -11,46 +12,60 @@ class UserController extends Controller
     public function index() {
         return view('users.index', [
             'users' => User::filter(request(['search', 'role', 'status', 'sort_column', 'sort_order']))->paginate(20)->withQueryString(),
-            'userNumbers' => User::all()
+            'userNumbers' => User::all(),
+            'roles' => Role::all()
         ]);
     }
 
     public function create() {
-        return view('users.create');
+        return view('users.create', [
+            'roles' => Role::all()
+        ]);
     }
 
     public function store(Request $request) {
         $formFields = $request->validate([
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'username' => 'required',
-            'role' => 'required',
             'email' => 'nullable|email|unique:users',
             'password' => 'required|confirmed|min:6'
         ]);
 
+        $role = $request->validate(['role' => 'required']);
+
         $formFields['password'] = bcrypt($formFields['password']);
 
-        if($request->hasFile('image')) {
-            $formFields['image'] = $request->file('image')->store('user_images', 'public');
+        $user = User::create($formFields);
+
+        if($user){
+            if($request->hasFile('image')) {
+                $formFields['image'] = $request->file('image')->store('user_images', 'public');
+            }
+            $user->assignRole($role);
+            return redirect('/users')->with('message', 'User created successfully');
         }
-
-        User::create($formFields);
-
-        return redirect('/users')->with('message', 'User created successfully');
+        else{
+            return redirect('/users')->with('erorrMessage', 'There was an error');
+        }
     }
 
     public function edit(User $user) {
         return view('users.edit', [
-            'user' => $user
+            'user' => $user,
+            'roles' => Role::all()
         ]);
     }
 
     public function update(Request $request, User $user) {
         $formFields = $request->validate([
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'username' => 'required',
-            'role' => 'required',
             'email' => 'nullable|email'
+        ]);
+        $role = $request->validate([
+            'role' => 'required'
         ]);
 
         if($request->hasFile('image')){
@@ -62,9 +77,15 @@ class UserController extends Controller
             $formFields['image'] = '';
         }
 
-        $user->update($formFields);
+        $userUpdate = $user->update($formFields);
 
-        return redirect('/users')->with('message', 'User updated successfully');
+        if($userUpdate){
+            $user->syncRoles([$role]);
+            return redirect('/users')->with('message', 'User updated successfully');
+        }
+        else {
+            return redirect('/users')->with('errorMessage', 'There was an error');
+        }
     }
 
     public function destroy(Request $request) {

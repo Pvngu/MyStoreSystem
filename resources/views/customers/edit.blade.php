@@ -109,7 +109,7 @@
                         <label>Status</label>
                         <select name="active">
                             <option value="1" {{$customer->active == 1 ? 'selected' : ''}}>Active</option>
-                            <option value="0" {{$customer->active == 0 ? 'selected' : ''}}>Deactive</option>
+                            <option value="0" {{$customer->active == 0 ? 'selected' : ''}}>Inactive</option>
                         </select>
                     </div>
                 </div>

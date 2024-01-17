@@ -24,16 +24,16 @@
                                     <select name="status" id="status" class="select-input" onchange="this.form.submit()">
                                         <option value="">All</option>
                                         <option value="active" {{request('status') == 'active' ? 'selected' : ''}}>Active</option>
-                                        <option value="deactive" {{request('status') == 'deactive' ? 'selected' : ''}}>Deactive</option>
+                                        <option value="inactive" {{request('status') == 'inactive' ? 'selected' : ''}}>Deactive</option>
                                     </select>
                                 </div>
                                 <div class="nav-item">
                                     <label>Role</label>
                                     <select name="role" id="role" class="select-input" onchange="this.form.submit()">
                                         <option value="">All</option>
-                                        <option value="admin">Admin</option>
-                                        <option value="inventory">Inventory</option>
-                                        <option value="report">Report</option>
+                                        @foreach ($roles as $role)
+                                            <option value="{{$role->id}}">{{$role->name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

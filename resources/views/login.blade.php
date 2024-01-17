@@ -25,11 +25,20 @@
       <form action="/login" method="post">
         @csrf
         <h1 class="loginText">Login</h1>
-        <div class="input-box">
-          <input name="email" type="email" placeholder="Email">
+        <div class="input-box {{$errors->has('error') ? 'error' : ''}}">
+          <input name="username" type="text" placeholder="Username">
+          @error('username')
+            <p class="errorMessage">{{$message}}</p>
+          @enderror
+          @if($errors->has('error'))
+            <p class="errorMessage">{{$errors->first('error')}}</p>
+          @endif
         </div>
-        <div class="input-box">
+        <div class="input-box {{$errors->has('error') ? 'error' : ''}}">
           <input name="password" type="password" placeholder="Password">
+          @error('password')
+            <p class="errorMessage">{{$message}}</p>
+          @enderror
         </div>
         <input id="loginButton" type="submit" value="Login">
         <div class="forgot open-button">Forgot Password?</div>

@@ -58,6 +58,14 @@ body{
 .login-form .input-box{
     border-bottom: solid 1px black;
     margin: 20px 5px;
+
+    & input {
+        font-family: 'Poppins';
+    }
+
+    &.error{
+        border-bottom: solid 1px rgb(255, 0, 0);  
+    }
 }
 
 .login-form .input-box input{
@@ -66,7 +74,7 @@ body{
     outline: none;
     width: 100%;
     font-size: 1em;
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 .login-form #loginButton{
@@ -153,4 +161,11 @@ body{
 
 .close-button:hover{
 opacity: 1;
+}
+
+.errorMessage{
+    position: absolute;
+    color: red;
+    font-size: 0.7rem;
+    margin-top: 5px;
 }

@@ -61,9 +61,16 @@
             <div class="item-info">
                 <div class="item-fields">
                     <div class="content-items">
-                        <label>Name</label>
-                        <input type="text" name="name" value="{{$user->name}}">
-                        @error('name')
+                        <label>First Name</label>
+                        <input type="text" name="first_name" value="{{$user->first_name}}">
+                        @error('first_name')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
+                    </div>
+                    <div class="content-items">
+                        <label>Last Name</label>
+                        <input type="text" name="last_name" value="{{$user->last_name}}">
+                        @error('last_name')
                             <p class="errorMessage">{{$message}}</p>
                         @enderror
                     </div>
@@ -75,18 +82,42 @@
                         @enderror
                     </div>
                     <div class="content-items">
+                        <label>Email</label>
+                        <input type="email" name="email" value="{{$user->email}}">
+                        @error('email')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
+                    </div>
+                    <div class="content-items">
+                        <label>Password</label>
+                        <input type="password" name="password">
+                        @error('password')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
+                    </div>
+                    <div class="content-items">
+                        <label>Confirm Password</label>
+                        <input type="password" name="password_confirmation">
+                        @error('password_confirmation')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
+                    </div>
+                    <div class="content-items">
                         <label>Role</label>
                         <select name="role">
-                            <option value="admin">Admin</option>
-                            <option value="inventory">Inventory</option>
-                            <option value="report">Report</option>
+                            @foreach ($roles as $role)
+                                <option value="{{$role->name}}">{{$role->name}}</option>
+                            @endforeach
                         </select>
+                        @error('role')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
                     </div>
                     <div class="content-items">
                         <label>Status</label>
                         <select name="status" value="active">
                             <option value="1">Active</option>
-                            <option value="0">Deactive</option>
+                            <option value="0">Inactive</option>
                         </select>
                     </div>
                 </div>

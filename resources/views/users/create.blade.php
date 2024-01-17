@@ -46,9 +46,16 @@
             <div class="item-info">
                 <div class="item-fields">
                     <div class="content-items">
-                        <label>Name</label>
-                        <input type="text" name="name" value="{{old('name')}}">
-                        @error('name')
+                        <label>First Name</label>
+                        <input type="text" name="first_name" value="{{old('first_name')}}">
+                        @error('first_name')
+                            <p class="errorMessage">{{$message}}</p>
+                        @enderror
+                    </div>
+                    <div class="content-items">
+                        <label>Last Name</label>
+                        <input type="text" name="last_name" value="{{old('last_name')}}">
+                        @error('last_name')
                             <p class="errorMessage">{{$message}}</p>
                         @enderror
                     </div>
@@ -83,12 +90,10 @@
                     <div class="content-items">
                         <label>User type</label>
                         <select name="role">
-                            <option value="" disabled selected>Select a role</option>
-                            <option value="admin">Admin</option>
-                            <option value="customerMgmt">Customer Management</option>
-                            <option value="inventoryMgmt">Inventory Management</option>
-                            <option value="orderMgmt">Order Management</option>
-                            <option value="reporting">Reporting</option>
+                            <option disabled selected>Select a role</option>
+                            @foreach ($roles as $role)
+                                <option value="{{$role->name}}">{{$role->name}}</option>
+                            @endforeach
                         </select>
                         @error('role')
                         <p class="errorMessage">{{$message}}</p>
