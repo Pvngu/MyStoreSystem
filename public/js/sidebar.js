@@ -129,9 +129,12 @@ contentClick.addEventListener("click", () => {
 // settings window
 const closeButtonS = document.querySelector(".closeBtnModalS")
 const modalS = document.querySelector(".settingsModal")
-const openButtonS = document.querySelector(".openModalS")
-openButtonS.addEventListener("click", () => {
-    modalS.showModal()
+const openButtonS = document.querySelectorAll(".openModalS")
+
+openButtonS.forEach((key, index) => {
+    openButtonS[index].addEventListener("click", () => {
+        modalS.showModal()
+    })
 })
 closeButtonS.addEventListener("click", () => {
     modalS.close();

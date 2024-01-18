@@ -38,7 +38,7 @@
                     <h2>User Management</h2>
                     <p>Manage your users to give them access to whatever you want.</p>
                 </a>
-                <a class="item-container">
+                <a class="item-container openModalS">
                     <img src="{{asset('images\settings-icon.png')}}" alt="icon image">
                     <h2>Settings</h2>
                     <p>Change theme color or see additional information about the page</p>
