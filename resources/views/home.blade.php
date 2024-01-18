@@ -1,6 +1,19 @@
 @push('css')
     <link rel="stylesheet" href="{{asset('css\home.css')}}">
 @endpush
+@push('scripts')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const items = document.querySelectorAll(".item-container");
+  
+      items.forEach((item, index) => {
+        setTimeout(() => {
+          item.classList.add("active");
+        }, index * 100); // Adjust the delay as needed
+      });
+    });
+  </script>
+@endpush
 <x-layout :title="'MyStoreSystem'">
     <div class="content">
         <div class="welcome">
