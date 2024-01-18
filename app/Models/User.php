@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -49,7 +50,7 @@ class User extends Authenticatable
 
     public function scopeFilter($query, array $filters) {
         if($filters['search'] ?? false) {
-            $query->where('name', 'like', '%' . request('search') . '%')
+            $query->where(DB::raw('CONCAT(first_name, " ", last_name)'), 'like', '%' . request('search') . '%')
             ->orWhere('username', 'like', '%'. request('search') . '%')
             ->orWhere('id', '=', request('search'));
         }
@@ -61,7 +62,12 @@ class User extends Authenticatable
         }
 
         if(($filters['sort_order']) ?? false) {
-            $query->orderBy(request('sort_column'), $filters['sort_order'] == 'D' ? 'desc' : 'asc');
+            if($filters['sort_column'] == 'name') {
+                $query->orderBy('first_name', $filters['sort_order'] == 'D' ? 'desc' : 'asc');
+            }
+            else {
+                $query->orderBy(request('sort_column'), $filters['sort_order'] == 'D' ? 'desc' : 'asc');
+            }
         }
     }
 }

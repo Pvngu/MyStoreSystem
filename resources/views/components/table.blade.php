@@ -51,6 +51,36 @@
     </tbody>
 </table>
 
+@unless(request()->has('search') || request()->has('sort_column') || request()->has('page'))
+    <style>
+    .content-header div{ 
+        animation: slide-up 500ms cubic-bezier(.25,.46,.45,.94) forwards;
+        transform: translateY(60px);
+    }
+
+    #addButton {
+        animation: slide-up 500ms cubic-bezier(.25,.46,.45,.94) forwards;
+        transform: translateY(140px);
+    }
+
+    nav {
+        animation: slide-up 650ms cubic-bezier(.25,.46,.45,.94) forwards;
+        transform: translateY(140px);
+    }
+
+    .table-container {
+        animation: slide-up 700ms cubic-bezier(.25,.46,.45,.94) forwards;
+        transform: translateY(180px);
+    }
+
+    @keyframes slide-up {
+        100% {
+            transform: translateY(0);
+        }
+    }
+    </style>
+@endunless
+
 <!-- Delete popup -->
 <dialog class="deleteModal modal">
     <div class="modalHeader">

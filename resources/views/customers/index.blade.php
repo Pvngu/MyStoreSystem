@@ -24,7 +24,7 @@
                                     <select name="status" id="status" class="select-input" onchange="this.form.submit()">
                                         <option value="" {{(request('status') == 'all') ? 'selected' : ''}}>All</option>
                                         <option value="active" {{request('status') == 'active' ? 'selected' : ''}}>Active</option>
-                                        <option value="inactive" {{request('status') == 'deactive' ? 'selected' : ''}}>Inactive</option>
+                                        <option value="inactive" {{request('status') == 'inactive' ? 'selected' : ''}}>Inactive</option>
                                     </select>
                                 </div>
                                 <div class="nav-item">

@@ -89,7 +89,7 @@
                         @enderror
                     </div>
                     <div class="content-items">
-                        <label>Password</label>
+                        <label>New Password</label>
                         <input type="password" name="password">
                         @error('password')
                             <p class="errorMessage">{{$message}}</p>

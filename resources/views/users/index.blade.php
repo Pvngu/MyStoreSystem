@@ -47,6 +47,7 @@
                     ['name' => 'id', 'column_type' => 'sortable'],
                     ['name' => 'username', 'column_type' => 'sortable'],
                     ['name' => 'name', 'column_type' => 'sortable'],
+                    ['name' => 'email', 'column_type' => 'sortable'],
                     ['name' => 'role', 'align' => 'center'],
                     ['name' => 'status', 'align' => 'center']
                 ]"
@@ -71,6 +72,7 @@
                                     </div>
                                 </td>
                                 <td>{{$user->first_name}} {{$user->last_name}}</td>
+                                <td>{{$user->email}}</td>
                                 <td>{{$user->role}}</td>
                                 <td class="flex-cell">
                                     @if ($user->status == 1)

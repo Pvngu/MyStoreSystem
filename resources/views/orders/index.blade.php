@@ -1,3 +1,32 @@
+@push('scripts')
+    <script>
+        const modalShow = document.querySelector('.showModal');
+        const itemOrder = document.getElementById('itemOrder');
+        $(document).ready(function () {
+            $('.openModalShow').click(function (e) {
+                order_id = $(this).data('order-id');
+                    $.ajax({
+                    url: '{{ route('items') }}?order_id='+order_id,
+                    type: 'get',
+                    success: function (res) {
+                        $.each(res, function (key, value) {
+                            $('#itemOrder').append('<td>' + value.name + '</td>');
+                        });
+                        modalShow.showModal();
+                    }
+                });
+            });
+        });
+
+        document.querySelector('.closeBtnModalShow').addEventListener('click', () => {
+            modalShow.close();
+        })
+
+        document.querySelector('.showModal').addEventListener('close', () => {
+            itemOrder.innerHTML = '';
+        })
+    </script>
+@endpush
 <x-layout :title="'Orders | MyStoreSystem'">
     <div class="content">
         @if(count($orderCount) >= 1)
@@ -84,7 +113,10 @@
                             <td class = 'center-cell'>{{$order->items->count()}}</td>
                             <td class = 'center-cell'>${{$order->total_amount}}</td>
                             <td class = 'actions center-cell'>
-                                <a href = 'orders/{{$order->id}}/edit'>
+                                <a class="openModalShow" data-order-id='{{$order->id}}'>
+                                    <i class='bx bx-show' style = 'color: #5993ff'></i>
+                                </a>
+                                <a href ='orders/{{$order->id}}/edit'>
                                     <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
                                 </a>
                                 <a class="openModalD" data-item-id='{{$order->id}}'>
@@ -108,4 +140,14 @@
         </div>
         @endif
     </div>
+    <!-- Show order items popup -->
+    <dialog class="showModal modal">
+        <div class="modalHeader">
+            <h1>Items</h1>
+            <i class='bx bx-x closeBtnModalShow modalX'></i>
+        </div>
+        <div class="modalContent">
+            <div id="itemOrder"></div>
+        </div>
+    </dialog>
 </x-layout>

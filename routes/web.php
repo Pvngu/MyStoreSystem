@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Item;
-use App\Models\Order;
-use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Routing\Router;
 use App\Http\Controllers\AuthController;
@@ -12,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,12 +32,7 @@ Route::get('/home', function () {
     return view('home');
 })->middleware('auth');
 
-Route::get('/dashboard', function () {
-    $itemCount = Item::count();
-    $customerCount = Customer::count();
-    $orderCount = Order::count();
-    return view('dashboard', compact('itemCount', 'customerCount', 'orderCount'));
-})->middleware('auth');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
 
 // inventory
 
@@ -122,6 +115,9 @@ Route::get('orders', [OrderController::class, 'index'])->middleware('auth');
 
 // Show create form
 Route::get('orders/create', [OrderController::class, 'create'])->middleware('auth');
+
+// Get ordered items
+Route::get('items', [OrderController::class, 'getItems'])->name('items')->middleware('auth');
 
 // Store order data
 Route::post('orders', [OrderController::class, 'store'])->middleware('auth');

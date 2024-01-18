@@ -6,7 +6,6 @@
     <title>{{$title}}</title>
     <link rel="stylesheet" href="{{asset('css\sidebar.css')}}">
     <link rel="stylesheet" href="{{asset('css\table.css')}}">
-    <link rel="stylesheet" href="{{asset('css\home.css')}}">
     @stack('css')
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="//unpkg.com/alpinejs" defer></script>
@@ -30,7 +29,7 @@
     <div class="sidebar">
         <div class="logoContent">
             <div class="logo">
-                <span>MyStore System</span>
+                <span>MyStoreSystem</span>
                 <div id="btn">
                     <label class="hamburger-menu">
                         <input type="checkbox" id="hamburger">
@@ -155,7 +154,7 @@
         <header>
             <div class="headerContent">
                 <div class="leftContent">
-                    <h1 class="bizName">MyStore System</h1>
+                    <h1 class="bizName">MyStoreSystem</h1>
                 </div>
                 <div class="rightContent">
                     <i class='bx bx-bell'></i>

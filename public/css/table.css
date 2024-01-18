@@ -110,6 +110,7 @@ table thead{
 .table-container{
     clear: right;
     overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .actions a{

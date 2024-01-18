@@ -1,3 +1,6 @@
+@push('css')
+    <link rel="stylesheet" href="{{asset('css\home.css')}}">
+@endpush
 <x-layout :title="'MyStoreSystem'">
     <div class="content">
         <div class="welcome">

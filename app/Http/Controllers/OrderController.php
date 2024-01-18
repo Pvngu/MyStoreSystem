@@ -79,6 +79,7 @@ class OrderController extends Controller
         $order->update($formFields);
 
         $itemCount = $request->itemCount;
+        
         if($itemCount){
             $totalAmount = [];
             $ids = [];
@@ -130,5 +131,14 @@ class OrderController extends Controller
     public function deleteOrders(Request $request){
         Order::whereIn('id', $request->ids)->delete();
         return back()->with('message', 'Orders deleted successfully');
+    }
+
+    public function getItems (Request $request) {
+        $items = DB::table('item_order')
+                    ->select('item_order.id','item_order.order_id', 'item_order.item_id','items.name', 'item_order.quantity')
+                    ->join('items', 'items.id', '=', 'item_order.item_id')
+                    ->where('order_id', $request->order_id)
+                    ->get();
+        return $items;
     }
 }

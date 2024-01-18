@@ -62,8 +62,11 @@ class UserController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'username' => 'required',
-            'email' => 'nullable|email'
+            'email' => 'nullable|email',
+            'password' => 'nullable|confirmed|min:6'
         ]);
+        $formFields['password'] = bcrypt($formFields['password']);
+        
         $role = $request->validate([
             'role' => 'required'
         ]);
