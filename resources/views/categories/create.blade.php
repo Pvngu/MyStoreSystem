@@ -60,7 +60,6 @@ function restoreRemovedOptions(value) {
     
     let btnAdd = document.getElementById('addButton');
     let table = document.getElementById('addRow');
-    let count = 0
 
     table.addEventListener('click', (event) => {
     if (event.target.id === 'addButton') {
@@ -68,16 +67,13 @@ function restoreRemovedOptions(value) {
         if(nameInput.options.length > 0) {
             let value = nameInput.value;
             const item = value.split(',');
-            count++;
-
-            document.getElementById('itemCount').value = count;
 
             let template = `
                 <tr data-item-value="${item[0]},${item[1]}">
                     <td>
                         <div>
                             ${item[0]}
-                            <input type="hidden" name="item${count}" value="${item[1]}" />
+                            <input type="hidden" name="ids[${item[1]}]" value="${item[1]}" />
                         </div>
                     </td>
                     <td class='actions center-cell'>
@@ -174,7 +170,6 @@ function restoreRemovedOptions(value) {
                         </tr>
                     </tbody>
                 </table>
-                <input type="hidden" name="itemCount" id="itemCount">
             </div>
             <div class="form-buttons">
                 <a href="/inventory/categories" style="text-decoration: none;">

@@ -75,7 +75,6 @@ function restoreRemovedOptions(value) {
     let btnAdd = document.getElementById('addButton');
     let table = document.getElementById('addRow');
     let count = document.getElementById('itemNumber').value;
-    document.getElementById('itemCount').value = count;
 
     table.addEventListener('click', (event) => {
     if (event.target.id === 'addButton') {
@@ -83,8 +82,6 @@ function restoreRemovedOptions(value) {
         if(nameInput.options.length > 0) {
             let value = nameInput.value; 
             const item = value.split(',');
-            count++;
-            document.getElementById('itemCount').value = count;
 
             let template = `
                 <tr data-item-value="${item[0]},${item[1]}">
@@ -92,7 +89,7 @@ function restoreRemovedOptions(value) {
                         <div class="row-image">
                             <img class="table-image" src="{{asset('images/default-gray.png')}}" alt="">
                             ${item[0]}
-                            <input type="hidden" name="item${count}" value="${item[1]}" />
+                            <input type="hidden" name="ids[${item[1]}]" value="${item[1]}" />
                         </div>
                     </td>
                     <td class='actions center-cell'>
@@ -190,14 +187,13 @@ function restoreRemovedOptions(value) {
                                 <input id="addButton" class="newButton" type="button" value="Add">
                             </td>
                         </tr>
-                        @foreach ($categoryItems as $index => $item)
-                        @php $index++;@endphp
+                        @foreach ($categoryItems as $item)
                         <tr data-item-value="{{$item->name . ',' . $item->id}}">
                             <td>
                                 <div class="row-image">
                                     <img class="table-image" src="{{asset('images/default-gray.png')}}" alt="">
                                     {{$item->name}}
-                                    <input type="hidden" name="{{'item' . $index}}" value="{{$item->id}}" />
+                                    <input type="hidden" name="ids[{{$item->id}}]" value="{{$item->id}}" />
                                 </div>
                             </td>
                             <td class='actions center-cell'>

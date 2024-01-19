@@ -38,15 +38,19 @@ class CategoryController extends Controller
 
         $category = Category::create($formFields);
 
-        $itemCount = $request->itemCount;
-        if($itemCount){
-            for($i = 1; $i <= $itemCount; $i++) {
-                $itemId = $request->input('item' . $i);
-                Item::where('id',$itemId)->update(['category_id'=>$category->id]);
+        if($category) {
+            if($request->has('ids')) {
+                $items = Item::whereIn('id', $request->ids)->get();
+                foreach($items as $item) {
+                    $item->update(['category_id' => $category->id]);
+                }
             }
+            
+            return redirect('/inventory/categories')->with('message', 'Category created successfully');
         }
-        
-        return redirect('/inventory/categories')->with('message', 'Category created successfully');
+        else{
+            return back()->with('errorMessage', 'There was an error');
+        }
     }
 
     public function edit(Category $category) {
@@ -76,18 +80,28 @@ class CategoryController extends Controller
 
         $category->update($formFields);
 
-        $itemCount = $request->itemCount;
-        if($itemCount){
-            $ids = [];
-            for($i = 1; $i <= $itemCount; $i++) {
-                $itemId = $request->input('item' . $i);
-                $itemId = is_null($itemId) ? 0 : $itemId;
-                array_push($ids, $itemId);
-                Item::where('id', $itemId)->whereNot('category_id', $category->id)->update(['category_id'=>$category->id]);
+        if($category){
+            if($request->has('ids')) {
+                $items = Item::whereIn('id', $request->ids)->get();
+                foreach($items as $item) {
+                    $item->update(['category_id' =>$category->id]);
+                }
+                $removeItems = Item::whereNotIn('id', $request->ids)->where('category_id', $category->id)->get();
+                foreach($removeItems as $item) {
+                    $item->update(['category_id' => 1]);
+                }
             }
-            Item::whereNotIn('id', $ids)->where('category_id', $category->id)->update(['category_id' => '1']);
+            else{
+                $removeItems = Item::where('category_id', $category->id)->get();
+                foreach($removeItems as $item) {
+                    $item->update(['category_id' => 1]);
+                }
+            }
+            return redirect('/inventory/categories')->with('message', 'Category updated successfully');
         }
-        return redirect('/inventory/categories')->with('message', 'Category updated successfully');
+        else{
+            return redirect('/inventory/categories')->with('errorMessage', 'There was an error');
+        }
     }
 
     public function destroy(Request $request) {

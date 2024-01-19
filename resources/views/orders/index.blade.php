@@ -10,7 +10,9 @@
                     type: 'get',
                     success: function (res) {
                         $.each(res, function (key, value) {
-                            $('#itemOrder').append('<td>' + value.name + '</td>');
+                            $('#itemOrder').append('<div class="left">' + value.name + '</div>');
+                            $('#itemOrder').append('<div>' + value.quantity + '</div>');
+                            $('#itemOrder').append('<div>$' + value.quantity * value.unit_price + '</div>');
                         });
                         modalShow.showModal();
                     }
@@ -113,7 +115,7 @@
                             <td class = 'center-cell'>{{$order->items->count()}}</td>
                             <td class = 'center-cell'>${{$order->total_amount}}</td>
                             <td class = 'actions center-cell'>
-                                <a class="openModalShow" data-order-id='{{$order->id}}'>
+                                <a class="openModalShow {{$order->total_amount > 0 ? '' : 'inactive'}}" data-order-id='{{$order->id}}'>
                                     <i class='bx bx-show' style = 'color: #5993ff'></i>
                                 </a>
                                 <a href ='orders/{{$order->id}}/edit'>
@@ -123,6 +125,12 @@
                                     <i class='bx bx-trash' style = 'color: #fa7878'></i>
                                 </a>
                             </td>
+                            <style>
+                                .openModalShow.inactive{
+                                    opacity: 0;
+                                    pointer-events: none;
+                                }
+                            </style>
                         </tr>
                     @endforeach
                 </form>
@@ -147,7 +155,50 @@
             <i class='bx bx-x closeBtnModalShow modalX'></i>
         </div>
         <div class="modalContent">
-            <div id="itemOrder"></div>
+            <style>
+                .previewItemsTable{
+                    
+                }
+            </style>
+            <div id="head">
+                <div>Name</div>
+                <div>Quantity</div>
+                <div>Amount</div>
+            </div>
+            <div id="itemOrder">
+
+            </div>
+            <style>
+                .modalContent {
+                    #head, #itemOrder {
+                        display: flex;
+                        justify-content: center;
+                        flex-wrap: wrap;
+                    }
+
+                    #head {
+                        font-weight: 600;
+                    }
+
+                    #itemOrder {
+                        font-weight: 300;
+                    }
+
+                    #head div:first-of-type {
+                        text-align: left;
+                    }
+
+                    #itemOrder div.left {
+                        text-align: left;
+                    }
+
+                    #head div, #itemOrder div {
+                        text-align: center;
+                        width: 140px;
+                        margin-block: 4px;
+                    }
+                }
+            </style>
         </div>
     </dialog>
 </x-layout>

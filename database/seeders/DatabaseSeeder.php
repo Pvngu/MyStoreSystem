@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         
         Category::insert($categoriesData);
 
-        Item::factory(500)->create();
+        Item::factory(20)->create();
 
         $this->call(AddressSeeder::class);
 
