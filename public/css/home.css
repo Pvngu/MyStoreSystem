@@ -101,6 +101,17 @@
   border-radius: 23px;
 }
 
+.card-item, .card-table {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.card-item.active, .card-table.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .card-number.counter{
   position: absolute;
   &.money {

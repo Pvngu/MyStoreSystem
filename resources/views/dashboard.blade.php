@@ -35,6 +35,21 @@
             }
             }
         })
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const items = document.querySelectorAll('.card-item');
+            const tables = document.querySelectorAll('.card-table');
+            items.forEach((item,index) => {
+                setTimeout(() => {
+                    item.classList.add('active');
+                }, index * 100);
+            })
+            tables.forEach((table,index) => {
+                setTimeout(() => {
+                    table.classList.add('active');
+                }, index * 100);
+            })
+        })
     </script>
 @endpush
 <x-layout :title="'Dashboard | MyStoreSystem'">
