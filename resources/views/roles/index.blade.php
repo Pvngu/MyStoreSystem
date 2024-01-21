@@ -12,10 +12,10 @@
                 <x-table.table
                 :headers="['id', 'name']"
                 :sortAction="'/roles'"
-                :deleteAction="'users/roles/delete'"
+                :deleteAction="'/users/roles/delete'"
                 :confirmationText="'Are you sure you want to delete this role?'"
                 >
-                <form id="deleteIdsForm" action="/roles/delete-users" method="POST">
+                <form id="deleteIdsForm" action="/users/roles/delete-roles" method="POST">
                     @csrf
                         @foreach ($roles as $role)
                             <tr>

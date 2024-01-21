@@ -137,6 +137,8 @@
     }
 </style>
 @endpush
+@push('scripts')
+@endpush
 <x-layout :title="'Add New Role | MyStoreSystem'">
     <div class="content">
         <div class="content-header">
@@ -156,7 +158,7 @@
                     @enderror
                 </div>
                 <div class="flex-cards">
-                    <div>
+                    <div class="cards-content">
                         <div class="cards-header" style="">Inventory</div>
                         <div class="cards">
                             <div class="checkbox-wrapper-16">
@@ -205,7 +207,7 @@
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div class="cards-content">
                         <div class="cards-header" style="">Customers</div>
                         <div class="cards">
                             <div class="checkbox-wrapper-16">
@@ -254,7 +256,7 @@
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div class="cards-content">
                         <div class="cards-header" style="">Orders</div>
                         <div class="cards">
                             <div class="checkbox-wrapper-16">
@@ -303,7 +305,7 @@
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div class="cards-content">
                         <div class="cards-header" style="">Users</div>
                         <div class="cards">
                             <div class="checkbox-wrapper-16">

@@ -3,7 +3,7 @@
         @if(count($itemCount) >= 1)
             <div class="content-header">
                 <div style="font-size: 1.4rem;">Inventory</div>
-                @can('delete inventory')
+                @can('create inventory')
                 <a id = "addButton" href="/inventory/items/create">
                     <span style="font-weight: 700;">+</span> New
                 </a>

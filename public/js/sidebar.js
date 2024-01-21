@@ -25,7 +25,8 @@ btn.onclick = function() {
     sidebar.classList.toggle("active");
 }
 
-const contentClick = document.querySelector(".content");
+const contentClick = document.querySelector(".home");
+
 contentClick.addEventListener("click", () => {
     const submenu = document.querySelectorAll('.submenu-items');
     submenu.forEach(element => {
@@ -33,39 +34,39 @@ contentClick.addEventListener("click", () => {
             element.classList.remove('show');
         }
     });
-    if(sidebarStatus == true){
+    if(sidebar.classList.contains("active")){
         sidebar.classList.remove("active");
         btn.checked = false;
     }
 })
     
-    function toggleSubmenu(submenu, arrow) {
-        sidebarStatus = sidebar.classList.contains('active');
-        if(sidebarStatus == true) {
-            submenu.classList.toggle("show");
-            arrow.classList.toggle("active");
-        }
-        else{
-            btn.checked = true;
-            sidebarStatus = true;
-            sidebar.classList.toggle("active");
-            submenu.classList.toggle("show");
-            arrow.classList.toggle("active");
-        }
+function toggleSubmenu(submenu, arrow) {
+    sidebarStatus = sidebar.classList.contains('active');
+    if(sidebarStatus == true) {
+        submenu.classList.toggle("show");
+        arrow.classList.toggle("active");
     }
+    else{
+        btn.checked = true;
+        sidebarStatus = true;
+        sidebar.classList.toggle("active");
+        submenu.classList.toggle("show");
+        arrow.classList.toggle("active");
+    }
+}
 
-    function closeSubmenu(submenuu) {
-        sidebarOptions.forEach(element => {
-            const submenu = element.querySelector('.submenu-items');
-            const name = element.querySelector('.a-id');
-            const status = submenu.classList.contains('show');
-            const arrow = element.querySelector('.submenuArrow');
-            if(status == true  && submenuu !== name.id) {
-                submenu.classList.toggle("show");
-                arrow.classList.toggle("active");
-            }
-        });
-    }
+function closeSubmenu(submenuu) {
+    sidebarOptions.forEach(element => {
+        const submenu = element.querySelector('.submenu-items');
+        const name = element.querySelector('.a-id');
+        const status = submenu.classList.contains('show');
+        const arrow = element.querySelector('.submenuArrow');
+        if(status == true  && submenuu !== name.id) {
+            submenu.classList.toggle("show");
+            arrow.classList.toggle("active");
+        }
+    });
+}
 //// popup window
 // settings window
 const closeButtonS = document.querySelector(".closeBtnModalS")

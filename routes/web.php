@@ -22,155 +22,171 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
+
 Route::get('/', [AuthController::class, 'show'])->name('login');
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 
-Route::get('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth')->group(function () {
 
-Route::get('/home', function () {
-    return view('home');
-})->middleware('auth');
+    Route::get('/logout', [AuthController::class, 'logout']);
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+    Route::get('/home', function () {
+        return view('home');
+    });
 
-// inventory
+    Route::get('/logout', [AuthController::class, 'logout']);
 
-// Show all Inventory
-Route::get('inventory/items', [ItemController::class, 'index'])->middleware('auth');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('permission:menu-dashboard');
 
-// Show create form
-Route::get('inventory/items/create', [ItemController::class, 'create'])->middleware('auth');
+    // <----------------------------> Inventory <---------------------------->
+    Route::controller(ItemController::class)->group(function () {
+        // Show all Inventory
+        Route::get('inventory/items', 'index')->middleware('permission:menu-inventory');
 
-// Store item data
-Route::post('inventory/items', [ItemController::class, 'store'])->middleware('auth');
+        // Show create form
+        Route::get('inventory/items/create', 'create')->middleware('permission:create inventory');
 
-// Show edit form
-Route::get('inventory/items/{item}/edit', [ItemController::class, 'edit'])->middleware('auth');
+        // Store item data
+        Route::post('inventory/items', 'store')->middleware('permission:create inventory');
 
-// Update items
-Route::put('inventory/items/{item}', [ItemController::class, 'update'])->middleware('auth');
+        // Show edit form
+        Route::get('inventory/items/{item}/edit', 'edit')->middleware('permission:edit inventory');
 
-// Delete an item
-Route::delete('inventory/items/{item}', [ItemController::class, 'destroy'])->middleware('auth');
+        // Update items
+        Route::put('inventory/items/{item}', 'update')->middleware('permission:edit inventory');
 
-//Delete more than one item
-Route::post('/inventory/items/delete-items', [ItemController::class, 'deleteItems'])->middleware('auth');
+        // Delete an item
+        Route::delete('inventory/items/{item}', 'destroy')->middleware('permission:delete inventory');
 
-//categories
+        //Delete more than one item
+        Route::post('/inventory/items/delete-items', 'deleteItems')->middleware('permission:delete inventory');
+    });
 
-// Show all categories
-Route::get('inventory/categories', [CategoryController::class, 'index'])->middleware('auth');
+    // <----------------------------> Categories <---------------------------->
+    Route::controller(CategoryController::class)->group(function () {
 
-// Show create form
-Route::get('inventory/categories/create', [CategoryController::class, 'create'])->middleware('auth');
+        // Show all categories
+        Route::get('inventory/categories', 'index')->middleware('permission:menu-inventory');
 
-// Store Category Data
-Route::post('inventory/categories', [CategoryController::class, 'store'])->middleware('auth');
+        // Show create form
+        Route::get('inventory/categories/create', 'create')->middleware('permission:create inventory');
 
-// Show edit form
-Route::get('inventory/categories/{category}/edit', [CategoryController::class, 'edit'])->middleware('auth');
+        // Store Category Data
+        Route::post('inventory/categories', 'store')->middleware('permission:create inventory');
 
-//Update categories
-Route::put('inventory/categories/{category}', [CategoryController::class, 'update'])->middleware('auth');
+        // Show edit form
+        Route::get('inventory/categories/{category}/edit', 'edit')->middleware('permission:create inventory');
 
-// Delete a category
-Route::delete('inventory/categories/{category}', [CategoryController::class, 'destroy'])->middleware('auth');
+        //Update categories
+        Route::put('inventory/categories/{category}', 'update')->middleware('permission:edit inventory');
 
-//Delete more than one category
-Route::post('/inventory/categories/delete-categories', [CategoryController::class, 'deleteCategories'])->middleware('auth');
+        // Delete a category
+        Route::delete('inventory/categories/{category}', 'destroy')->middleware('permission:delete inventory');
 
-//Customers
+        //Delete more than one category
+        Route::post('/inventory/categories/delete-categories', 'deleteCategories')->middleware('permission:delete inventory');
+    });
 
-// Show all customers
-Route::get('customers', [CustomerController::class, 'index'])->middleware('auth');
+    // <----------------------------> Customers <---------------------------->
+    Route::controller(CustomerController::class)->group(function () {
+        // Show all customers
+        Route::get('customers', 'index')->middleware('permission:menu-customers');
 
-// Show create form
-Route::get('customers/create', [CustomerController::class, 'create'])->middleware('auth');
+        // Show create form
+        Route::get('customers/create', 'create')->middleware('permission:create customer');
 
-// Select Country, States and cities option
-Route::get('countries', [CustomerController::class, 'getCountries'])->name('countries');
-Route::get('states', [CustomerController::class, 'getStates'])->name('states');
-Route::get('cities', [CustomerController::class, 'getCities'])->name('cities');
+        // Select Country, States and cities option
+        Route::get('countries', [CustomerController::class, 'getCountries'])->middleware('permission:create customer')->name('countries');
+        Route::get('states', [CustomerController::class, 'getStates'])->middleware('permission:create customer')->name('states');
+        Route::get('cities', [CustomerController::class, 'getCities'])->middleware('permission:create customer')->name('cities');
 
-// Store customer data
-Route::post('customers', [CustomerController::class, 'store']);
+        // Store customer data
+        Route::post('customers', 'store')->middleware('permission:create customer');
 
-// Show edit form
-Route::get('customers/{customer}/edit', [CustomerController::class, 'edit'])->middleware('auth');
+        // Show edit form
+        Route::get('customers/{customer}/edit', 'edit')->middleware('permission:edit customer');
+        // Update customers
+        Route::put('customers/{customer}', 'update')->middleware('permission:edit customer');
 
-// Update customers
-Route::put('customers/{customer}', [CustomerController::class, 'update'])->middleware('auth');
+        // Delete a customer
+        Route::delete('customers/{customer}', 'destroy')->middleware('permission:delete customer');
 
-// Delete a customer
-Route::delete('customers/{customer}', [CustomerController::class, 'destroy'])->middleware('auth');
+        // Delete more than one customer
+        Route::post('customers/delete-customers', 'deleteCustomers')->middleware('permission:delete customer');
+    });
+    
+    // <----------------------------> Orders <---------------------------->
+    Route::controller(OrderController::class)->group(function () {
 
-// Delete more than one customer
-Route::post('customers/delete-customers', [CustomerController::class, 'deleteCustomers'])->middleware('auth');
+        // Show all orders
+        Route::get('orders', 'index')->middleware('permission:menu-orders');
 
-// Orders
+        // Show create form
+        Route::get('orders/create', 'create')->middleware('permission:create order');
 
-// Show all orders
-Route::get('orders', [OrderController::class, 'index'])->middleware('auth');
+        // Get ordered items
+        Route::get('items', 'getItems')->name('items')->middleware('permission:menu-orders');
 
-// Show create form
-Route::get('orders/create', [OrderController::class, 'create'])->middleware('auth');
+        // Store order data
+        Route::post('orders', 'store')->middleware('permission:create order');
 
-// Get ordered items
-Route::get('items', [OrderController::class, 'getItems'])->name('items')->middleware('auth');
+        //Show edit form
+        Route::get('orders/{order}/edit', 'edit')->middleware('permission:edit order');
 
-// Store order data
-Route::post('orders', [OrderController::class, 'store'])->middleware('auth');
+        // Update order data
+        Route::put('orders/{order}', 'update')->middleware('permission:edit order');
 
-//Show edit form
-Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->middleware('auth');
+        // Delete an order
+        Route::delete('orders/{order}', 'destroy')->middleware('permission:delete order');
 
-// Update order data
-Route::put('orders/{order}', [OrderController::class, 'update'])->middleware('auth');
+        // Delete more than one order
+        Route::post('orders/delete-orders', 'deleteOrders')->middleware('permission:delete order');
+    });
 
-// Delete an order
-Route::delete('orders/{order}', [OrderController::class, 'destroy'])->middleware('auth');
+    // <----------------------------> Users <---------------------------->
+    Route::controller(UserController::class)->group(function () {
 
-// Delete more than one order
-Route::post('orders/delete-orders', [OrderController::class, 'deleteOrders'])->middleware('auth');
+        // Show all users
+        Route::get('users', 'index')->middleware('permission:menu-users');
 
-// Users
+        // Show create form
+        Route::get('users/create', 'create')->middleware('permission:create user');
+        // Store user data
+        Route::post('users', 'store')->middleware('permission:create user');
 
-// Show all users
-Route::get('users', [UserController::class, 'index'])->middleware('auth');
+        // Show edit form
+        Route::get('users/{user}/edit', 'edit')->middleware('permission:edit user');
+        //Update users
+        Route::put('users/{user}', 'update')->middleware('permission:edit user');
 
-// Show create form
-Route::get('users/create', [UserController::class, 'create'])->middleware('auth');
+        // Delete a user
+        Route::delete('users/{user}', 'destroy')->middleware('permission:delete user');
 
-// Store user data
-Route::post('users', [UserController::class, 'store'])->middleware('auth');
+        // Delete more than one user
+        Route::post('users/delete-users', 'deleteUsers')->middleware('permission:delete user');
+    });
 
-// Show edit form
-Route::get('users/{user}/edit', [UserController::class, 'edit'])->middleware('auth');
+    Route::controller(RoleController::class)->group(function () {
+        // Show all roles
+        Route::get('users/roles', 'index')->middleware('permission:menu-users');
 
-//Update users
-Route::put('users/{user}', [UserController::class, 'update'])->middleware('auth');
+        // Show create form
+        Route::get('users/roles/create', 'create')->middleware('permission:create user');
 
-// Delete a user
-Route::delete('users/{user}', [UserController::class, 'destroy'])->middleware('auth');
+        // store role data
+        Route::post('users/roles', 'store')->middleware('permission:create user');
 
-// Delete more than one user
-Route::post('users/delete-users', [UserController::class, 'deleteUsers'])->middleware('auth');
+        // Show edit form
+        Route::get('users/roles/{role}/edit', 'edit')->middleware('permission:edit user');
 
-// Show all roles
-Route::get('users/roles', [RoleController::class, 'index'])->middleware('auth');
+        // update roles
+        Route::put('users/roles/{role}', 'update')->middleware('permission:edit user');
 
-// Show create form
-Route::get('users/roles/create', [RoleController::class, 'create'])->middleware('auth');
+        // Delete role
+        Route::delete('users/roles/{role}', 'destroy')->middleware('permission:delete user');
 
-// store role data
-Route::post('users/roles', [RoleController::class, 'store'])->middleware('auth');
-
-// Show edit form
-Route::get('users/roles/{role}/edit', [RoleController::class, 'edit']);
-
-// update roles
-Route::put('users/roles/{role}', [RoleController::class, 'update']);
-
-// Delete role
-Route::delete('users/roles/{role}', [RoleController::class, 'destroy'])->middleware('auth');
+        // Delete more than one user
+        Route::post('users/roles/delete-roles', 'deleteRoles')->middleware('permission:delete user');
+    });
+});

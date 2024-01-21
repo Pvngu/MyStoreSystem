@@ -48,7 +48,7 @@ class RoleController extends Controller
 
         $role->syncPermissions($permissions);
 
-        return redirect('users/roles')->with('message', 'Role was created successfully');
+        return redirect('users/roles')->with('message', 'Role was updated successfully');
     }
 
     public function destroy(Request $request) {
@@ -62,7 +62,7 @@ class RoleController extends Controller
         }
     }
 
-    public function deleteOrders(Request $request){
+    public function deleteRoles(Request $request){
         Role::whereIn('id', $request->ids)->delete();
         return back()->with('message', 'Roles deleted successfully');
     }

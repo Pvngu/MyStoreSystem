@@ -283,7 +283,7 @@
                     </li>
                     <li>
                         <i class='bx bx-user'></i>
-                        <span>Name: {{Auth::user()->name}}</span>
+                        <span>Name: {{Auth::user()->first_name}} {{Auth::user()->last_name}}</span>
                     </li>
                     <li>
                         <i class='bx bx-user'></i>
@@ -291,7 +291,7 @@
                     </li>
                     <li>
                         <i class='bx bx-user'></i>
-                        <span>Role: {{Auth::user()->role}}</span>
+                        <span>Role: {{ implode(', ', Auth::user()->getRoleNames()->toArray()) }}</span>
                     </li>
                 </ul>
             </div>
