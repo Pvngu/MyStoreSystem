@@ -162,3 +162,15 @@ Route::get('users/roles', [RoleController::class, 'index'])->middleware('auth');
 
 // Show create form
 Route::get('users/roles/create', [RoleController::class, 'create'])->middleware('auth');
+
+// store role data
+Route::post('users/roles', [RoleController::class, 'store'])->middleware('auth');
+
+// Show edit form
+Route::get('users/roles/{role}/edit', [RoleController::class, 'edit']);
+
+// update roles
+Route::put('users/roles/{role}', [RoleController::class, 'update']);
+
+// Delete role
+Route::delete('users/roles/{role}', [RoleController::class, 'destroy'])->middleware('auth');

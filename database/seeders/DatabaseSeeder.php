@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Customer;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -45,11 +46,59 @@ class DatabaseSeeder extends Seeder
 
         $this->call(AddressSeeder::class);
 
-        Customer::factory(60)->create();
+        Customer::factory(10)->create();
 
         Order::factory(3)->create();
 
-        Role::create(['name' => 'admin']);
+        $admin = Role::create(['name' => 'admin']);
+
+        $permissions = [
+            'menu-dashboard',
+            'menu-inventory',
+            'menu-orders',
+            'menu-customers',
+            'menu-users',
+            'create inventory',
+            'edit inventory',
+            'delete inventory',
+            'create order',
+            'edit order',
+            'delete order',
+            'create customer',
+            'edit customer',
+            'delete customer',
+            'create user',
+            'edit user',
+            'delete user',
+            'create role',
+            'edit role',
+            'delete role'
+        ];
+        
+        foreach ($permissions as $permission) {
+            Permission::create(['name' => $permission]);
+        }
+
+        $admin->givePermissionTo([
+            'menu-dashboard',
+            'menu-inventory',
+            'menu-orders',
+            'menu-customers',
+            'menu-users',
+            'create inventory',
+            'edit inventory',
+            'delete inventory',
+            'create order',
+            'edit order',
+            'delete order',
+            'create customer',
+            'edit customer',
+            'delete customer',
+            'create user',
+            'edit user',
+            'delete user'
+        ]);
+
         User::find(1)->assignRole('admin');
     }
 }

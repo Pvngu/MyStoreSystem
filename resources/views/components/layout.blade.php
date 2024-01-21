@@ -47,6 +47,7 @@
                     </a>
                     <span class="tooltip">Home</span>
                 </li>
+                @can('menu-dashboard')
                 <li>
                     <a href="/dashboard">
                         <i class='bx bxs-dashboard'></i>
@@ -54,8 +55,11 @@
                     </a>
                     <span class="tooltip">Dashboard</span>
                 </li>
-                <li>
-                    <a id="inventory">
+                @endcan
+                
+                @can('menu-inventory')
+                <li class="openItem">
+                    <a class="a-id" id="inventory">
                         <i class='bx bx-package'></i>
                         <span>Inventory</span>
                         <i class='bx bx-chevron-right submenuArrow invArrow'></i>
@@ -65,19 +69,26 @@
                         <li>
                             <a href="/inventory/items">Items</a>
                         </li>
+                        @can('create inventory')
                         <li>
                             <a href="/inventory/items/create">New Items</a>
                         </li>
+                        @endcan
                         <li>
                             <a href="/inventory/categories">Categories</a>
                         </li>
+                        @can('create inventory')
                         <li>
                             <a href="/inventory/categories/create">New Category</a>
                         </li>
+                        @endcan
                     </ul>
                 </li>
-                <li>
-                    <a id="orders">
+                @endcan
+                
+                @can('create order')
+                <li class="openItem">
+                    <a class="a-id" id="orders">
                         <i class='bx bx-shopping-bag'></i>
                         <span>Orders</span>
                         <i class='bx bx-chevron-right submenuArrow ordersArrow'></i>
@@ -92,8 +103,19 @@
                         </li>
                     </ul>
                 </li>
+                @elsecan('menu-orders')
                 <li>
-                    <a id="customers">
+                    <a href="/orders">
+                        <i class='bx bx-shopping-bag'></i>
+                        <span>Orders</span>
+                    </a>
+                    <span class="tooltip">Orders</span>
+                </li>
+                @endcan
+
+                @can('create customer')
+                <li class="openItem">
+                    <a class="a-id" id="customers">
                         <i class='bx bx-group'></i>
                         <span>Customers</span>
                         <i class='bx bx-chevron-right submenuArrow customersArrow'></i>
@@ -103,13 +125,26 @@
                         <li>
                             <a href="/customers">View Customers</a>
                         </li>
+                        @can('create customer')
                         <li>
                             <a href="/customers/create">New Customer</a>
                         </li>
+                        @endcan
                     </ul>
                 </li>
+                @elsecan('menu-customers')
                 <li>
-                    <a id="users">
+                    <a href="/customers">
+                        <i class='bx bx-group'></i>
+                        <span>Customers</span>
+                    </a>
+                    <span class="tooltip">Customers</span>
+                </li>
+                @endcan
+
+                @can('menu-users')
+                <li class="openItem">
+                    <a class="a-id" id="users">
                         <i class='bx bxs-user-account'></i>
                         <span>Users</span>
                         <i class='bx bx-chevron-right submenuArrow usersArrow'></i>
@@ -119,17 +154,22 @@
                         <li>
                             <a href="/users">View Users</a>
                         </li>
+                        @can('create user')
                         <li>
                             <a href="/users/create">New Users</a>
                         </li>
+                        @endcan
                         <li>
                             <a href="/users/roles">View Roles</a>
                         </li>
+                        @can('create user')
                         <li>
                             <a href="/users/roles/create">New Role</a>
                         </li>
+                        @endcan
                     </ul>
                 </li>
+                @endcan
             </div>
             <div class="bottomItems">
                 <div class="itemsHeader">Preferences</div>
@@ -161,7 +201,7 @@
                     <div class="userProfile">
                         <div class="userText">
                             <div class="name">{{Auth::User()->username}}</div>
-                            <div class="job">{{Auth::User()->role}}</div>
+                            <div class="job">{{ implode(', ', Auth::User()->getRoleNames()->toArray()) }}</div>
                         </div>
                         <div class="profilePicture">
                             <img src="{{Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('images/default-profile-picture.jpg')}}">

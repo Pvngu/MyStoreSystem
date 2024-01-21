@@ -40,10 +40,7 @@ class CategoryController extends Controller
 
         if($category) {
             if($request->has('ids')) {
-                $items = Item::whereIn('id', $request->ids)->get();
-                foreach($items as $item) {
-                    $item->update(['category_id' => $category->id]);
-                }
+                Item::whereIn('id', $request->ids)->update(['category_id' => $category->id]);
             }
             
             return redirect('/inventory/categories')->with('message', 'Category created successfully');
@@ -82,20 +79,11 @@ class CategoryController extends Controller
 
         if($category){
             if($request->has('ids')) {
-                $items = Item::whereIn('id', $request->ids)->get();
-                foreach($items as $item) {
-                    $item->update(['category_id' =>$category->id]);
-                }
-                $removeItems = Item::whereNotIn('id', $request->ids)->where('category_id', $category->id)->get();
-                foreach($removeItems as $item) {
-                    $item->update(['category_id' => 1]);
-                }
+                Item::whereIn('id', $request->ids)->update(['category_id' =>$category->id]);
+                Item::where('category_id', $category->id)->whereNotIn('id', $request->ids)->update(['category_id' => 1]);
             }
             else{
-                $removeItems = Item::where('category_id', $category->id)->get();
-                foreach($removeItems as $item) {
-                    $item->update(['category_id' => 1]);
-                }
+                Item::where('category_id', $category->id)->update(['category_id' => 1]);
             }
             return redirect('/inventory/categories')->with('message', 'Category updated successfully');
         }

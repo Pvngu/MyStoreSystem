@@ -2,63 +2,43 @@
 let btn = document.querySelector("#hamburger");
 let sidebar = document.querySelector(".sidebar");
 
-const inventory = document.querySelector("#inventory");
-const users = document.querySelector("#users");
-const customers = document.querySelector("#customers");
-const orders = document.querySelector("#orders");
-const submenu = document.querySelector(".submenu-items");
-
-const inventorySubmenu = document.querySelector(".sm-inv");
-const usersSubmenu = document.querySelector(".sm-users");
-const customersSubmenu = document.querySelector(".sm-customers");
-const ordersSubmenu = document.querySelector(".sm-orders");
-
-const invArrow = document.querySelector(".invArrow");
-const usersArrow = document.querySelector(".usersArrow");
-const customersArrow = document.querySelector(".customersArrow");
-const ordersArrow = document.querySelector(".ordersArrow");
-
-let invStatus = false;
-let usersStatus = false;
-let customersStatus = false;
-let ordersStatus = false;
 let sidebarStatus = false;
 
+sidebarOptions = document.querySelectorAll('.openItem');
+sidebarOptions.forEach(element => {
+    const name = element.querySelector('.a-id');
+    const submenu = element.querySelector('.submenu-items');
+    const arrow = element.querySelector('.submenuArrow');
+    name.addEventListener("click", () => {
+        closeSubmenu(name.id);
+        toggleSubmenu(submenu, arrow);
+    })
+});
+
 btn.onclick = function() {
+    const submenu = document.querySelectorAll('.submenu-items');
+    submenu.forEach(element => {
+        if(sidebar.classList.contains('active')) {
+            element.classList.remove('show');
+        }
+    });
     sidebar.classList.toggle("active");
-    closeSidebar();
 }
 
 const contentClick = document.querySelector(".content");
 contentClick.addEventListener("click", () => {
+    const submenu = document.querySelectorAll('.submenu-items');
+    submenu.forEach(element => {
+        if(sidebar.classList.contains('active')) {
+            element.classList.remove('show');
+        }
+    });
     if(sidebarStatus == true){
-        sidebar.classList.toggle("active");
+        sidebar.classList.remove("active");
         btn.checked = false;
     }
-    closeSidebar();
 })
-
-    //submenu Items
-    inventory.addEventListener("click", () => {
-        closeSubmenu("inventory");
-        toggleSubmenu(inventorySubmenu, invArrow);
-    })
-
-    users.addEventListener("click", () => {
-        closeSubmenu("users");
-        toggleSubmenu(usersSubmenu, usersArrow);
-    })
-
-    customers.addEventListener("click", () => {
-        closeSubmenu("customers");
-        toggleSubmenu(customersSubmenu, customersArrow);
-    })
     
-    orders.addEventListener("click", () => {
-        closeSubmenu("orders");
-        toggleSubmenu(ordersSubmenu, ordersArrow);
-    })
-
     function toggleSubmenu(submenu, arrow) {
         sidebarStatus = sidebar.classList.contains('active');
         if(sidebarStatus == true) {
@@ -74,56 +54,17 @@ contentClick.addEventListener("click", () => {
         }
     }
 
-    function closeSidebar(){
-        sidebarStatus = sidebar.classList.contains('active');
-        invStatus = inventorySubmenu.classList.contains('show');
-        usersStatus = usersSubmenu.classList.contains('show');
-        customersStatus = customersSubmenu.classList.contains('show');
-        ordersStatus = ordersSubmenu.classList.contains('show');
-
-        if(invStatus){
-            isSubmenuOpen(inventorySubmenu, invStatus, invArrow);
-        }
-        if(usersStatus){
-            isSubmenuOpen(usersSubmenu, usersStatus, usersArrow);
-        }
-        if(customersStatus){
-            isSubmenuOpen(customersSubmenu, customersStatus, customersArrow);
-        }
-        if(ordersStatus){
-            isSubmenuOpen(ordersSubmenu, ordersStatus, ordersArrow);
-        }
-    }
-
-    function isSubmenuOpen(submenu, submenuStatus, arrow) {
-        if(sidebarStatus === false && submenuStatus === true) {
-            submenu.classList.toggle("show");
-            arrow.classList.toggle("active");
-        }
-    }
-
-    function closeSubmenu(submenu) {
-        usersStatus = usersSubmenu.classList.contains('show');
-        invStatus = inventorySubmenu.classList.contains('show');
-        customersStatus = customersSubmenu.classList.contains('show');
-        ordersStatus = ordersSubmenu.classList.contains('show');
-
-        if(usersStatus == true  && submenu !== "users") {
-            usersSubmenu.classList.toggle("show");
-            usersArrow.classList.toggle("active");
-        }
-        if(customersStatus == true && submenu !== "customers") {
-            customersSubmenu.classList.toggle("show");
-            customersArrow.classList.toggle("active");
-        }
-        if(invStatus == true  && submenu !== "inventory") {
-            inventorySubmenu.classList.toggle("show");
-            invArrow.classList.toggle("active");
-        }      
-        if(ordersStatus == true  && submenu !== "orders") {
-            ordersSubmenu.classList.toggle("show");
-            ordersArrow.classList.toggle("active");
-        }
+    function closeSubmenu(submenuu) {
+        sidebarOptions.forEach(element => {
+            const submenu = element.querySelector('.submenu-items');
+            const name = element.querySelector('.a-id');
+            const status = submenu.classList.contains('show');
+            const arrow = element.querySelector('.submenuArrow');
+            if(status == true  && submenuu !== name.id) {
+                submenu.classList.toggle("show");
+                arrow.classList.toggle("active");
+            }
+        });
     }
 //// popup window
 // settings window

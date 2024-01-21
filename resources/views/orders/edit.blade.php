@@ -33,8 +33,6 @@ function restoreRemovedOptions(value) {
     
     let btnAdd = document.getElementById('addButton');
     let table = document.getElementById('addRow');
-    let count = document.getElementById('itemNumber').value;
-    document.getElementById('itemCount').value = count;
 
     table.addEventListener('click', (event) => {
         let quantityInput = document.getElementById('quantity');
@@ -51,20 +49,17 @@ function restoreRemovedOptions(value) {
         if(nameInput.options.length > 0) {
             let value = nameInput.value;
             const item = value.split(',');
-            count++;
-
-            document.getElementById('itemCount').value = count;
 
             let template = `
                 <tr data-item-value="${item[0]},${item[1]},${item[2]}">
                     <td>
                         <div>
                             ${item[0]}
-                            <input type="hidden" name="item${count}" value="${item[1]}" />
+                            <input type="hidden" name="ids[${item[1]}]" value="${item[1]}" />
                         </div>
                     </td>
                     <td class="center-cell">
-			            <input class="input-box" type="number" value="${quantity.value}" name="quantity${count}" style="max-width: 60px" min="1" max="${item[2]}">
+			            <input class="input-box" type="number" value="${quantity.value}" name="quantities[${item[1]}]" style="max-width: 60px" min="1" max="${item[2]}">
                     </td>
                     <td class="center-cell">
                         $20
@@ -179,17 +174,16 @@ function restoreRemovedOptions(value) {
                                 <input id="addButton" class="newButton" type="button" value="Add">
                             </td>
                         </tr>
-                        @foreach ($itemsOrder as $index => $itemOrder)
-                        @php $index++;@endphp
+                        @foreach ($itemsOrder as $itemOrder)
                             <tr data-item-value="{{$itemOrder->item->name . ',' . $itemOrder->item->id . ',' . $itemOrder->item->stock}}">
                                 <td>
                                     <div>
                                         {{$itemOrder->item->name}}
-                                        <input type="hidden" name="{{'item' . $index}}" value="{{$itemOrder->item->id}}" />
+                                        <input type="hidden" name="ids[{{$itemOrder->item->id}}]" value="{{$itemOrder->item->id}}" />
                                     </div>
                                 </td>
                                 <td class="center-cell">
-                                    <input class="input-box" type="number" value="{{$itemOrder->quantity}}" name="{{'quantity' . $index}}" style="max-width: 60px" min="1" max="{{$itemOrder->item->stock + $itemOrder->quantity}}">
+                                    <input class="input-box" type="number" value="{{$itemOrder->quantity}}" name="quantities[{{$itemOrder->item->id}}]" style="max-width: 60px" min="1" max="{{$itemOrder->item->stock + $itemOrder->quantity}}">
                                 </td>
                                 <td class="center-cell">
                                     $20
@@ -202,7 +196,6 @@ function restoreRemovedOptions(value) {
                         <input type="hidden" id="itemNumber" value="{{$index ?? false ? $index : 0}} ">
                     </tbody>
                 </table>
-                <input type="hidden" name="itemCount" id="itemCount">
             </div>
             <div class="form-buttons">
                 <a href="/orders" style="text-decoration: none;">

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\File;
 
+use function PHPUnit\Framework\isNull;
+
 class UserController extends Controller
 {
     public function index() {
@@ -36,12 +38,13 @@ class UserController extends Controller
 
         $formFields['password'] = bcrypt($formFields['password']);
 
+        if($request->hasFile('image')) {
+            $formFields['image'] = $request->file('image')->store('user_images', 'public');
+        }
+
         $user = User::create($formFields);
 
         if($user){
-            if($request->hasFile('image')) {
-                $formFields['image'] = $request->file('image')->store('user_images', 'public');
-            }
             $user->assignRole($role);
             return redirect('/users')->with('message', 'User created successfully');
         }
@@ -63,9 +66,13 @@ class UserController extends Controller
             'last_name' => 'required',
             'username' => 'required',
             'email' => 'nullable|email',
-            'password' => 'nullable|confirmed|min:6'
         ]);
-        $formFields['password'] = bcrypt($formFields['password']);
+
+        if(isset($request->password)) {
+            $request->validate(['password' => 'nullable|confirmed|min:6']);
+            $password = $request->password;
+            $formFields['password'] = bcrypt($password);
+        }
         
         $role = $request->validate([
             'role' => 'required'

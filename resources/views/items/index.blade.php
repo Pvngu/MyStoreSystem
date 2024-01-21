@@ -3,9 +3,11 @@
         @if(count($itemCount) >= 1)
             <div class="content-header">
                 <div style="font-size: 1.4rem;">Inventory</div>
+                @can('delete inventory')
                 <a id = "addButton" href="/inventory/items/create">
                     <span style="font-weight: 700;">+</span> New
                 </a>
+                @endcan
             </div>
         <nav>
             <form action="/inventory/items">
@@ -89,12 +91,16 @@
                             @endif
                         </td>
                         <td class = 'actions center-cell'>
+                            @can('edit inventory')
                             <a href='/inventory/items/{{$item->id}}/edit'>
                                 <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
                             </a>
+                            @endcan
+                            @can('delete inventory')
                             <a class="openModalD" data-item-id="{{$item->id}}">
                                 <i class='bx bx-trash' style = 'color: #fa7878'></i>
                             </a>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

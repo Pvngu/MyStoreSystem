@@ -3,9 +3,11 @@
         @if(count($customerCount) >= 1)
             <div class="content-header">
                 <div style="font-size: 1.4rem;">Customers</div>
+                @can('delete inventory')
                 <a id = "addButton" href="customers/create">
                     <span style="font-weight: 700;">+</span> New
                 </a>
+                @endcan
             </div>
             <div>
                 <nav>
@@ -83,12 +85,16 @@
                             @endif
                         </td>
                         <td class = 'actions center-cell'>
+                            @can('edit customer')
                             <a href = 'customers/{{$customer->id}}/edit'>
                                 <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
                             </a>
+                            @endcan
+                            @can('delete customer')
                             <a class="openModalD" data-item-id='{{$customer->id}}'>
                                 <i class='bx bx-trash' style = 'color: #fa7878'></i>
                             </a>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

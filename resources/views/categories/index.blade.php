@@ -3,9 +3,11 @@
         @if(count($categoryCount) >= 1)
             <div class="content-header">
                 <div style="font-size: 1.4rem;">Categories</div>
+                @can('delete inventory')
                 <a id = "addButton" href="/inventory/categories/create">
                     <span style="font-weight: 700;">+</span> New
                 </a>
+                @endcan
             </div>
                 <div>
                     <nav>
@@ -68,12 +70,16 @@
                                 <td class="center-cell">{{$category->items->count()}}</td>
                                 <td class = 'actions center-cell'>
                                     @if($category->id > 1)
+                                    @can('edit inventory')
                                         <a href = '/inventory/categories/{{$category->id}}/edit'>
                                             <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
                                         </a>
+                                    @endcan
+                                    @can('delete inventory')
                                         <a class="openModalD" data-item-id='{{$category->id}}'>
                                             <i class='bx bx-trash' style = 'color: #fa7878'></i>
                                         </a>
+                                    @endcan
                                     @endif
                                 </td>           
                             </tr>

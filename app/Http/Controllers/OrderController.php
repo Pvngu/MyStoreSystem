@@ -33,21 +33,21 @@ class OrderController extends Controller
             'date' => 'required',
             'status' => 'required'
         ]);
-        
-        $formFields['total_amount'] = 0;
 
         $order = Order::create($formFields);
 
-        $itemCount = $request->itemCount;
-        if($itemCount){
+        if(!$order) {
+            return redirect('/orders')->with('errorMessage', 'There was an error');
+        }
+
+        if($request->has('ids')) {
             $totalAmount = [];
-            for($i = 1; $i <= $itemCount; $i++) {
-                $itemId = $request->input('item' . $i);
-                $quantity = $request->input('quantity' . $i);
-                $item = Item::find($itemId);
+            $items = Item::whereIn('id', $request->ids)->get();
+            foreach($items as $item) {
+                $quantity = $request->quantities[$item->id];
                 ItemOrder::create([
                     'order_id' => $order->id,
-                    'item_id' => $itemId,
+                    'item_id' => $item->id,
                     'quantity' => $quantity
                 ]);
                 $item->decrement('stock', $quantity);
@@ -55,7 +55,6 @@ class OrderController extends Controller
             }
             $order->update(['total_amount' => array_sum($totalAmount)]);
         }
-
         return redirect('/orders')->with('message', 'Order created successfully');
     }
 
@@ -78,42 +77,54 @@ class OrderController extends Controller
 
         $order->update($formFields);
 
-        $itemCount = $request->itemCount;
-        
-        if($itemCount){
-            $totalAmount = [];
-            $ids = [];
-            for($i = 1; $i <= $itemCount; $i++) {
-                $itemId = $request->input('item' . $i);
-                $quantity = $request->input('quantity' . $i);
-                $itemOrder = ItemOrder::where('order_id', $order->id)->where('item_id', $itemId)->first();
-                $item = Item::find($itemId);
-                if($itemOrder) {
-                    $item->increment('stock', $itemOrder->quantity);
-                    $itemOrder->update([
-                        'order_id' => $order->id,
-                        'item_id' => $itemId,
-                        'quantity' => $quantity
-                    ]);
-                    $item->decrement('stock', $quantity);
-                    array_push($ids, $itemOrder->id);
-                    array_push($totalAmount, $item->unit_price * $quantity);
-                }
-                elseif(is_null($itemOrder) && isset($itemId)){
-                    $newItemOrder = ItemOrder::create([
-                        'order_id' => $order->id,
-                        'item_id' => $itemId,
-                        'quantity' => $quantity
-                    ]);
-                    $item->decrement('stock', $quantity);
-                    array_push($ids, $newItemOrder->id);
-                    array_push($totalAmount, $item->unit_price * $quantity);
-                }
-            }
-            ItemOrder::whereNotIn('id', $ids)->where('order_id', $order->id)->delete();
-            $order->update(['total_amount' => array_sum($totalAmount)]);
+        if(!$order) {
+            return redirect('/orders')->with('errorMessage', 'There was an error');
         }
 
+        if($request->has('ids')) {
+            $totalAmount = [];
+            $items = Item::whereIn('id', $request->ids)->get();
+
+            foreach($items as $item) {
+                $quantity = $request->quantities[$item->id];
+                $itemOrder = ItemOrder::where('order_id', $order->id)->where('item_id', $item->id)->first();
+
+                if($itemOrder) {
+                    $oldQuantity = $itemOrder->quantity;
+                    $itemOrder->update(['quantity' => $quantity]);
+                    if($itemOrder->wasChanged('quantity')) {
+                        $item->increment('stock', $oldQuantity);
+                        $item->decrement('stock', $quantity);
+                    }
+                    array_push($totalAmount, $item->unit_price * $quantity);
+                }
+                else {
+                    ItemOrder::create([
+                        'order_id' => $order->id,
+                        'item_id' => $item->id,
+                        'quantity' =>$quantity
+                    ]);
+                    $item->decrement('stock', $quantity);
+                    array_push($totalAmount, $item->unit_price * $quantity);
+                }
+                $order->update(['total_amount' => array_sum($totalAmount)]);
+            }
+            $itemOrderDeleted = ItemOrder::where('order_id', $order->id)->whereNotIn('item_id', $request->ids)->get();
+            foreach($itemOrderDeleted as $itemOrder) {
+                Item::where('id', $itemOrder->item_id)->increment('stock', $itemOrder->quantity);
+                $itemOrder->delete();
+            }
+        }
+        else{
+            $itemOrderDeleted = ItemOrder::where('order_id', $order->id)->get();
+            if($itemOrderDeleted){
+                foreach($itemOrderDeleted as $itemOrder) {
+                    Item::where('id', $itemOrder->item_id)->increment('stock', $itemOrder->quantity);
+                    $itemOrder->delete();
+                }
+            }
+            $order->update(['total_amount' => 0]);
+        }
         return redirect('/orders')->with('message', 'Order updated successfully');
     }
 

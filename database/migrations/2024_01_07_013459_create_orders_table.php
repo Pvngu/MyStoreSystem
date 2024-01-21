@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('status', 8);
             $table->decimal('total_amount', $precision = 10, $scale = 2)->default('0');
             $table->timestamps();
+            $table->index('customer_id');
         });
     }
 

@@ -9,6 +9,7 @@
 
         input {
             width: 280px;
+            flex-grow: 0;
         }
     }
     .cards-header {
@@ -142,15 +143,16 @@
         <div class="content-header">
             <div class="header-text">
                 <a href="/users/roles">Roles</a>
-                <div class="animated-header">> New Role</div>
+                <div class="animated-header">> Edit Role</div>
             </div>
         </div>
-        <form action="/users/roles" method="post">
+        <form action="/users/roles/{{$role->id}}" method="post">
             @csrf
+            @method('PUT')
             <div>
                 <div class="content-items">
                     <label>name</label>
-                    <input style="flex-grow: 0;" type="text" name="name" value="{{old('name')}}">
+                    <input type="text" name="name" value="{{$role->name}}">
                     @error('name')
                         <p class="errorMessage">{{$message}}</p>
                     @enderror
@@ -161,7 +163,7 @@
                         <div class="cards">
                             <div class="checkbox-wrapper-16">
                                 <label class="checkbox-wrapper">
-                                <input class="checkbox-input" type="checkbox" name="ids[0]" value="menu-inventory">
+                                <input class="checkbox-input" type="checkbox" name="ids[0]" value="menu-inventory" {{$role->hasPermissionTo('menu-inventory') ? 'checked' : ''}}>
                                 <span class="checkbox-tile">
                                     <span class="checkbox-icon">
                                         <i class='bx bx-table' ></i>
@@ -172,7 +174,7 @@
                             </div>
                             <div class="checkbox-wrapper-16">
                             <label class="checkbox-wrapper">
-                                <input class="checkbox-input" type="checkbox" name="ids[1]" value="create inventory">
+                                <input class="checkbox-input" type="checkbox" name="ids[1]" value="create inventory" {{$role->hasPermissionTo('create inventory') ? 'checked' : ''}}>
                                 <span class="checkbox-tile">
                                 <span class="checkbox-icon">
                                     <i class='bx bx-layer-plus'></i>
@@ -183,7 +185,7 @@
                             </div>
                             <div class="checkbox-wrapper-16">
                             <label class="checkbox-wrapper">
-                                <input class="checkbox-input" type="checkbox" name="ids[2]" value="edit inventory">
+                                <input class="checkbox-input" type="checkbox" name="ids[2]" value="edit inventory" {{$role->hasPermissionTo('edit inventory') ? 'checked' : ''}}>
                                 <span class="checkbox-tile">
                                 <span class="checkbox-icon">
                                     <i class='bx bxs-edit'></i>
@@ -194,7 +196,7 @@
                             </div>
                             <div class="checkbox-wrapper-16">
                                 <label class="checkbox-wrapper">
-                                    <input class="checkbox-input" type="checkbox" name="ids[3]" value="delete inventory">
+                                    <input class="checkbox-input" type="checkbox" name="ids[3]" value="delete inventory" {{$role->hasPermissionTo('delete inventory') ? 'checked' : ''}}>
                                     <span class="checkbox-tile">
                                     <span class="checkbox-icon">
                                         <i class='bx bxs-trash'></i>
@@ -210,7 +212,7 @@
                         <div class="cards">
                             <div class="checkbox-wrapper-16">
                                 <label class="checkbox-wrapper">
-                                <input class="checkbox-input" type="checkbox" name="ids[4]" value="menu-customers">
+                                <input class="checkbox-input" type="checkbox" name="ids[4]" value="menu-customers" {{$role->hasPermissionTo('menu-customers') ? 'checked' : ''}}>
                                 <span class="checkbox-tile">
                                     <span class="checkbox-icon">
                                         <i class='bx bx-table' ></i>
@@ -221,7 +223,7 @@
                             </div>
                             <div class="checkbox-wrapper-16">
                             <label class="checkbox-wrapper">
-                                <input class="checkbox-input" type="checkbox" name="ids[5]" value="create customer">
+                                <input class="checkbox-input" type="checkbox" name="ids[5]" value="create customer" {{$role->hasPermissionTo('create customer') ? 'checked' : ''}} >
                                 <span class="checkbox-tile">
                                 <span class="checkbox-icon">
                                     <i class='bx bx-layer-plus'></i>
@@ -232,7 +234,7 @@
                             </div>
                             <div class="checkbox-wrapper-16">
                             <label class="checkbox-wrapper">
-                                <input class="checkbox-input" type="checkbox" name="ids[6]" value="edit customer">
+                                <input class="checkbox-input" type="checkbox" name="ids[6]" value="edit customer" {{$role->hasPermissionTo('edit customer') ? 'checked' : ''}}>
                                 <span class="checkbox-tile">
                                 <span class="checkbox-icon">
                                     <i class='bx bxs-edit'></i>
@@ -243,7 +245,7 @@
                             </div>
                             <div class="checkbox-wrapper-16">
                                 <label class="checkbox-wrapper">
-                                    <input class="checkbox-input" type="checkbox" name="ids[7]" value="delete customer">
+                                    <input class="checkbox-input" type="checkbox" name="ids[7]" value="delete customer" {{$role->hasPermissionTo('delete customer') ? 'checked' : ''}}>
                                     <span class="checkbox-tile">
                                     <span class="checkbox-icon">
                                         <i class='bx bxs-trash'></i>
@@ -259,7 +261,7 @@
                         <div class="cards">
                             <div class="checkbox-wrapper-16">
                                 <label class="checkbox-wrapper">
-                                <input class="checkbox-input" type="checkbox" name="ids[8]" value="menu-orders">
+                                <input class="checkbox-input" type="checkbox" name="ids[8]" value="menu-orders" {{$role->hasPermissionTo('menu-orders') ? 'checked' : ''}}>
                                 <span class="checkbox-tile">
                                     <span class="checkbox-icon">
                                         <i class='bx bx-table' ></i>
@@ -270,7 +272,7 @@
                             </div>
                             <div class="checkbox-wrapper-16">
                             <label class="checkbox-wrapper">
-                                <input class="checkbox-input" type="checkbox" name="ids[9]" value="create order">
+                                <input class="checkbox-input" type="checkbox" name="ids[9]" value="create order" {{$role->hasPermissionTo('create order') ? 'checked' : ''}}>
                                 <span class="checkbox-tile">
                                 <span class="checkbox-icon">
                                     <i class='bx bx-layer-plus'></i>
@@ -281,7 +283,7 @@
                             </div>
                             <div class="checkbox-wrapper-16">
                             <label class="checkbox-wrapper">
-                                <input class="checkbox-input" type="checkbox" name="ids[10]" value="edit order">
+                                <input class="checkbox-input" type="checkbox" name="ids[10]" value="edit order" {{$role->hasPermissionTo('edit order') ? 'checked' : ''}}>
                                 <span class="checkbox-tile">
                                 <span class="checkbox-icon">
                                     <i class='bx bxs-edit'></i>
@@ -292,7 +294,7 @@
                             </div>
                             <div class="checkbox-wrapper-16">
                                 <label class="checkbox-wrapper">
-                                    <input class="checkbox-input" type="checkbox" name="ids[11]" value="delete order">
+                                    <input class="checkbox-input" type="checkbox" name="ids[11]" value="delete order" {{$role->hasPermissionTo('delete order') ? 'checked' : ''}}>
                                     <span class="checkbox-tile">
                                     <span class="checkbox-icon">
                                         <i class='bx bxs-trash'></i>
@@ -308,7 +310,7 @@
                         <div class="cards">
                             <div class="checkbox-wrapper-16">
                                 <label class="checkbox-wrapper">
-                                <input class="checkbox-input" type="checkbox" name="ids[12]" value="menu-users">
+                                <input class="checkbox-input" type="checkbox" name="ids[12]" value="menu-users" {{$role->hasPermissionTo('menu-users') ? 'checked' : ''}}>
                                 <span class="checkbox-tile">
                                     <span class="checkbox-icon">
                                         <i class='bx bx-table' ></i>
@@ -319,7 +321,7 @@
                             </div>
                             <div class="checkbox-wrapper-16">
                             <label class="checkbox-wrapper">
-                                <input class="checkbox-input" type="checkbox" name="ids[13]" value="create user">
+                                <input class="checkbox-input" type="checkbox" name="ids[13]" value="create user" {{$role->hasPermissionTo('create user') ? 'checked' : ''}}>
                                 <span class="checkbox-tile">
                                 <span class="checkbox-icon">
                                     <i class='bx bx-layer-plus'></i>
@@ -330,7 +332,7 @@
                             </div>
                             <div class="checkbox-wrapper-16">
                             <label class="checkbox-wrapper">
-                                <input class="checkbox-input" type="checkbox" name="ids[14]" value="edit user">
+                                <input class="checkbox-input" type="checkbox" name="ids[14]" value="edit user" {{$role->hasPermissionTo('edit user') ? 'checked' : ''}}>
                                 <span class="checkbox-tile">
                                 <span class="checkbox-icon">
                                     <i class='bx bxs-edit'></i>
@@ -341,7 +343,7 @@
                             </div>
                             <div class="checkbox-wrapper-16">
                                 <label class="checkbox-wrapper">
-                                    <input class="checkbox-input" type="checkbox" name="ids[15]" value="delete user">
+                                    <input class="checkbox-input" type="checkbox" name="ids[15]" value="delete user" {{$role->hasPermissionTo('delete user') ? 'checked' : ''}}>
                                     <span class="checkbox-tile">
                                     <span class="checkbox-icon">
                                         <i class='bx bxs-trash'></i>
@@ -357,7 +359,7 @@
                         <div class="cards">
                             <div class="checkbox-wrapper-16">
                                 <label class="checkbox-wrapper">
-                                <input class="checkbox-input" type="checkbox" name="ids[16]" value="menu-dashboard">
+                                <input class="checkbox-input" type="checkbox" name="ids[16]" value="menu-dashboard" {{$role->hasPermissionTo('menu-dashboard') ? 'checked' : ''}}>
                                 <span class="checkbox-tile">
                                     <span class="checkbox-icon">
                                         <i class='bx bx-table' ></i>
@@ -373,7 +375,7 @@
                     <a href="/orders" style="text-decoration: none;">
                         <input class="newButton cancelButton" type="button" value="Cancel">
                     </a>
-                    <input class="newButton" type="submit" value="Create">
+                    <input class="newButton" type="submit" value="Update">
                 </div>
             </div>
         </form>

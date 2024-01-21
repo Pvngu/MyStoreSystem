@@ -34,9 +34,11 @@
         @if(count($orderCount) >= 1)
         <div class="content-header">
             <div style="font-size: 1.4rem;">Orders</div>
+            @can('create order')
             <a id = "addButton" href="orders/create">
                 <span style="font-weight: 700;">+</span> New
             </a>
+            @endcan
         </div>
             <div>
                 <nav>
@@ -118,12 +120,16 @@
                                 <a class="openModalShow {{$order->total_amount > 0 ? '' : 'inactive'}}" data-order-id='{{$order->id}}'>
                                     <i class='bx bx-show' style = 'color: #5993ff'></i>
                                 </a>
+                                @can('edit order')
                                 <a href ='orders/{{$order->id}}/edit'>
                                     <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
                                 </a>
+                                @endcan
+                                @can('delete order')
                                 <a class="openModalD" data-item-id='{{$order->id}}'>
                                     <i class='bx bx-trash' style = 'color: #fa7878'></i>
                                 </a>
+                                @endcan
                             </td>
                             <style>
                                 .openModalShow.inactive{
@@ -181,7 +187,9 @@
                     }
 
                     #itemOrder {
+                        max-height: 300px;
                         font-weight: 300;
+                        overflow-x: hidden;
                     }
 
                     #head div:first-of-type {
@@ -194,7 +202,7 @@
 
                     #head div, #itemOrder div {
                         text-align: center;
-                        width: 140px;
+                        width: 120px;
                         margin-block: 4px;
                     }
                 }

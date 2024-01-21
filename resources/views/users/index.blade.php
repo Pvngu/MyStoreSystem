@@ -3,9 +3,11 @@
         @if(count($userNumbers) >= 1)
             <div class="content-header">
                 <div style="font-size: 1.4rem;">Users</div>
+                @can('delete inventory')
                 <a id = "addButton" href="/users/create">
                     <span style="font-weight: 700;">+</span> New
                 </a>
+                @endcan
             </div>
             <div>
                 <nav>
@@ -73,7 +75,7 @@
                                 </td>
                                 <td>{{$user->first_name}} {{$user->last_name}}</td>
                                 <td>{{$user->email}}</td>
-                                <td>{{$user->role}}</td>
+                                <td class="center-cell">{{ implode(', ', $user->getRoleNames()->toArray()) }}</td>
                                 <td class="flex-cell">
                                     @if ($user->status == 1)
                                     <div class="status active">
@@ -88,12 +90,16 @@
                                     @endif
                                 </td>
                                 <td class = 'actions center-cell'>
+                                    @can('edit user')
                                     <a href = '/users/{{$user->id}}/edit'>
                                         <i class='bx bxs-edit-alt' style = 'color: #2a8c3f'></i>
                                     </a>
+                                    @endcan
+                                    @can('delete user')
                                     <a class="openModalD" data-item-id="{{$user->id}}">
                                         <i class='bx bx-trash' style = 'color: #fa7878'></i>
                                     </a>
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach
