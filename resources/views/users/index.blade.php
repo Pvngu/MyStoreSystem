@@ -3,7 +3,7 @@
         @if(count($userNumbers) >= 1)
             <div class="content-header">
                 <div style="font-size: 1.4rem;">Users</div>
-                @can('delete inventory')
+                @can('delete user')
                 <a id = "addButton" href="/users/create">
                     <span style="font-weight: 700;">+</span> New
                 </a>
@@ -26,16 +26,7 @@
                                     <select name="status" id="status" class="select-input" onchange="this.form.submit()">
                                         <option value="">All</option>
                                         <option value="active" {{request('status') == 'active' ? 'selected' : ''}}>Active</option>
-                                        <option value="inactive" {{request('status') == 'inactive' ? 'selected' : ''}}>Deactive</option>
-                                    </select>
-                                </div>
-                                <div class="nav-item">
-                                    <label>Role</label>
-                                    <select name="role" id="role" class="select-input" onchange="this.form.submit()">
-                                        <option value="">All</option>
-                                        @foreach ($roles as $role)
-                                            <option value="{{$role->id}}">{{$role->name}}</option>
-                                        @endforeach
+                                        <option value="inactive" {{request('status') == 'inactive' ? 'selected' : ''}}>Inactive</option>
                                     </select>
                                 </div>
                             </div>

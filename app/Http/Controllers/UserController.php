@@ -66,6 +66,7 @@ class UserController extends Controller
             'last_name' => 'required',
             'username' => 'required',
             'email' => 'nullable|email',
+            'status' => 'required'
         ]);
 
         if(isset($request->password)) {

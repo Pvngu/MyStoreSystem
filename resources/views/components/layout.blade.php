@@ -197,7 +197,6 @@
                     <h1 class="bizName">MyStoreSystem</h1>
                 </div>
                 <div class="rightContent">
-                    <i class='bx bx-bell'></i>
                     <div class="userProfile">
                         <div class="userText">
                             <div class="name">{{Auth::User()->username}}</div>

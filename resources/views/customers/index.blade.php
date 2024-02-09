@@ -3,7 +3,7 @@
         @if(count($customerCount) >= 1)
             <div class="content-header">
                 <div style="font-size: 1.4rem;">Customers</div>
-                @can('delete inventory')
+                @can('create customer')
                 <a id = "addButton" href="customers/create">
                     <span style="font-weight: 700;">+</span> New
                 </a>

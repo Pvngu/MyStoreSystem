@@ -151,7 +151,7 @@ if (savedTheme) {
 
 for (var i = 0; i < radios.length; i++) {
     radios[i].addEventListener('change', function () {
-        html[0].classList.remove(html[0].classList.item(0));
+        html[0].classList='';
         html[0].classList.add(this.id);
         setThemeCookie(this.id);
         updateSliderPosition();

@@ -54,9 +54,6 @@ class User extends Authenticatable
             ->orWhere('username', 'like', '%'. request('search') . '%')
             ->orWhere('id', '=', request('search'));
         }
-        if($filters['role'] ?? false) {
-            $query->where('role', '=', request('role'));
-        }
         if($filters['status'] ?? false) {
             $query->where('status', $filters['status'] == 'active' ? 1 : 0);
         }

@@ -116,8 +116,8 @@
                     <div class="content-items">
                         <label>Status</label>
                         <select name="status" value="active">
-                            <option value="1">Active</option>
-                            <option value="0">Inactive</option>
+                            <option value="1" {{$user->status == 1 ? 'selected' :''}}>Active</option>
+                            <option value="0" {{$user->status == 0 ? 'selected' : ''}}>Inactive</option>
                         </select>
                     </div>
                 </div>
